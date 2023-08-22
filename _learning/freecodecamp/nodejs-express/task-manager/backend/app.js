@@ -11,12 +11,12 @@ dotenv.config();
 // Middleware
 app.use(express.static('./public'))
 app.use(express.json());
-app.use(notFound)
-app.use(errorHandler)
 
 // Routes
-
 app.use("/api/v1/tasks", tasks);
+
+app.use(notFound)
+app.use(errorHandler)
 
 /* app.get('api/v1/tasks') - get all the tasks
 app.post('api/v1/tasks') - create the tasks

@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from "dotenv";
+//import expressAsyncErrors from 'express-async-errors';
 import connectDB from './db/connect.js';
 import notFound from "./middleware/not-found.js";
 import errorHandler from "./middleware/error-handler.js";

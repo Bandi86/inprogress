@@ -1,20 +1,22 @@
 import jwt from "jsonwebtoken";
-import { UnauthenticatedError } from "../errors/index.js"
+import { UnauthenticatedError } from "../errors/index.js";
+import User from "../models/User.js";
 
 const authMiddleware = async (req, res, next) => {
+  // check header
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith("")) {
-    throw new UnauthenticatedError("no token provided");
+  if (!authHeader || !authHeader.startsWith("Bearer")) {
+    throw new UnauthenticatedError("Authentication invalid");
   }
   const token = authHeader.split(" ")[1];
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const { id, username } = decoded;
-    req.user = { id, username };
+    const payload = jwt.verify(token, process.env.JWT_SECRET);
+    // attach the user the job routes
+    req.user = { userId: payload.userId, name: payload.name };
     next();
   } catch (error) {
-    throw new UnauthenticatedError("not authorized to access this route");
+    throw new UnauthenticatedError("Authentication invalid");
   }
 };
 

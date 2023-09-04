@@ -10,6 +10,7 @@ import notFound from './middleware/not-found.js'
 import errorHandler from './middleware/error-handler.js'
 import authRouter from './routes/auth.js';
 import booksRouter from './routes/books.js';
+import categoryRouter from './routes/categories.js'
 
 
 dotenv.config();
@@ -29,6 +30,7 @@ app.use(rateLimit({
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/books', authMiddleware, booksRouter)
+app.use('/api/v1/categories', categoryRouter)
 
 app.use(notFound)
 app.use(errorHandler)

@@ -34,6 +34,12 @@ const BooksSchema = new mongoose.Schema({
     type: String,
     required: [true, "book must be have description"]
   },
+  categories: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Category",
+    },
+  ],
   reviews: [
     {
       user: {

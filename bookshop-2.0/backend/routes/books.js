@@ -10,6 +10,6 @@ import {
 const router = express.Router();
 
 router.route("/").post(createBook).get(getAllBooks);
-router.route("/id:id").get(getBook).patch(deleteBook).patch(updateBook);
+router.route("/:id").get(getBook).patch(deleteBook).patch(updateBook);
 
 export default router;

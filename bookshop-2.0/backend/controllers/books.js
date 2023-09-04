@@ -6,16 +6,17 @@ import adminCheckMiddleware from "../middleware/adminCheck.js";
 import Book from "../models/Books.js";
 
 // GET ALL BOOKS
+// csak azt adjuk vissza ahol az isdeleted értéke false
 const getAllBooks = asyncHandler(async (req, res) => {
-  const books = await Book.find({}).sort("createdAt");
-  res.status(StatusCodes.OK).json({ books, count: books.length });
+  const books = await Book.find({ isDeleted: false }).sort("createdAt");
   if (!books) throw new Error({ message: error.message });
+  res.status(StatusCodes.OK).json({ books, count: books.length });
 });
 
 // SINGLE BOOK
+// csak azt adjuk vissza ahol az isdeleted értéke false
 const getBook = asyncHandler(async (req, res) => {
-  const {
-    user: { userId },
+  const {    
     params: { id: bookId },
   } = req;
 
@@ -38,6 +39,7 @@ const createBook = asyncHandler(async (req, res) => {
 // UPDATE BOOK
 const updateBook = asyncHandler(async (req, res) => {
   adminCheckMiddleware(req, res, async () => {
+
     canEdited = [
       "title",
       "author",
@@ -49,7 +51,9 @@ const updateBook = asyncHandler(async (req, res) => {
       "coverImage",
       "description",
       "isDeleted",
+      "price"
     ];
+
     // Check if book exists
     const bookId = req.params.id; // updated book id
     const book = await Book.findById(bookId);
@@ -84,7 +88,7 @@ const deleteBook = asyncHandler(async (req, res) => {
 
     if (!book) throw new notFound(`No book with id: ${bookId}`);
 
-    // patch Book argument isDeleted to  true
+    // patch Book argument isDeleted to true
     const isDeleted = true;
     const deletingBook = await Book.findByIdAndUpdate(bookId, { isDeleted });
     if (!deletingBook) return res.status(StatusCodes.NO_CONTENT);

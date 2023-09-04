@@ -5,14 +5,15 @@ import notFound from "../middleware/not-found.js";
 import { BadrequestError } from "../errors/bad-request.js";
 import adminCheckMiddleware from "../middleware/adminCheck.js";
 
-// GET ALL CATEGORIE
+// GET ALL CATEGORIES
 const getAllCategorys = asyncHandler(async (req, res) => {
-  const categories = await Category.find({});
-  res.status(StatusCodes.OK).json({ categories, count: categories.length });
-  if (!categories) return;
-  res
-    .status(StatusCodes.INTERNAL_SERVER_ERROR)
-    .json({ error: "failed to fetch categories" });
+  const categories = await Category.find({ isDeleted: false });
+  if (!categories) {
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "failed to fetch categories" });
+  } else
+    res.status(StatusCodes.OK).json({ categories, count: categories.length });
 });
 
 // GET SINGLE CATEGORIE

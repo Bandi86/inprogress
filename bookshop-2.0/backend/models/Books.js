@@ -3,36 +3,40 @@ import mongoose from "mongoose";
 const BooksSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, "book must be have title"]
+    required: [true, "book must be have title"],
   },
   author: {
     type: String,
-    required: [true, "book most be have author"]
-  },  
+    required: [true, "book most be have author"],
+  },
   publishedYear: {
     type: Number,
-    required: [true, "book most be have published year"]
+    required: [true, "book most be have published year"],
   },
   isbn: {
     type: String,
-    required: [true, "book most be have isbn code"]
+    required: [true, "book most be have isbn code"],
   },
   publisher: {
     type: String,
-    required: [true, "book most be have publisher"]
+    required: [true, "book most be have publisher"],
   },
   language: {
     type: String,
-    required: [true, "book must be have a language "]
+    required: [true, "book must be have a language "],
   },
   pageCount: {
     type: Number,
-    required: [true, "book must be have page count"]
+    required: [true, "book must be have page count"],
   },
   coverImage: String,
   description: {
     type: String,
-    required: [true, "book must be have description"]
+    required: [true, "book must be have description"],
+  },
+  price: {
+    type: Number,
+    required: [true, "book most have a price"],
   },
   categories: [
     {
@@ -51,8 +55,11 @@ const BooksSchema = new mongoose.Schema({
       comment: String,
       date: { type: Date, default: Date.now },
     },
-  ],  
-  isDeleted: Boolean,
+  ],
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
   createdAt: { type: Date, default: Date.now },
   updatedAt: { type: Date, default: Date.now },
 });

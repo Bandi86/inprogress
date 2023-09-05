@@ -6,9 +6,9 @@ const OrdersSchema = new mongoose.Schema({
         ref: "User",
         required: true, // A rendelést leadó felhasználó referencia
       },
-      products: [
+      books: [
         {
-          product: {
+          book: {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Book",
             required: true, // A rendelt termék referencia

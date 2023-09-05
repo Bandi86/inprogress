@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const InventorySchema = new mongoose.Schema({
-    product: {
+    books: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Book", // Az áru vagy termék referencia
         required: true,

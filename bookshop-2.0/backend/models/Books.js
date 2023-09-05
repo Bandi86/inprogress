@@ -6,8 +6,9 @@ const BooksSchema = new mongoose.Schema({
     required: [true, "book must be have title"],
   },
   author: {
-    type: String,
-    required: [true, "book most be have author"],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Author",
+    required: [true, "A book must have an author"],
   },
   publishedYear: {
     type: Number,
@@ -18,8 +19,9 @@ const BooksSchema = new mongoose.Schema({
     required: [true, "book most be have isbn code"],
   },
   publisher: {
-    type: String,
-    required: [true, "book most be have publisher"],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Publisher",
+    required: [true, "A book must have a publisher"],
   },
   language: {
     type: String,
@@ -37,6 +39,10 @@ const BooksSchema = new mongoose.Schema({
   price: {
     type: Number,
     required: [true, "book most have a price"],
+  },
+  inventoryQuantity: {
+    type: Number,
+    default: 0, // Alapértelmezett érték: 0
   },
   categories: [
     {

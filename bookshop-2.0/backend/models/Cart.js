@@ -1,16 +1,16 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CartSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true, 
+    ref: 'User',
+    required: true,
   },
-  products: [
+  books: [
     {
-      product: {
+      book: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Book",
+        ref: 'Book',
         required: true,
       },
       quantity: {
@@ -19,12 +19,15 @@ const CartSchema = new mongoose.Schema({
       },
     },
   ],
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+  createdAt: { type: Date, default: Date.now },
+  updatedAt: { type: Date, default: Date.now },
 });
 
-const Cart = mongoose.model("Cart", CartSchema);
+CartSchema.pre('save', function (next) {
+  this.updatedAt = new Date();
+  next();
+});
+
+const Cart = mongoose.model('Cart', CartSchema);
 
 export default Cart;

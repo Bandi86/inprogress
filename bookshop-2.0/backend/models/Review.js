@@ -6,7 +6,7 @@ const ReviewSchema = mongoose.Schema({
     ref: "User", // Az értékelést hagyó felhasználó referencia
     required: true,
   },
-  book: {
+  books: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Book", // Az értékelt könyv referencia
     required: true,

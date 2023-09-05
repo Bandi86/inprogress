@@ -16,7 +16,7 @@ const getAllBooks = asyncHandler(async (req, res) => {
 // SINGLE BOOK
 // csak azt adjuk vissza ahol az isdeleted értéke false
 const getBook = asyncHandler(async (req, res) => {
-  const {    
+  const {
     params: { id: bookId },
   } = req;
 
@@ -39,7 +39,6 @@ const createBook = asyncHandler(async (req, res) => {
 // UPDATE BOOK
 const updateBook = asyncHandler(async (req, res) => {
   adminCheckMiddleware(req, res, async () => {
-
     canEdited = [
       "title",
       "author",
@@ -51,7 +50,7 @@ const updateBook = asyncHandler(async (req, res) => {
       "coverImage",
       "description",
       "isDeleted",
-      "price"
+      "price",
     ];
 
     // Check if book exists

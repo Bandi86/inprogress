@@ -1,18 +1,21 @@
-import express from "express";
-import winston from "winston"
-import dotenv from "dotenv";
-import cookieParser from "cookie-parser";
-import helmet from "helmet";
+import express from 'express';
+import winston from 'winston';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import helmet from 'helmet';
 import cors from 'cors';
-import { rateLimit } from 'express-rate-limit'
-import connectDB from "./config/connect.js";
+import { rateLimit } from 'express-rate-limit';
+import connectDB from './config/connect.js';
 import authMiddleware from './middleware/auth.js';
-import notFound from './middleware/not-found.js'
-import errorHandler from './middleware/error-handler.js'
+import notFound from './middleware/not-found.js';
+import errorHandler from './middleware/error-handler.js';
 import authRouter from './routes/auth.js';
 import booksRouter from './routes/books.js';
-import categoryRouter from './routes/categories.js'
-
+import categoryRouter from './routes/categories.js';
+import favoritesRouter from './routes/favorites.js';
+import cartRouter from './routes/cart.js';
+import getUserActivity from './controllers/userActivity.js'
+import logUserActivity from './middleware/logUserActivity.js';
 
 dotenv.config();
 
@@ -37,28 +40,35 @@ const logger = winston.createLogger({
 // `${info.level}: ${info.message} JSON.stringify({ ...rest }) `
 //
 if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple(),
-  }));
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    })
+  );
 }
 
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
+app.use(logUserActivity);
 
-app.use(rateLimit({
-  windowMs: 15 * 60* 1000,
-  max: 100
-}))
-
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+  })
+);
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/books', authMiddleware, booksRouter)
-app.use('/api/v1/categories', categoryRouter)
+app.use('/api/v1/books', authMiddleware, booksRouter);
+app.use('/api/v1/categories', categoryRouter);
+app.use('/api/v1/favorites', favoritesRouter);
+app.use('/api/v1/cart', cartRouter);
+app.use('/api/v1/user-activity', getUserActivity);
 
-app.use(notFound)
-app.use(errorHandler)
+app.use(notFound);
+app.use(errorHandler);
 
 const port = process.env.PORT || 8080;
 

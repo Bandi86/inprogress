@@ -1,19 +1,21 @@
+import mongoose from "mongoose";
+
 const ProductGroupSchema = new mongoose.Schema({
-    name: {
-      type: String,
-      required: true, // A csoport neve (pl. "Harry Potter könyvsorozat")
+  name: {
+    type: String,
+    required: true,
+  },
+  books: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Book",
     },
-    products: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Book",
-      },
-    ], // Az áruk csoportjához tartozó termékek referenciái
-    description: String, // Részletes leírás a csoportról
-    price: Number, // Az ár, amely a csoportra vonatkozik
-    // Egyéb mezők vagy validációk a konkrét igényektől függően
-  });
+  ],
+  description: String,
+  price: Number,
+  // További mezők az árú csoporttal kapcsolatban
+});
 
-  const ProductGroup = mongoose.model("ProductGroup", ProductGroupSchema)
+const ProductGroup = mongoose.model("ProductGroup", ProductGroupSchema);
 
-  export default ProductGroup
+export default ProductGroup;

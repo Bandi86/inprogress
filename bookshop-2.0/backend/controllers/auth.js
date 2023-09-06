@@ -13,6 +13,7 @@ const register = asyncHandler(async (req, res) => {
   const user = await User.create({ ...req.body });
   const token = user.createJWT();
   res.status(StatusCodes.CREATED).json({ user: { name: user.name }, token });
+  console.log(`registration succes, name: ${user.name} email: ${user.email}`)
 });
 
 const login = asyncHandler(async (req, res) => {
@@ -36,6 +37,7 @@ const login = asyncHandler(async (req, res) => {
   //compare password
   const token = user.createJWT();
   res.status(StatusCodes.OK).json({ user: { name: user.name, role: user.role }, token });
+  console.log(`login succes, name: ${user.name} email: ${user.email}`)
 });
 
 export { register, login };

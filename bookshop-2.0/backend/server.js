@@ -14,6 +14,7 @@ import booksRouter from './routes/books.js';
 import categoryRouter from './routes/categories.js';
 import favoritesRouter from './routes/favorites.js';
 import cartRouter from './routes/cart.js';
+import userRouter from './routes/user.js';
 import getUserActivity from './controllers/userActivity.js'
 import logUserActivity from './middleware/logUserActivity.js';
 
@@ -66,6 +67,7 @@ app.use('/api/v1/categories', categoryRouter);
 app.use('/api/v1/favorites', favoritesRouter);
 app.use('/api/v1/cart', cartRouter);
 app.use('/api/v1/user-activity', getUserActivity);
+app.use('/api/v1/users', userRouter)
 
 app.use(notFound);
 app.use(errorHandler);

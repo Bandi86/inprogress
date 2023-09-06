@@ -1,26 +1,38 @@
 import jwt from "jsonwebtoken";
-import { UnauthenticatedError } from "../errors/index.js";
 import User from "../models/User.js";
 
 const authMiddleware = async (req, res, next) => {
-  // check header
+  // Check header
   const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith("Bearer")) {
-    throw new UnauthenticatedError("Authentication invalid");
+    return res.status(401).json({ error: "Authentication invalid" });
   }
   const token = authHeader.split(" ")[1];
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
-    // attach the user the job routes
-    const user = User.findById(payload.id).select("-password");
+    
+    const user = await User.findById(payload.id).select("-password");
+
+    if (!user) {
+      return res.status(401).json({ error: "Authentication invalid" });
+    }
+
     req.user = user;
 
-    req.user = { userId: payload.userId, name: payload.name };
-    next();
+    // Ellenőrizd az admin jogosultságot
+    if (req.user.role !== "admin") {
+      return res
+        .status(403)
+        .json({ error: "No permission for this operation" });
+    }
+
   } catch (error) {
-    throw new UnauthenticatedError("Authentication invalid");
+    return res.status(401).json({ error: "Authentication invalid" });
   }
+  next();
 };
 
 export default authMiddleware;
+
+

@@ -3,20 +3,23 @@ import UserActivity from '../models/UserActivity.js';
 // Az aktivitás middleware
 const logUserActivity = async (req, res, next) => {
   try {
-    // Gyűjtsd össze az aktivitás adatait a kérésből
-    const userId = req.user.id; // Például az aktuális felhasználó azonosítója
-    const activityType = 'modify'; // Például módosítás
-    const purchaseAmount = req.body.purchaseAmount; // Például vásárlás összértéke
-    const cartChanges = req.body.cartChanges; // Például kosár változásai
+    // Ellenőrizd, hogy van-e bejelentkezett felhasználó
+    if (req.user && req.user.id) {
+      // Ha van bejelentkezett felhasználó, gyűjtsd össze az aktivitás adatait
+      const userId = req.user.id; // Például az aktuális felhasználó azonosítója
+      const activityType = 'modify'; // Például módosítás
+      const purchaseAmount = req.body.purchaseAmount; // Például vásárlás összértéke
+      const cartChanges = req.body.cartChanges; // Például kosár változásai
 
-    // Rögzítsd az aktivitást az adatbázisban
-    const activity = new UserActivity({
-      userId,
-      activityType,
-      purchaseAmount,
-      cartChanges,
-    });
-    await activity.save();
+      // Rögzítsd az aktivitást az adatbázisban
+      const activity = new UserActivity({
+        userId,
+        activityType,
+        purchaseAmount,
+        cartChanges,
+      });
+      await activity.save();
+    }
 
     // Folytasd a kérés feldolgozását
     next();
@@ -27,7 +30,5 @@ const logUserActivity = async (req, res, next) => {
   }
 };
 
-// A middleware utáni további útvonalak és vezérlők
-// ...
 
 export default logUserActivity;

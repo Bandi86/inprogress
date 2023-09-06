@@ -1,9 +1,8 @@
-import asyncHandler from "express-async-handler";
-import { StatusCodes } from "http-status-codes";
-import Category from "../models/Categories.js";
-import notFound from "../middleware/not-found.js";
-import { BadrequestError } from "../errors/bad-request.js";
-import adminCheckMiddleware from "../middleware/adminCheck.js";
+import asyncHandler from 'express-async-handler';
+import { StatusCodes } from 'http-status-codes';
+import Category from '../models/Categories.js';
+import notFound from '../middleware/not-found.js';
+import { BadrequestError } from '../errors/bad-request.js';
 
 // GET ALL CATEGORIES
 const getAllCategorys = asyncHandler(async (req, res) => {
@@ -11,7 +10,7 @@ const getAllCategorys = asyncHandler(async (req, res) => {
   if (!categories) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ error: "failed to fetch categories" });
+      .json({ error: 'failed to fetch categories' });
   } else
     res.status(StatusCodes.OK).json({ categories, count: categories.length });
 });
@@ -31,11 +30,9 @@ const getCategory = asyncHandler(async (req, res) => {
 
 // CREATE CATEGORIE
 const createCategory = asyncHandler(async (req, res) => {
-  adminCheckMiddleware(req, res, async () => {
-    const newCategorie = new Category(req.body);
-    await newCategorie.save();
-    res.status(StatusCodes.CREATED).json(newCategorie);
-  });
+  const newCategorie = new Category(req.body);
+  await newCategorie.save();
+  res.status(StatusCodes.CREATED).json(newCategorie);
 });
 
 // UPDATE CATEGORY
@@ -46,25 +43,24 @@ const updateCategory = asyncHandler(async (req, res) => {
   // Az admin jogosultság ellenőrzése az adminCheckMiddleware segítségével
   // Ha a felhasználó nem admin, akkor a middleware hibaüzenetet küld vissza
   // Ha admin, folytatja a kódot
-  adminCheckMiddleware(req, res, async () => {
-    // Check if category exists
-    const idExists = await Category.findById(id);
-    if (!idExists) {
-      throw new notFound(`No category with id: ${id}`);
-    }
 
-    // update category in db
-    const category = await Category.findByIdAndUpdate(
-      id,
-      { name },
-      { new: true }
-    );
-    if (!category) {
-      throw new BadrequestError("Category update failed");
-    }
+  // Check if category exists
+  const idExists = await Category.findById(id);
+  if (!idExists) {
+    throw new notFound(`No category with id: ${id}`);
+  }
 
-    res.status(StatusCodes.OK).json({ category });
-  });
+  // update category in db
+  const category = await Category.findByIdAndUpdate(
+    id,
+    { name },
+    { new: true }
+  );
+  if (!category) {
+    throw new BadrequestError('Category update failed');
+  }
+
+  res.status(StatusCodes.OK).json({ category });
 });
 
 // DELETE CATEGORY
@@ -76,31 +72,30 @@ const deleteCategory = asyncHandler(async (req, res) => {
   // Az admin jogosultság ellenőrzése az adminCheckMiddleware segítségével
   // Ha a felhasználó nem admin, akkor a middleware hibaüzenetet küld vissza
   // Ha admin, folytatja a kódot
-  adminCheckMiddleware(req, res, async () => {
-    const category = await Category.findOne({
-      _id: categoryId,
-    });
 
-    if (!category) {
-      throw new notFound(`No category with id: ${categoryId}`);
-    }
-
-    // patch Category argument isDeleted to true
-    const isDeleted = true;
-    const deletingCategory = await Category.findByIdAndUpdate(
-      categoryId,
-      { isDeleted },
-      { new: true }
-    );
-
-    if (!deletingCategory) {
-      return res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: "Category deletion failed" });
-    }
-
-    res.status(StatusCodes.OK).json({ message: "Category is deleted" });
+  const category = await Category.findOne({
+    _id: categoryId,
   });
+
+  if (!category) {
+    throw new notFound(`No category with id: ${categoryId}`);
+  }
+
+  // patch Category argument isDeleted to true
+  const isDeleted = true;
+  const deletingCategory = await Category.findByIdAndUpdate(
+    categoryId,
+    { isDeleted },
+    { new: true }
+  );
+
+  if (!deletingCategory) {
+    return res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: 'Category deletion failed' });
+  }
+
+  res.status(StatusCodes.OK).json({ message: 'Category is deleted' });
 });
 
 export {

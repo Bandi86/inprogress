@@ -1,6 +1,9 @@
 'use client';
 import { useState, SyntheticEvent } from 'react';
 import axios from 'axios';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import { signupSchema } from '../schema/signup';
 import { apiUrls } from '../api/api';
@@ -12,16 +15,15 @@ interface FormState {
   confirmPassword: string;
 }
 
-const Page = () => {
-
-  const router = useRouter();  
+const SignUp = () => {
+  const router = useRouter();
 
   const [formState, setFormState] = useState<FormState>({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
-  });  
+  });
 
   const handleForm = async (e: SyntheticEvent) => {
     e.preventDefault();
@@ -31,7 +33,7 @@ const Page = () => {
         if (formState.password == formState.confirmPassword) {
           const res = await axios.post(apiUrls.signupAPI, validatedData);
           if (res.status === 201) {
-            console.log("succes registration")
+            console.log('succes registration');
             router.push('/login');
           }
         } else {
@@ -46,50 +48,75 @@ const Page = () => {
   };
 
   return (
-    <div>
-      <h2 className='text-center'>Sign Up</h2>
+    <>
+      <h2 className='text-center text-2xl font-semibold mb-4'>Sign Up</h2>
       <form
         onSubmit={handleForm}
-        className='flex flex-col items-center justify-center text-black gap-4 mt-10'
+        className='grid grid-cols-1 gap-4 max-w-sm mx-auto'
       >
-        <label className='text-white'>Username</label>
-        <input
-          type='text'
-          placeholder='Username'
-          required
-          onChange={(e) => setFormState({ ...formState, name: e.target.value })}
-        />
-        <label className='text-white'>Email</label>
-        <input
-          type='email'
-          placeholder='Email adress'
-          required
-          onChange={(e) =>
-            setFormState({ ...formState, email: e.target.value })
-          }
-        />
-        <label className='text-white'>Password</label>
-        <input
-          type='password'
-          placeholder='Password'
-          required
-          onChange={(e) =>
-            setFormState({ ...formState, password: e.target.value })
-          }
-        />
-        <label className='text-white'>Confirm Password</label>
-        <input
-          type='password'
-          placeholder='Confirm password'
-          required
-          onChange={(e) =>
-            setFormState({ ...formState, confirmPassword: e.target.value })
-          }
-        />
-        <button type='submit' className='border-white text-white'>Submit</button>
+        <div className="flex flex-col gap-4">
+          <Label htmlFor='username' className='text-white'>Username</Label>
+          <Input
+            type='text'
+            id='name'
+            placeholder='Username'
+            required
+            autoComplete='true'
+            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+            className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
+          />
+        </div>
+  
+        <div className="flex flex-col gap-4">
+          <Label htmlFor='email' className='text-white'>Email</Label>
+          <Input
+            type='email'
+            id='email'
+            placeholder='Email'
+            required
+            autoComplete='true'
+            onChange={(e) =>
+              setFormState({ ...formState, email: e.target.value })
+            }
+            className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
+          />
+        </div>
+  
+        <div className="flex flex-col gap-4">
+          <Label htmlFor='password' className='text-white'>Password</Label>
+          <Input
+            type='password'
+            placeholder='Password'
+            required
+            autoComplete='true'
+            onChange={(e) =>
+              setFormState({ ...formState, password: e.target.value })
+            }
+            className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
+          />
+        </div>
+  
+        <div className="flex flex-col gap-4">
+          <Label htmlFor='confirmPassword' className='text-white'>Confirm Password</Label>
+          <Input
+            type='password'
+            placeholder='Confirm Password'
+            required
+            autoComplete='true'
+            onChange={(e) =>
+              setFormState({ ...formState, confirmPassword: e.target.value })
+            }
+            className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
+          />
+        </div>
+  
+        <Button type='submit' className='px-4 py-2 bg-indigo-500 border rounded-md hover:bg-indigo-600 text-white'>
+          Submit
+        </Button>
       </form>
-    </div>
+    </>
   );
+  
 };
 
-export default Page;
+export default SignUp;

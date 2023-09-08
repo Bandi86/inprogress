@@ -15,7 +15,7 @@ import categoryRouter from './routes/categories.js';
 import favoritesRouter from './routes/favorites.js';
 import cartRouter from './routes/cart.js';
 import userRouter from './routes/user.js';
-import getUserActivity from './controllers/userActivity.js'
+import getUserActivity from './controllers/userActivity.js';
 import logUserActivity from './middleware/logUserActivity.js';
 
 dotenv.config();
@@ -48,7 +48,14 @@ if (process.env.NODE_ENV !== 'production') {
   );
 }
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ['http://localhost:3000', 'http://localhost:8000'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use(helmet());
@@ -62,12 +69,12 @@ app.use(
 );
 
 app.use('/api/v1/auth', authRouter);
-app.use('/api/v1/books', authMiddleware, booksRouter);
+app.use('/api/v1/books', booksRouter);
 app.use('/api/v1/categories', categoryRouter);
-app.use('/api/v1/favorites', favoritesRouter);
+app.use('/api/v1/favorites', authMiddleware, favoritesRouter);
 app.use('/api/v1/cart', cartRouter);
-app.use('/api/v1/user-activity', getUserActivity);
-app.use('/api/v1/users', userRouter)
+app.use('/api/v1/user-activity', authMiddleware, getUserActivity);
+app.use('/api/v1/users', userRouter);
 
 app.use(notFound);
 app.use(errorHandler);

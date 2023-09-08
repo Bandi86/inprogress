@@ -27,14 +27,8 @@ const Login = () => {
       const validatedData = loginSchema.parse(formState);
       if (validatedData) {
         const res = await axios.post(apiUrls.loginAPI, validatedData);
-        if (res.status === 200) {
-          if (res.data.user.role === 'admin') {
-            router.push('/admin');
-          } else {
-            router.push('/');
-            console.log('succes login');
-          }
-        }
+        if (res.status === 200 && res.data.user.role === 'admin')
+          router.push('/admin');
       } else {
         throw new Error('Invalid form data');
       }
@@ -50,8 +44,10 @@ const Login = () => {
         onSubmit={handleForm}
         className='grid grid-cols-1 gap-4 max-w-sm mx-auto'
       >
-       <div className="flex flex-col gap-4">
-          <Label htmlFor='email' className='text-white'>Email</Label>
+        <div className='flex flex-col gap-4'>
+          <Label htmlFor='email' className='text-white'>
+            Email
+          </Label>
           <Input
             type='email'
             id='email'
@@ -64,8 +60,10 @@ const Login = () => {
             className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
           />
         </div>
-        <div className="flex flex-col gap-4">
-          <Label htmlFor='password' className='text-white'>Password</Label>
+        <div className='flex flex-col gap-4'>
+          <Label htmlFor='password' className='text-white'>
+            Password
+          </Label>
           <Input
             type='password'
             placeholder='Password'
@@ -78,7 +76,10 @@ const Login = () => {
           />
         </div>
 
-        <Button type='submit' className='px-4 py-2 bg-indigo-500 border rounded-md hover:bg-indigo-600 text-white'>
+        <Button
+          type='submit'
+          className='px-4 py-2 bg-indigo-500 border rounded-md hover:bg-indigo-600 text-white'
+        >
           Submit
         </Button>
       </form>

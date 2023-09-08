@@ -1,5 +1,5 @@
 'use client';
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, useEffect } from 'react';
 import axios from 'axios';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -32,9 +32,11 @@ const SignUp = () => {
       if (validatedData) {
         if (formState.password == formState.confirmPassword) {
           const res = await axios.post(apiUrls.signupAPI, validatedData);
+          if (res.status === 400) {
+            console.log(res.data.msg);
+          }
           if (res.status === 201) {
-            console.log('succes registration');
-            router.push('/login');
+            console.log('Registration success');
           }
         } else {
           throw new Error('passwords not match');
@@ -54,21 +56,27 @@ const SignUp = () => {
         onSubmit={handleForm}
         className='grid grid-cols-1 gap-4 max-w-sm mx-auto'
       >
-        <div className="flex flex-col gap-4">
-          <Label htmlFor='username' className='text-white'>Username</Label>
+        <div className='flex flex-col gap-4'>
+          <Label htmlFor='username' className='text-white'>
+            Username
+          </Label>
           <Input
             type='text'
             id='name'
             placeholder='Username'
             required
             autoComplete='true'
-            onChange={(e) => setFormState({ ...formState, name: e.target.value })}
+            onChange={(e) =>
+              setFormState({ ...formState, name: e.target.value })
+            }
             className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
           />
         </div>
-  
-        <div className="flex flex-col gap-4">
-          <Label htmlFor='email' className='text-white'>Email</Label>
+
+        <div className='flex flex-col gap-4'>
+          <Label htmlFor='email' className='text-white'>
+            Email
+          </Label>
           <Input
             type='email'
             id='email'
@@ -81,9 +89,11 @@ const SignUp = () => {
             className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
           />
         </div>
-  
-        <div className="flex flex-col gap-4">
-          <Label htmlFor='password' className='text-white'>Password</Label>
+
+        <div className='flex flex-col gap-4'>
+          <Label htmlFor='password' className='text-white'>
+            Password
+          </Label>
           <Input
             type='password'
             placeholder='Password'
@@ -95,9 +105,11 @@ const SignUp = () => {
             className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
           />
         </div>
-  
-        <div className="flex flex-col gap-4">
-          <Label htmlFor='confirmPassword' className='text-white'>Confirm Password</Label>
+
+        <div className='flex flex-col gap-4'>
+          <Label htmlFor='confirmPassword' className='text-white'>
+            Confirm Password
+          </Label>
           <Input
             type='password'
             placeholder='Confirm Password'
@@ -109,14 +121,16 @@ const SignUp = () => {
             className='px-3 py-2 bg-gray-900 border rounded-md focus:outline-none focus:border-indigo-500 text-white'
           />
         </div>
-  
-        <Button type='submit' className='px-4 py-2 bg-indigo-500 border rounded-md hover:bg-indigo-600 text-white'>
+
+        <Button
+          type='submit'
+          className='px-4 py-2 bg-indigo-500 border rounded-md hover:bg-indigo-600 text-white'
+        >
           Submit
         </Button>
       </form>
     </>
   );
-  
 };
 
 export default SignUp;

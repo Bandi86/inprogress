@@ -2,7 +2,6 @@ import asyncHandler from 'express-async-handler';
 import User from '../models/User.js';
 import { StatusCodes } from 'http-status-codes';
 import { BadrequestError, UnauthenticatedError } from '../errors/index.js';
-import generateToken from '../utils/generateToken.js';
 
 const register = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -26,12 +25,12 @@ const register = asyncHandler(async (req, res) => {
       email: user.email,
       role: user.role,
     };
-    generateToken(res, user._id);
+
     res.status(StatusCodes.CREATED).json({ newUser });
   } else {
     res.status(StatusCodes.BAD_REQUEST);
     throw new BadrequestError('Invalid user data');
-  }  
+  }
   console.log(`registration succes, ${user}`);
 });
 
@@ -51,8 +50,15 @@ const login = asyncHandler(async (req, res, next) => {
   if (!isPasswordCorrect) {
     throw new UnauthenticatedError('Invalid Credentials');
   } else {
-    generateToken(res, user._id);
+    // send jwt token to cookie
+    const jwt = user.createJWT();
     res
+      .cookie('jwt', jwt, {
+        httpOnly: true,
+        domain: 'localhost',
+        path: '/',
+        secure: true,
+      })
       .status(StatusCodes.OK)
       .json({
         user: {
@@ -60,9 +66,9 @@ const login = asyncHandler(async (req, res, next) => {
           name: user.name,
           email: user.email,
           role: user.role,
-        },        
+        },
       });
-  }  
+  }
   console.log(`login success, name: ${user.name} email: ${user.email}`);
 });
 

@@ -1,12 +1,12 @@
 'use client';
+
 import { useState, SyntheticEvent } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { loginSchema } from '../schema/login';
-import { apiUrls } from '../api/api';
+import { apiUrls, useAxios } from '../api/api';
 
 interface FormState {
   email: string;
@@ -24,11 +24,16 @@ const Login = () => {
   const handleForm = async (e: SyntheticEvent) => {
     e.preventDefault();
     try {
-      const validatedData = loginSchema.parse(formState);
+      const validatedData: FormState = loginSchema.parse(formState);
+
       if (validatedData) {
-        const res = await axios.post(apiUrls.loginAPI, validatedData);
-        if (res.status === 200 && res.data.user.role === 'admin')
-          router.push('/admin');
+        const res = await useAxios('POST', apiUrls.loginAPI, validatedData);
+        if (res && res.status === 200) {
+          localStorage.setItem('user', JSON.stringify(res.data.user));
+          if (res.data.user.role === 'admin') {
+            router.push('/admin');
+          } 
+        }
       } else {
         throw new Error('Invalid form data');
       }
@@ -54,6 +59,7 @@ const Login = () => {
             placeholder='Email'
             required
             autoComplete='true'
+            value={formState.email}
             onChange={(e) =>
               setFormState({ ...formState, email: e.target.value })
             }
@@ -69,6 +75,7 @@ const Login = () => {
             placeholder='Password'
             required
             autoComplete='true'
+            value={formState.password}
             onChange={(e) =>
               setFormState({ ...formState, password: e.target.value })
             }

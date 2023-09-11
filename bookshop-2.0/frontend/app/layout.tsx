@@ -1,8 +1,11 @@
+'use client';
+
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import Header from '../components/Header';
+import { User } from './types/user';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -16,11 +19,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const userFromLocalStorage: User | null = JSON.parse(
+    localStorage.getItem('user') || 'null'
+  );
   return (
     <html lang='en'>
       <body className={inter.className}>
         <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
-          <Header />
+          {userFromLocalStorage && userFromLocalStorage.role === 'admin' ? null : <Header />}
+
           {children}
         </ThemeProvider>
       </body>

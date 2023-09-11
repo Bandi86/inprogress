@@ -9,9 +9,11 @@ import {
   IoIosChatboxes,
   IoIosStats,
 } from 'react-icons/io';
+import { SlLogout } from 'react-icons/sl';
 import Link from 'next/link';
+import logout from '../fn/logout';
 
- const Menu = () => {
+const Menu = () => {
   const iconStyle = 'text-2xl mr-2';
   const divStyle = 'flex flex-row h-14 gap-10 items-center hover:bg-red-600';
 
@@ -21,7 +23,6 @@ import Link from 'next/link';
         <div className={divStyle}>
           <span>
             <IoIosHome className={iconStyle} />
-            
           </span>
           <span>Home</span>
         </div>
@@ -89,9 +90,15 @@ import Link from 'next/link';
           </span>
           <span>Statistics</span>
         </div>
-      </Link>
+      </Link>      
+        <div className={divStyle}>
+          <span>
+            <SlLogout className={iconStyle} />
+          </span>
+          <span onClick={logout}>Logout</span>
+        </div>      
     </div>
   );
 };
 
-export default Menu
+export default Menu;

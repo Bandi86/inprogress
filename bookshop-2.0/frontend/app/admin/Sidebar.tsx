@@ -1,4 +1,4 @@
-import Menu from "../fn/adminSideBar";
+import Menu from "../components/adminSideBar";
 
 const Sidebar = () => {
   return (

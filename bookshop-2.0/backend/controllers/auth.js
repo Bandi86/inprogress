@@ -10,9 +10,9 @@ const register = asyncHandler(async (req, res) => {
     throw new BadrequestError('Please provide a name, email, password');
   }
 
-  const userExits = await User.findOne({ email });
+  const userExists = await User.findOne({ email });
 
-  if (userExits) {
+  if (userExists) {
     res.status(StatusCodes.BAD_REQUEST);
     throw new BadrequestError('User Already Exists');
   }

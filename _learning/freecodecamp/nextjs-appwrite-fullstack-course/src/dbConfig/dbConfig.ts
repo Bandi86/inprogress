@@ -1,17 +1,23 @@
 import mongoose from 'mongoose';
 
 export async function connect() {
-  try {
-    mongoose.connect(process.env.MONGO_URI!);
-    const connection = mongoose.connection;
+  
+  try {    
+    if (process.env.MONGO_URI === undefined) {
+      console.log(process.env.MONGO_URI)
+      throw new Error('The MONGO_URI environment variable undefined');
+    }
 
-    connection.on('connected', () => {
-      console.log('mongo db connected succesfully');
+    mongoose.connect(process.env.MONGO_URI!);
+    const con = mongoose.connection;
+
+    con.on('connected', () => {
+      console.log(`Connected to Mongoose: ${con.collection.name}`);
     });
 
-    connection.on('error', (err) => {
+    con.on('error', (err) => {
       console.log(
-        `MongoDB connecntion error. Please make sure MongoDB is running. + ${err}`
+        `MongoDB connection error. Please make sure MongoDB is running. + ${err}`
       );
       process.exit();
     });

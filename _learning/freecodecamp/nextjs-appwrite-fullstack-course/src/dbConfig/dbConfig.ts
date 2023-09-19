@@ -1,14 +1,19 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv'
 
 export async function connect() {
   
-  try {    
-    if (process.env.MONGO_URI === undefined) {
-      console.log(process.env.MONGO_URI)
+  dotenv.config()
+
+  try {
+    
+    const url = process.env.MONGO_URI    
+    
+    if (url === undefined) {     
       throw new Error('The MONGO_URI environment variable undefined');
     }
 
-    mongoose.connect(process.env.MONGO_URI!);
+    mongoose.connect(url!);
     const con = mongoose.connection;
 
     con.on('connected', () => {

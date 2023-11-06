@@ -2,10 +2,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-
 export default function Home() {
-  const [generaltHet, setGeneraltHet] = useState([]);
   const [ebedlist, setEbedlist] = useState([]);
+  const [fozes, setFozes] = useState([]);
 
   useEffect(() => {
     axios.get('http://127.0.0.1:8000/ebeds').then((response) => {
@@ -21,60 +20,76 @@ export default function Home() {
   }, []);
 
   function etelGeneralas() {
-    // a fetchelt adatbol generalni 7 levest es 7 foetelt ami az elmult 14napban nem fordult elo
+    try {
+      axios
+        .get('http://127.0.0.1:8000/generate-meals')
+        .then((response) => {
+          setFozes(response.data);
+        })
+        .catch((error) => {
+          console.error('Hiba történt a GET kérés során:', error);
+        });
+    } catch (error) {
+      console.error('Hiba történt:', error);
+    }
   }
 
   function generaltHetNapjai() {
-  // aznap csekkolasa ezutan az elozo 7 nap datumanak elmentese egy valtozoba
+    const currentDate = new Date();
+    const previous7Dates = [];
+    const next7Dates = [];
 
+    // előző 7 nap
+    for (let i = 1; i <= 7; i++) {
+      const previousDate = new Date(currentDate);
+      previousDate.setDate(currentDate.getDate() - i);
+      previous7Dates.push(previousDate);
+    }
+
+    // fordított sorrendben megjelenítés
+    previous7Dates.reverse();
+
+    // következő 7 nap
+    for (let i = 1; i <= 7; i++) {
+      const nextDate = new Date(currentDate);
+      nextDate.setDate(currentDate.getDate() + i);
+      next7Dates.push(nextDate);
+    }
+
+    const options = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+
+    return (
+      <div>
+        <p>Előző 7 nap</p>
+        {previous7Dates.map((date) => {
+          return (
+            <div key={date.toISOString().slice(0, 10)}>
+              {date.toLocaleDateString('hu-HU', options)}
+            </div>
+          );
+        })}
+        <p>Mai Nap: {currentDate.toLocaleDateString('hu-HU', options)}</p>
+        <p>Következő 7 nap</p>
+        {next7Dates.map((date) => {
+          return (
+            <div key={date.toISOString().slice(0, 10)}>
+              {date.toLocaleDateString('hu-HU', options)}
+            </div>
+          );
+        })}
+      </div>
+    );
   }
- 
 
   return (
     <main>
-      <h1>Hello</h1>
-      <div className='relative overflow-x-auto'>
-        <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-          <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
-            <tr>
-              <th scope='col' className='px-6 py-3'>
-                elozo 7 nap
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                nev
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                leves
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                foetel
-              </th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div className='relative overflow-x-auto'>
-        <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-          <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
-            <tr>
-              <th scope='col' className='px-6 py-3'>
-                kovetkezo 7 nap
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                nev
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                leves
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                foetel
-              </th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
+      <p>{generaltHetNapjai()}</p>
+      <button onClick={etelGeneralas}>A kovetkezo 7 nap elkeszitese</button>
     </main>
   );
 }

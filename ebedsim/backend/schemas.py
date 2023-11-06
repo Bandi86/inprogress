@@ -16,3 +16,10 @@ class Ebedschema(BaseModel):
     
     class Config:
         from_attributes = True
+
+class Fozesschema(BaseModel):
+    id: int
+    cook_date: datetime
+    
+    class Config:
+        from_attributes = True        

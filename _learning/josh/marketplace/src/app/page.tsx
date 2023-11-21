@@ -58,7 +58,8 @@ export default function Home() {
                   </div>
                 </div>
                 <div className='mt-6 md:ml-4 md:mt-0 lg:ml-0 lg:mt-6'>
-                  <h3>{}</h3>
+                  <h3 className='text-base font-medium text-gray-900'>{p.name}</h3>
+                  <p className='mt-3 text-sm text-muted-foreground'>{p.description}</p>
                 </div>
               </div>
             ))}

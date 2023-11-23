@@ -54,4 +54,31 @@ config mongodb
 
 Authentication
 
-2:35
+ha () kozott hozunk letre egy mappat akkor a next route nem veszi figyelembe
+signup form
+input label shadcn 
+npx shadcn-ui@latest add input
+npx shadcn-ui@latest add label
+
+npm i react-hook-form @hookform/resolvers zod sonner
+
+import { useForm } from 'react-hook-form';
+const {} = useForm()
+
+TRPC
+npm i @trpc/client @trpc/next @trpc/react-query @trpc/server @tanstack/react-query
+
+Providers 
+trpc client
+
+providelolni a trpct a layoutban
+
+HA GOND VAN npm i @tanstack/react-query@4.36.1
+
+ha request erkezik az expressnek tobabbitja a trpcnek a middleware miatt igy lehe hasznalni a nextjben
+route handler 
+
+api [trpc] mappa
+route.ts
+3:29:59
+

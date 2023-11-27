@@ -80,5 +80,30 @@ route handler
 
 api [trpc] mappa
 route.ts
-3:29:59
 
+
+authrouter
+
+src collection folder
+
+Users.ts 
+type of users
+admins, Users
+user lehet seller v buyer
+
+package.json
+script:
+ "generate:types": "cross-env PAYLOAD_CONFIG_PATH=src/payload.config.ts payload generate:types",
+
+npm run generate:types
+
+resend.com
+uj api keszites majd envbe masol
+aztan get-payload
+npm i -D nodemailer
+
+transporter definialasa.
+
+verify email
+
+4:15

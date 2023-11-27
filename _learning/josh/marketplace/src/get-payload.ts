@@ -8,6 +8,7 @@ dotenv.config({
   path: path.resolve(__dirname, '../.env'),
 })
 
+// EMAIL settings
 const transporter = nodemailer.createTransport({
   host: 'smtp.resend.com',
   secure: true,
@@ -46,7 +47,7 @@ export const getPayloadClient = async ({
     cached.promise = payload.init({
       email: {
         transport: transporter,
-        fromAddress: 'hello@joshtriedcoding.com',
+        fromAddress: 'susutechno@gmail.com',
         fromName: 'DigitalHippo',
       },
       secret: process.env.PAYLOAD_SECRET,

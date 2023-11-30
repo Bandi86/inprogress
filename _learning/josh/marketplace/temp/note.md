@@ -106,4 +106,9 @@ transporter definialasa.
 
 verify email
 
-4:15
+loading state
+
+sign in page
+seller or buyer
+
+5:07

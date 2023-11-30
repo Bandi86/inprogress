@@ -7,6 +7,7 @@ import Navbar from './components/Navbar';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import Home from './components/Home';
+import Admin from './components/admin/Admin';
 
 export interface User {
   id: string;
@@ -38,6 +39,7 @@ function App() {
             <Route path='/login' element={<Login />} />
             <Route path='/register' element={<Register />} />
             <Route path='/' element={<HomeWithUser user={user} />} />
+            <Route path='/admin' element={<Admin />} />
           </Routes>
         </Layout>
       </MaxWidthWrapper>

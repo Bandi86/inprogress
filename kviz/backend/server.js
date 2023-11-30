@@ -16,7 +16,11 @@ dotenv.config();
 app.use(bodyParser.json());
 
 const corsOptions = {
-  origin: 'http://localhost:8000',
+  origin: 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200,
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  allowedHeaders: 'Content-Type, Authorization',
 };
 
 app.use(cors(corsOptions));

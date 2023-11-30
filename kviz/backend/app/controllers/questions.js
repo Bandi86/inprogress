@@ -5,9 +5,37 @@ import Category from '../models/category.js';
 export const getQuestions = async (req, res) => {
   try {
     const questions = await Questions.findAll();
-    res.status(200).json(questions);
+
+    // Manuálisan hozzáadunk egy categoryName mezőt a lekért kérdésekhez
+    for (const question of questions) {
+      const category = await Category.findByPk(question.categoryId);
+      question.dataValues.categoryName = category ? category.name : null;
+    }
+
+    res.status(200).json({ questions, length: questions.length });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
+//get questions by categories
+export const getQuestionsByCategory = async (req, res) => {
+  try {
+    let { categorys } = req.params;
+    // Ha tömbként érkezik a kategória, vegyük az első elemét
+    categorys = Array.isArray(categorys) ? categorys[0] : categorys;
+    console.log(categorys);
+    const questions = await Questions.findAll({
+      where: {
+        categoryId: categorys, // A categoryId-nek kell megfelelnie az adatbázisban lévő mezőnek
+      },
+    });
+
+    res.status(200).json({ questions, length: questions.length, category });
   } catch (error) {
     console.log(error);
+    res.status(500).json({ error: 'Valami hiba történt a lekérdezés során' });
   }
 };
 
@@ -29,6 +57,7 @@ export const getQuestion = async (req, res) => {
 export const createQuestion = async (req, res) => {
   const { questionText, options, correctOptionIndex, category, difficulty } =
     req.body;
+  console.log(req.body);
   try {
     let categoryId;
 
@@ -36,25 +65,27 @@ export const createQuestion = async (req, res) => {
       return res.status(404).json({ error: 'Invalid difficulty' });
     }
 
-    const existingCategory = await Category.findOne({
+    let existingCategory = await Category.findOne({
       where: { name: category },
     });
 
-    if (existingCategory) {
-      categoryId = existingCategory.id;
-    } else {
-      throw new Error('Category not found');
+    if (!existingCategory) {
+      existingCategory = await Category.create({
+        name: category,
+      });
     }
 
+    categoryId = existingCategory.id;
+
     const questionDB = await Questions.create({
-      questionText: questionText,
-      options: options,
-      correctOptionIndex: correctOptionIndex,
-      categoryId: categoryId,
-      difficulty: difficulty,
+      questionText,
+      options,
+      correctOptionIndex,
+      categoryId,
+      difficulty,
     });
 
-    res.status(201).json({message: "Question saved to database" , questionDB});
+    res.status(201).json({ message: 'Question saved to database', questionDB });
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Failed to create question' });

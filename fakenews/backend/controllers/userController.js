@@ -1,4 +1,4 @@
-import User from '../models/Users.js';
+import { User } from '../utils/init.js';
 import bcrypt from 'bcrypt';
 import generateToken from '../utils/generateToken.js';
 
@@ -111,7 +111,10 @@ export const updateUserEmail = async (req, res, next) => {
       delete updatedUser.dataValues.password;
       res
         .status(200)
-        .json({ message: 'User email updated successfully!', user: updatedUser });
+        .json({
+          message: 'User email updated successfully!',
+          user: updatedUser,
+        });
     }
   } catch (error) {
     console.log(error);
@@ -138,7 +141,7 @@ export const deleteUser = async (req, res, next) => {
 // LOGIN USER
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
-  
+
   try {
     const user = await User.findOne({ where: { email: email } });
     if (!user) {

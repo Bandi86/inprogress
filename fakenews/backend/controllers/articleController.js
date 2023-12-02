@@ -1,5 +1,4 @@
-import User from '../models/Users.js';
-import { Article, Tag } from '../utils/init.js';
+import { Article, Tag, User } from '../utils/init.js';
 import { getNumberOfLikesForArticle } from '../utils/like.js';
 
 // ALL ARTICLE

@@ -8,7 +8,7 @@ import logger from 'morgan';
 import userRouter from './routes/user.js';
 import articleRouter from './routes/article.js';
 import { loginUser, logoutUser } from './controllers/userController.js';
-
+import commentsReplyRouter from './routes/comments.js'
 
 const app = express();
 
@@ -60,6 +60,8 @@ app.use('/login', loginUser);
 app.use('/logout', logoutUser);
 //article
 app.use('/articles', articleRouter);
+//comments
+app.use('/comments', commentsReplyRouter)
 
 
 

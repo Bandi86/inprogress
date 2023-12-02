@@ -1,6 +1,5 @@
 import Sequelize from 'sequelize';
 import db from '../db/config.js';
-import User from './Users.js';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -47,15 +46,5 @@ const Article = db.define('article', {
     allowNull: false,
   },
 });
-
-Article.belongsTo(User, {
-  foreignKey: {
-    name: 'userId',
-    type: DataTypes.UUID,
-  },
-});
-
-
-
 
 export default Article;

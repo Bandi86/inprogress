@@ -109,12 +109,10 @@ export const updateUserEmail = async (req, res, next) => {
       await updatedUser.save();
       // give object back without password
       delete updatedUser.dataValues.password;
-      res
-        .status(200)
-        .json({
-          message: 'User email updated successfully!',
-          user: updatedUser,
-        });
+      res.status(200).json({
+        message: 'User email updated successfully!',
+        user: updatedUser,
+      });
     }
   } catch (error) {
     console.log(error);
@@ -141,6 +139,9 @@ export const deleteUser = async (req, res, next) => {
 // LOGIN USER
 export const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: 'No data provided!' });
+  }
 
   try {
     const user = await User.findOne({ where: { email: email } });
@@ -151,8 +152,9 @@ export const loginUser = async (req, res, next) => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid credentials!' });
     }
-    const token = generateToken(user);
-    console.log(token);
+    const token = generateToken(res, user.userId);
+
+    delete user.dataValues.password;
     res.status(200).json({
       message: `Logged in successfully!`,
       token: token,
@@ -165,11 +167,6 @@ export const loginUser = async (req, res, next) => {
 
 // LOGOUT USER
 export const logoutUser = async (req, res, next) => {
-  res.cookie('jwt', '', {
-    httpOnly: true,
-    secure: process.env.NODE_ENV !== 'development',
-    sameSite: 'none',
-    maxAge: 1,
-  });
+  res.cookie('jwt', '', { httpOnly: true, expires: new Date(0) });
   res.status(200).json({ message: 'Logged out successfully!' });
 };

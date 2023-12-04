@@ -36,6 +36,7 @@ export const getArticlesByUser = async (req, res) => {
 export const createArticle = async (req, res) => {
   const { title, body, description, image, source, url, userId, tags } =
     req.body;
+    console.log(req.body);
 
   try {
     const user = await User.findByPk(userId);

@@ -7,14 +7,14 @@ export type User = {
   updatedAt: string;
 };
 
-export interface Article {
+export type Article = {
   articleId: string;
   title: string;
   body: string;
   description: string;
   image: string;
   source: string;
-  url: string;
+  tagNames: Array<string>;
   publishedAt: string;
   createdAt: string;
   updatedAt: string;
@@ -27,4 +27,4 @@ export type Tags = {
 
 }
 
-export type FilmArticles = Article[];
+

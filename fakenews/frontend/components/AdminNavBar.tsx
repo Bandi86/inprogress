@@ -13,7 +13,7 @@ const AdminNavBar = () => {
             <Link href='/admin/ujkategoria'>Uj kategoria</Link>
           </li>
           <li>
-            <Link href='/admin/ujtag'>uj cimke</Link>
+            <Link href='/admin/ujcimke'>uj cimke</Link>
           </li>
           <li>
             <Link href='/admin/felhasznalok'>Felhasznalok listaja</Link>

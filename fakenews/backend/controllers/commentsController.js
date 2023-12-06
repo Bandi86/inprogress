@@ -1,4 +1,4 @@
-import { Article, Comments, User, CommentReply } from '../utils/init.js';
+/* import { Article, Comments, User, CommentReply } from '../utils/init.js';
 
 // ALL COMMENTS BY ARTICLE ID
 export const getAllCommentsForArticle = async (req, res) => {
@@ -180,4 +180,4 @@ export const getRepliesForComment = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}; */

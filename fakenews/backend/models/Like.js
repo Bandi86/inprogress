@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from 'sequelize';
+/* import { DataTypes, Sequelize } from 'sequelize';
 import db from '../db/config.js';
 
 const Like = db.define('like', {
@@ -29,4 +29,4 @@ export const CommentLikes = db.define('comment_like', {
   },
 });
 
-export default Like;
+export default Like; */

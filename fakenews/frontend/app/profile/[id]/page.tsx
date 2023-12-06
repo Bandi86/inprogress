@@ -1,26 +1,25 @@
-"use client"
-import { useParams } from 'next/navigation'
+'use client';
+import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'sonner';
 import { User } from '@/types/types';
-import {formatDateTime} from '@/lib/convertTime'
-import { useRouter } from 'next/router';
+import { formatDateTime } from '@/lib/convertTime';
+import { useRouter } from 'next/navigation';
 
 const Profile = () => {
   const router = useRouter();
-  const params = useParams()
+  const params = useParams();
   const { id } = params; // id: aktuális dinamikus útvonal paraméter
 
   const [profileData, setProfileData] = useState<User | null>(null);
-  
 
   useEffect(() => {
     if (id) {
-      axios.get(`http://localhost:8000/profile/${id}`, { withCredentials: true })
+      axios
+        .get(`http://localhost:8000/profile/${id}`, { withCredentials: true })
         .then((res) => {
           setProfileData(res.data);
-         
         })
         .catch((error) => {
           if (error.response) {
@@ -36,11 +35,6 @@ const Profile = () => {
         });
     }
   }, [id]);
-  
-
-  if (router.isFallback) {
-    return <div>Profil adatok toltodnek...</div>;
-  }
 
   return (
     <div>

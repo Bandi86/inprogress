@@ -1,74 +1,67 @@
 'use client';
+import React, { useState, useEffect } from 'react';
+import { Tags } from '@/types/types';
+import axios from 'axios';
+import { baseUrl } from '@/lib/utils';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { baseUrl, cn } from '@/lib/utils';
-import { zodResolver } from '@hookform/resolvers/zod';
-import axios from 'axios';
-import { BaseSyntheticEvent, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { TSArticle, articleValidation } from '@/lib/articleValidation';
-import { Tags, User } from '@/types/types';
-import { toast } from 'sonner';
+import { Textarea } from '@/components/ui/textarea';
 import { useUser } from '@/contexts/userContext';
-import { SubmitHandler } from 'react-hook-form';
 
-const page = () => {
-  const [tags, setTags] = useState<Tags[]>([]);
-  const [newTag, setNewTag] = useState('');
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
+const createArticle = () => {
   const { user } = useUser();
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<TSArticle>({
-    resolver: zodResolver(articleValidation),
+  const [tags, setTags] = useState<Tags[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [data, setData] = useState({
+    title: '',
+    body: '',
+    description: '',
+    image: '',
+    tags: [],
   });
 
+  console.log(selectedTags);
+
+  // download tags from the backend
   useEffect(() => {
     axios.get(`${baseUrl}/tags`).then((res) => {
       setTags(res.data);
     });
   }, []);
 
-  const handleChange = (e: BaseSyntheticEvent) => {
-    const { name, checked } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const isChecked = e.target.checked;
+    const tagName = e.target.name;
 
-    if (checked) {
-      setSelectedCategories([...selectedCategories, name]);
+    if (isChecked) {
+      setSelectedTags([...selectedTags, tagName]);
     } else {
-      setSelectedCategories(selectedCategories.filter((item) => item !== name));
+      setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
     }
   };
 
-  const onSubmit = async (data: TSArticle) => {
-    console.log('Az onSubmit függvény futott le.');
-    
-    
-    let newData = { ...data };
-  
-    // Check if newTag exists and has a length greater than 2
-    const exists = tags.find((tag) => tag.name === newTag);
-  
-    if (!exists && newTag && newTag.length > 2) {
-      newData = {
-        ...data,
-        userId: user?.userId || '',
-        tagList: [...data.tagList, newTag],
-      };
-    }
-  
-    axios.post(`${baseUrl}/articles`, newData, {withCredentials: true}).then((res) => {
-      if (res.status === 201) {
-        toast.success('Sikeres cikkfeltoltes');
-      } else {
-        toast.error('Hiba történt a feltoltes során');
-      }
-    });
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newData = {
+      ...data,
+      userId: user?.userId || '',
+      tags: selectedTags,
+    };
+    console.log(newData);
+
+    const res = await axios
+      .post(`${baseUrl}/articles`, newData)
+      .then((res) => {
+        if (res.status === 201) {
+          toast.success('Sikeres cikk feltoltes');
+        }
+      })
+      .catch((err) => {
+        toast.error('Hiba tortent a cikk feltoltese soran');
+      });
   };
 
   return (
@@ -76,107 +69,80 @@ const page = () => {
       <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
         <div className='grid gap-6'>
           <h2>Uj cikk keszitese</h2>
-          <form onSubmit={handleSubmit(onSubmit)} className='space-y-8'>
-            <div className='grid gap-4 py-4'>
-              <Label htmlFor='name'>Cim</Label>
-              <Input
-                {...register('title')}
-                className={cn({
-                  'focus-visible:ring-red-500': errors.title,
-                })}
-                placeholder='Cikk cime'
-                type='text'
-              />
-              {errors?.title && (
-                <p className='text-sm text-red-500'>
-                  {errors?.title && errors.title.message}
-                </p>
-              )}
-
-              <Label htmlFor='body'>Cikk tartalma</Label>
-              <Input
-                {...register('body')}
-                className={cn({
-                  'focus-visible:ring-red-500': errors.body,
-                })}
-                placeholder='Cikk tartalma'
-                type='text'
-              />
-              {errors?.body && (
-                <p className='text-sm text-red-500'>{errors.body.message}</p>
-              )}
-            </div>
-            <div className='grid gap-4 py-4'>
-              <Label htmlFor='description'>Cikk leirasa</Label>
-              <Input
-                {...register('description')}
-                className={cn({
-                  'focus-visible:ring-red-500': errors.description,
-                })}
-                placeholder='cikk leirasa'
-                type='text'
-              />
-              {errors?.description && (
-                <p className='text-sm text-red-500'>
-                  {errors.description.message}
-                </p>
-              )}
-            </div>
-            <div className='grid gap-4 py-4'>
-              <Label htmlFor='image'>kep linkje</Label>
-              <Input
-                {...register('image')}
-                className={cn({
-                  'focus-visible:ring-red-500': errors.image,
-                })}
-                placeholder='kep linkje'
-                type='text'
-              />
-              {errors?.image && (
-                <p className='text-sm text-red-500'>{errors.image.message}</p>
-              )}
-            </div>
-            <div className='grid gap-4 py-4'>
-              <Label>Uj cimke hozzaadasa</Label>
-              <Input
-                type='text'
-                placeholder='uj cimke neve'
-                id='newTag'
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-              />
-            </div>
-            <div className='items-top flex space-x-2 gap-4 py-4 px-4'>
-              {tags.length > 0 ? (
-                tags.map((item) => (
-                  <div key={item.tagId}>
-                    <Checkbox
-                      id={item.tagId}
-                      name={item.name}
-                      onChange={(e) => handleChange(e)}
-                      className=''
-                    />
-                    <div className='grid gap-1.5 leading-none'>
-                      <label
-                        htmlFor={item.tagId}
-                        className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-                      >
-                        {item.name}
-                      </label>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <h2>jelenleg nincs kategoria</h2>
-              )}
-            </div>
-
-            <Button type='submit'>Cikk bekuldese</Button>
-          </form>
         </div>
+        <form onSubmit={handleSubmit} className='space-y-8'>
+          <div className='grid gap-4 py-4'>
+            <Label htmlFor='name'>Cim</Label>
+            <Input
+              type='text'
+              name='name'
+              id='name'
+              placeholder='Cim'
+              onChange={(e) => setData({ ...data, title: e.target.value })}
+            />
+          </div>
+          <div className='grid gap-4 py-4'>
+            <Label htmlFor='body'>Cikk tartalma</Label>
+            <Textarea
+              name='body'
+              id='body'
+              onChange={(e) => setData({ ...data, body: e.target.value })}
+            ></Textarea>
+          </div>
+          <div className='grid gap-4 py-4'>
+            <Label htmlFor='description'>Leiras</Label>
+            <Input
+              type='text'
+              name='description'
+              id='description'
+              placeholder='leiras'
+              onChange={(e) =>
+                setData({ ...data, description: e.target.value })
+              }
+            />
+          </div>
+          <div className='grid gap-4 py-4'>
+            <Label htmlFor='image'>Kep linkje</Label>
+            <Input
+              type='text'
+              name='image'
+              id='image'
+              placeholder='kep linkje'
+              onChange={(e) => setData({ ...data, image: e.target.value })}
+            />
+          </div>
+          <div className='items-top flex space-x-2 gap-4 py-4 px-4'>
+            <Label htmlFor='tags'>Cimkek</Label>
+            {tags.length > 0 ? (
+              tags.map((item) => (
+                <div key={item.tagId}>
+                  <input
+                    type='checkbox'
+                    id={item.tagId}
+                    name={item.name}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange(e)
+                    }
+                  />
+                  <div className='grid gap-1.5 leading-none'>
+                    <label
+                      htmlFor={item.tagId}
+                      className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                    >
+                      {item.name}
+                    </label>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <h2>jelenleg nincs kategoria</h2>
+            )}
+          </div>
+          <Button>Cikk bekuldese</Button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default page;
+export default createArticle;

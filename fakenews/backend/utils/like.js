@@ -1,4 +1,4 @@
-// Like-ok számának lekérdezése egy adott cikkhez
+/* // Like-ok számának lekérdezése egy adott cikkhez
 import Like from "../models/Like.js";
 
 export const getNumberOfLikesForArticle = async (articleId) => {
@@ -8,4 +8,4 @@ export const getNumberOfLikesForArticle = async (articleId) => {
   } catch (error) {
     throw new Error(error.message);
   }
-};
+}; */

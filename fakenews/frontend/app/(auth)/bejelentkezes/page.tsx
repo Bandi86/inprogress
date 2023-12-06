@@ -1,6 +1,5 @@
 'use client';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { ZodError } from 'zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -31,20 +30,19 @@ const signIn = () => {
 
   const onSubmit = async (data: TLoginSchema) => {
     try {
-      await axios
+      axios
         .post('http://localhost:8000/login', data, { withCredentials: true })
         .then((res) => {
           if (res.status === 200) {
+            //create localstorage
             localStorage.setItem('user', JSON.stringify(res.data.user));
-            setUser(res.data.user);
-            toast.success('Sikeres bejelentkezés');
+            setUser(res.data);
             router.push('/');
-          } else {
-            toast.error('Hiba történt a bejelentkezés során');
           }
         });
-    } catch (error) {
+    } catch (error : any) {
       console.log(error);
+      toast.error(error.message);
     }
   };
 

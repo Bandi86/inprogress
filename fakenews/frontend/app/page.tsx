@@ -1,20 +1,17 @@
 'use client';
 
 import Navbar from '@/components/Navbar';
-import { useUser } from '@/contexts/userContext';
+import HomeArticlePreviewRender from '@/components/HomeArticlePreviewRender';
 
 export default function Home() {
-  const { user } = useUser();
-
   return (
-    <>
-      {user !== null &&
-      Object.keys(user).length !== 0 &&
-      user.role === 'user' ? (
-        <Navbar />
-      ) : null}
-
-      <h2>Hello</h2>
-    </>
+      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
+    <div className='bg-gray-100 min-h-screen'>
+      <Navbar />
+        <div className='text-center'>
+          <HomeArticlePreviewRender />
+        </div>
+      </div>
+    </div>
   );
 }

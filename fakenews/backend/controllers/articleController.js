@@ -1,5 +1,7 @@
-import { Article, Tag, User } from '../utils/init.js';
-import { getNumberOfLikesForArticle } from '../utils/like.js';
+import Article from '../models/Articles.js';
+import Tag from '../models/Tags.js';
+import User from '../models/Users.js';
+//import { getNumberOfLikesForArticle } from '../utils/like.js';
 
 // ALL ARTICLE
 export const getAllArticles = async (req, res) => {
@@ -34,9 +36,7 @@ export const getArticlesByUser = async (req, res) => {
 
 // CREATE ARTICLE
 export const createArticle = async (req, res) => {
-  const { title, body, description, image, source, url, userId, tags } =
-    req.body;
-    console.log(req.body);
+  const { title, body, description, image, userId, tags } = req.body;
 
   try {
     const user = await User.findByPk(userId);
@@ -44,11 +44,7 @@ export const createArticle = async (req, res) => {
       return res.status(404).json({ message: 'User not found!' });
     }
 
-    const existingArticle = await Article.findOne({ where: { url: url } });
-
-    if (existingArticle) {
-      return res.status(400).json({ message: 'URL is not available' });
-    }
+    const author = user.name;
 
     // Cikk létrehozása
     const newArticle = await Article.create({
@@ -56,27 +52,14 @@ export const createArticle = async (req, res) => {
       body,
       description,
       image,
-      source,
-      url,
+      author,
       userId,
+      tagNames: tags,
     });
-
-    // Tömeges tag kezelése
-    const createdTags = [];
-    for (const tagName of tags) {
-      let [tag, created] = await Tag.findOrCreate({ where: { name: tagName } });
-
-      // Ellenőrzés, hogy a tag már hozzá van-e rendelve az adott cikkhez
-      const isAlreadyAdded = await newArticle.hasTag(tag);
-      if (!isAlreadyAdded) {
-        await newArticle.addTag(tag);
-        createdTags.push(tag);
-      }
-    }
 
     res.status(201).json({
       message: 'Cikk sikeresen feltöltve',
-      article: { ...newArticle.toJSON(), tags: createdTags },
+      newArticle,
     });
   } catch (error) {
     console.error('Validation Error:', error);
@@ -115,9 +98,9 @@ export const getArticleById = async (req, res) => {
       return res.status(404).json({ message: 'No article with this id' });
     }
 
-    const numberOfLikes = await getNumberOfLikesForArticle(articleId);
+    //const numberOfLikes = await getNumberOfLikesForArticle(articleId);
 
-    res.status(200).json({ article, numberOfLikes });
+    res.status(200).json({ article /* numberOfLikes */ });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

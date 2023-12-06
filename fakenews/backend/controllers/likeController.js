@@ -1,4 +1,4 @@
-import { Article, Comments, User, Like } from '../utils/init.js';
+/* import { Article, Comments, User, Like } from '../utils/init.js';
 
 // Cikk lajkolása
 export const likeArticle = async (req, res) => {
@@ -186,4 +186,4 @@ export const unlikeComment = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+}; */

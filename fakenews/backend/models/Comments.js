@@ -1,4 +1,4 @@
-import { DataTypes, Sequelize } from 'sequelize';
+/* import { DataTypes, Sequelize } from 'sequelize';
 import db from '../db/config.js';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -21,4 +21,4 @@ const Comments = db.define('comment', {
   },
 });
 
-export default Comments;
+export default Comments; */

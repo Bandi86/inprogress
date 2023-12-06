@@ -2,6 +2,8 @@ import Sequelize from 'sequelize';
 import db from '../db/config.js';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
+//import ArticleTags from './ArticleTags.js';
+//import Tag from './Tags.js'; // Add missing import for Tag model
 
 const Article = db.define('article', {
   articleId: {
@@ -15,12 +17,13 @@ const Article = db.define('article', {
     allowNull: false,
   },
   body: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
   },
   description: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: '',
   },
   image: {
     type: Sequelize.STRING,
@@ -29,13 +32,33 @@ const Article = db.define('article', {
   source: {
     type: Sequelize.STRING,
     allowNull: false,
+    defaultValue: '',
   },
-  url: {
+  author: {
     type: Sequelize.STRING,
-    unique: true,
     allowNull: false,
+    defaultValue: '',
+  },
+  tagNames: {
+   type: Sequelize.ARRAY(Sequelize.STRING),
+    allowNull: false,
+    defaultValue: [],
+    
+  },
+  userId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'users',
+      key: 'userId',
+    },
   },
   publishedAt: {
+    type: 'TIMESTAMP',
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false,
+  },
+  createdAt: {
     type: 'TIMESTAMP',
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     allowNull: false,

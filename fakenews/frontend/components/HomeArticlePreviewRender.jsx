@@ -1,12 +1,13 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { baseUrl } from '@/lib/utils';
 import { cutBody } from '@/lib/cutBody';
 import { formatDateTime } from '@/lib/convertTime';
 import Link from 'next/link';
 import dummy from '../public/dummy-article-img.jpg';
 import Image from 'next/image';
+import CommentCount from './CommentCount';
+import { getArticles } from '@/app/api/articles';
 
 const HomeArticlePreviewRender = () => {
   const [articlesState, setArticlesState] = useState({
@@ -15,27 +16,26 @@ const HomeArticlePreviewRender = () => {
     error: false,
   });
 
-  const fetchData = async () => {
-    try {
-      setArticlesState((prevState) => ({ ...prevState, loading: true }));
-      const response = await axios.get(`${baseUrl}/articles`);
-      setArticlesState((prevState) => ({
-        ...prevState,
-        loading: false,
-        articles: response.data.articles,
-        error: false,
-      }));
-    } catch (error) {
-      setArticlesState((prevState) => ({
-        ...prevState,
-        loading: false,
-        error: true,
-      }));
-    }
-  };
+  console.log(articlesState.articles);
 
   useEffect(() => {
-    fetchData();
+    getArticles()
+      .then((response) => {
+        setArticlesState((prevState) => ({
+          ...prevState,
+          loading: false,
+          articles: response,
+          error: false,
+        }));
+      })
+      .catch((error) => {
+        console.error(error);
+        setArticlesState((prevState) => ({
+          ...prevState,
+          loading: false,
+          error: true,
+        }));
+      });
   }, []);
 
   return (
@@ -81,17 +81,18 @@ const HomeArticlePreviewRender = () => {
                       <div className='flex-shrink-0'>
                         <img
                           className='h-10 w-10 rounded-full'
-                          src={article.authorImage} // Add the source for the author image here
+                          src={article.authorImage}
                           alt={article.author}
                         />
                       </div>
                     )}
-                    <div className='ml-3'>
+                    <div className='gap-4'>
                       <p className='text-sm font-medium text-gray-900'>
                         <Link href={`/authors/${article.author}`}>
                           Szerzo: {article.author}
                         </Link>
                       </p>
+                      <CommentCount articleId={article.articleId} />
                     </div>
                   </div>
                 </div>

@@ -15,6 +15,7 @@ const Tag = db.define('tag', {
     unique: true,
     allowNull: false,
   },
+
   createdAt: {
     type: 'TIMESTAMP',
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

@@ -9,11 +9,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useUser } from '@/contexts/userContext';
+import { Category } from '@/types/types';
 
 const createArticle = () => {
   const { user } = useUser();
   const [tags, setTags] = useState<Tags[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [data, setData] = useState({
     title: '',
     body: '',
@@ -21,24 +24,37 @@ const createArticle = () => {
     image: '',
     tags: [],
   });
-
-  console.log(selectedTags);
+  
 
   // download tags from the backend
   useEffect(() => {
     axios.get(`${baseUrl}/tags`).then((res) => {
       setTags(res.data);
     });
+    axios.get(`${baseUrl}/categories`).then((res) => {
+      setCategories(res.data);
+    });
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: string
+  ) => {
     const isChecked = e.target.checked;
     const tagName = e.target.name;
+    const categoryName = e.target.name;
 
-    if (isChecked) {
-      setSelectedTags([...selectedTags, tagName]);
-    } else {
-      setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
+    if (type === 'tag') {
+      if (isChecked) {
+        setSelectedTags([...selectedTags, tagName]);
+      } else {
+        setSelectedTags(selectedTags.filter((tag) => tag !== tagName));
+      }
+    } else if (type === 'category') {
+      if (isChecked) {
+        setSelectedCategory(categoryName);
+      } 
+      
     }
   };
 
@@ -49,18 +65,30 @@ const createArticle = () => {
       ...data,
       userId: user?.userId || '',
       tags: selectedTags,
+      category: selectedCategory,
     };
-    console.log(newData);
 
     const res = await axios
       .post(`${baseUrl}/articles`, newData)
       .then((res) => {
         if (res.status === 201) {
           toast.success('Sikeres cikk feltoltes');
+         
         }
       })
       .catch((err) => {
         toast.error('Hiba tortent a cikk feltoltese soran');
+      })
+      .finally(() => {
+        setData({
+          title: '',
+          body: '',
+          description: '',
+          image: '',
+          tags: [],
+        });
+        setSelectedTags([]);
+        setSelectedCategory('');
       });
   };
 
@@ -121,7 +149,7 @@ const createArticle = () => {
                     id={item.tagId}
                     name={item.name}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleChange(e)
+                      handleChange(e, 'tag')
                     }
                   />
                   <div className='grid gap-1.5 leading-none'>
@@ -137,6 +165,29 @@ const createArticle = () => {
             ) : (
               <h2>jelenleg nincs kategoria</h2>
             )}
+          </div>
+          <div className='items-top flex space-x-2 gap-4 py-4 px-4'>
+            <Label htmlFor='categories'>Kategoriak</Label>
+            {categories.map((category) => (
+              <div key={category.categoryId}>
+                <input
+                  type='checkbox'
+                  id={category.categoryId}
+                  name={category.name}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    handleChange(e, 'category')
+                  }
+                />
+                <div className='grid gap-1.5 leading-none'>
+                  <label
+                    htmlFor={category.categoryId}
+                    className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+                  >
+                    {category.name}
+                  </label>
+                </div>
+              </div>
+            ))}
           </div>
           <Button>Cikk bekuldese</Button>
         </form>

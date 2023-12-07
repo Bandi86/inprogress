@@ -11,6 +11,7 @@ import { loginUser, logoutUser } from './controllers/userController.js';
 import commentsReplyRouter from './routes/comments.js';
 import { profileRouter } from './controllers/profileRouter.js';
 import tagRouter from './routes/tag.js'
+import categoryRouter from './routes/category.js'
 
 const app = express();
 
@@ -66,7 +67,10 @@ app.use('/articles', articleRouter);
 app.use('/comments', commentsReplyRouter);
 //profile
 app.use('/profile/:id', profileRouter);
+//tags
 app.use('/tags', tagRouter)
+app.use('/categories', categoryRouter)
+
 
 //sync database
 db.sync()

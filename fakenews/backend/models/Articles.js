@@ -2,8 +2,8 @@ import Sequelize from 'sequelize';
 import db from '../db/config.js';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
-//import ArticleTags from './ArticleTags.js';
-//import Tag from './Tags.js'; // Add missing import for Tag model
+
+
 
 const Article = db.define('article', {
   articleId: {
@@ -53,6 +53,8 @@ const Article = db.define('article', {
       key: 'userId',
     },
   },
+ 
+ 
   publishedAt: {
     type: 'TIMESTAMP',
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -69,5 +71,6 @@ const Article = db.define('article', {
     allowNull: false,
   },
 });
+
 
 export default Article;

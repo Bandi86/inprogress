@@ -1,3 +1,5 @@
+import exp from "constants";
+
 export type User = {
   userId: string;
   name: string;
@@ -25,6 +27,13 @@ export type Tags = {
   tagId: string,
   name: string,
 
+}
+
+export type Category = {
+  categoryId: string,
+  name: string,
+  createdAt: string,
+  updatedAt: string,
 }
 
 

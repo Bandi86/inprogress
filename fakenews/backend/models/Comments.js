@@ -1,9 +1,10 @@
-/* import { DataTypes, Sequelize } from 'sequelize';
+import { DataTypes, Sequelize } from 'sequelize';
 import db from '../db/config.js';
+
 
 import { v4 as uuidv4 } from 'uuid';
 
-const Comments = db.define('comment', {
+const Comments = db.define('comments', {
   commentId: {
     type: DataTypes.UUID,
     defaultValue: () => uuidv4(),
@@ -14,11 +15,34 @@ const Comments = db.define('comment', {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  commentedAt: {
-    type: Sequelize.DATE,
+  userId: {
+    type: DataTypes.UUID,
     allowNull: false,
-    defaultValue: Sequelize.NOW,
+    references: {
+      model: 'users',
+      key: 'userId',
+    },
+  },
+  articleId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: 'articles',
+      key: 'articleId',
+    },
+  },
+  commentedAt: {
+    type: 'TIMESTAMP',
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false,
+  },
+  commentUpdatedAt: {
+    type: 'TIMESTAMP',
+    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false,
   },
 });
 
-export default Comments; */
+
+
+export default Comments;

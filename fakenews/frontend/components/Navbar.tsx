@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import AvatarComponent from '@/components/Avatar';
 import { useUser } from '@/contexts/userContext';
+import { categories } from '@/lib/category';
 
 const Navbar = () => {
   const { user } = useUser();
@@ -20,21 +21,11 @@ const Navbar = () => {
       </Link>
       <div className='hidden md:flex'>
         <ul className='flex flex-row gap-10'>
-          <li>
-            <Link href='/hirek'>Hírek</Link>
-          </li>
-          <li>
-            <Link href='/filmek'>Filmek</Link>
-          </li>
-          <li>
-            <Link href='/sorozatok'>Sorozatok</Link>
-          </li>
-          <li>
-            <Link href='/pc'>PC</Link>
-          </li>
-          <li>
-            <Link href='/konzol'>Konzol</Link>
-          </li>
+          {categories.map((category) => (
+            <li key={category}>
+              <Link href={`/pages/category/${category}`}>{category}</Link>
+            </li>
+          ))}
         </ul>
       </div>
       <div className='md:hidden'>
@@ -57,21 +48,11 @@ const Navbar = () => {
         {isOpen && (
           <div className='absolute top-16 right-0 bg-gray-800 text-white py-2 px-4'>
             <ul className='flex flex-col gap-2'>
-              <li>
-                <Link href='/hirek'>Hírek</Link>
-              </li>
-              <li>
-                <Link href='/filmek'>Filmek</Link>
-              </li>
-              <li>
-                <Link href='/sorozatok'>Sorozatok</Link>
-              </li>
-              <li>
-                <Link href='/pc'>PC</Link>
-              </li>
-              <li>
-                <Link href='/konzol'>Konzol</Link>
-              </li>
+              {categories.map((category) => (
+                <li key={category}>
+                  <Link href={`/pages/category/${category}`}>{category}</Link>
+                </li>
+              ))}
             </ul>
           </div>
         )}

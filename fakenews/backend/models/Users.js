@@ -3,6 +3,7 @@ import db from '../db/config.js';
 import { DataTypes } from 'sequelize';
 import { v4 as uuidv4 } from 'uuid';
 
+
 const User = db.define('user', {
   userId: {
     type: DataTypes.UUID,
@@ -31,6 +32,7 @@ const User = db.define('user', {
       isIn: [['user', 'admin']],
     },
   },
+ 
   createdAt: {
     type: 'TIMESTAMP',
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
@@ -42,5 +44,7 @@ const User = db.define('user', {
     allowNull: false,
   },
 });
+
+
 
 export default User;

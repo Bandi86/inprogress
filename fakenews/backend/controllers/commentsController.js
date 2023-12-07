@@ -1,3 +1,55 @@
+import { User, Article, Comments } from '../models/relacio.js';
+
+// ALL COMMENTS BY ARTICLE ID
+export const getAllCommentsForArticle = async (req, res) => {
+  const { articleId } = req.params;
+
+  try {
+    // SEARCH ARTICLE BY ID
+    const article = await Article.findOne({ where: { articleId } });
+    if (!article) {
+      return res.status(404).json({ message: 'No article with this id' });
+    }
+
+    // FIND ALL COMMENTS
+    const comments = await Comments.findAll({ where: { articleId } });
+
+    res.status(200).json({ comments, length: comments.length });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// CREATE NEW COMMENT
+export const createComment = async (req, res) => {
+  const { articleId } = req.params;
+  const { content, userId } = req.body;
+
+  try {
+    const user = await User.findByPk(userId);
+    // check if user exists
+    if (!user) {
+      return res.status(404).json({ message: 'User not found!' });
+    }
+    // check if article exists
+    const article = await Article.findOne({ where: { articleId } });
+    if (!article) {
+      return res.status(404).json({ message: 'No article with this id' });
+    }
+
+    // ADD COMMENT TO ARTICLE
+    const newComment = await Comments.create({
+      content,
+      userId,
+      articleId,
+    });
+
+    res.status(201).json({ message: 'Comment added to article', newComment });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 /* import { Article, Comments, User, CommentReply } from '../utils/init.js';
 
 // ALL COMMENTS BY ARTICLE ID

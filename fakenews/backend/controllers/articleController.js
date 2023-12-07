@@ -1,7 +1,6 @@
-import Article from '../models/Articles.js';
 import Tag from '../models/Tags.js';
-import User from '../models/Users.js';
 //import { getNumberOfLikesForArticle } from '../utils/like.js';
+import { Article, User, Category } from '../models/relacio.js';
 
 // ALL ARTICLE
 export const getAllArticles = async (req, res) => {
@@ -36,8 +35,8 @@ export const getArticlesByUser = async (req, res) => {
 
 // CREATE ARTICLE
 export const createArticle = async (req, res) => {
-  const { title, body, description, image, userId, tags } = req.body;
-
+  const { title, body, description, image, userId, tags, category } = req.body;
+  console.log(req.body);
   try {
     const user = await User.findByPk(userId);
     if (!user) {
@@ -46,7 +45,14 @@ export const createArticle = async (req, res) => {
 
     const author = user.name;
 
-    // Cikk létrehozása
+    // Kategória keresése a név alapján
+    const foundCategory = await Category.findOne({ where: { name: category } });
+    console.log(foundCategory);
+    if (!foundCategory) {
+      return res.status(404).json({ message: 'Category not found!' });
+    }
+
+    // Cikk létrehozása és hozzárendelése a kategóriához
     const newArticle = await Article.create({
       title,
       body,
@@ -56,6 +62,11 @@ export const createArticle = async (req, res) => {
       userId,
       tagNames: tags,
     });
+
+    // Hozzárendeljük az új cikket a megtalált kategóriához
+    await newArticle.addCategory(foundCategory);
+
+    // Címkék hozzáadása az új cikkhez - itt a megfelelő logikát kell alkalmazni
 
     res.status(201).json({
       message: 'Cikk sikeresen feltöltve',
@@ -101,6 +112,25 @@ export const getArticleById = async (req, res) => {
     //const numberOfLikes = await getNumberOfLikesForArticle(articleId);
 
     res.status(200).json({ article /* numberOfLikes */ });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// ARTICLE BY CATEGORY
+export const getArticleByCategory = async (req, res) => {
+  const { categoryName } = req.params;
+
+  try {
+    const category = await Category.findOne({ where: { name: categoryName } });
+
+    if (!category) {
+      return res.status(404).json({ message: 'Category not exists' });
+    }
+
+    const articles = await category.getArticles();
+
+    res.status(200).json({ articles, length: articles.length });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

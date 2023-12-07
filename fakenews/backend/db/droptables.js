@@ -1,11 +1,11 @@
 import {
   User,
-  Tag,
   Article,
-  Like,
-  CommentReply,
   Comments,
-} from '../utils/init.js';
+  Tag,
+  Category,
+  ArticleCategory,
+} from '..//models//relacio.js';
 
 const recreateDatabase = async () => {
   try {
@@ -15,6 +15,8 @@ const recreateDatabase = async () => {
     await Like.sync({ force: true });
     await CommentReply.sync({ force: true });
     await Comments.sync({ force: true });
+    await Category.sync({ force: true });
+    await ArticleCategory.sync({ force: true });
 
     console.log('Az összes tábla sikeresen újra létrehozva!');
   } catch (error) {

@@ -1,4 +1,4 @@
-import Tag from '../models/Tags.js';
+import { Tag } from '../models/relacio.js';
 
 export const getAllTag = async (req, res) => {
   // give back all tag
@@ -12,7 +12,7 @@ export const getAllTag = async (req, res) => {
 
 export const createTag = async (req, res) => {
   // create new tag
-  const { name } = req.body;
+  const { name, categories } = req.body;
   try {
     // check if tag already exists
     const existingTag = await Tag.findOne({ where: { name: name } });
@@ -20,8 +20,9 @@ export const createTag = async (req, res) => {
     if (existingTag) {
       return res.status(400).json({ message: 'Tag already exists' });
     }
-    
+
     const newTag = await Tag.create({ name });
+
     res.status(201).json(newTag);
   } catch (error) {
     res.status(409).json({ message: error.message });

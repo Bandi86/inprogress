@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { baseUrl } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -19,9 +19,8 @@ const newTag = () => {
         if (res.status === 201) {
           toast.success('Sikeres cimke feltoltes');
         }
-         
       })
-      .catch((err) => {
+      .catch((error) => {
         toast.error('Hiba tortent a cimke feltoltese soran');
       });
   };
@@ -32,7 +31,10 @@ const newTag = () => {
         <div className='grid gap-6'>
           <h2>uj cimke hozzaadasa</h2>
         </div>
-        <form onSubmit={handleSubmit} className='flex flex-col gap-4 justify-center'>
+        <form
+          onSubmit={handleSubmit}
+          className='flex flex-col gap-4 justify-center'
+        >
           <Label htmlFor='name'>Cimke neve</Label>
           <Input
             type='text'
@@ -41,6 +43,7 @@ const newTag = () => {
             value={tag}
             onChange={(e) => setTag(e.target.value)}
           />
+
           <Button type='submit'>Cimke hozzaadasa</Button>
         </form>
       </div>

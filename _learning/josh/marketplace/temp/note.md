@@ -111,4 +111,19 @@ loading state
 sign in page
 seller or buyer
 
-5:07
+fix navbar
+
+lib/ payload-utils
+dropdown menu
+ez a uibol jon npx shadcn-ui@latest add dropdown-menu
+
+custom react hook handle logout menu
+use-auth
+
+termekek fenykep es fileokra lesz bontva
+
+tablak letrehozasa Products collection
+
+create media collection
+
+6:10

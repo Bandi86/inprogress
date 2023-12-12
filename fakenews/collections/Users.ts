@@ -14,6 +14,7 @@ export const Users: CollectionConfig = {
     create: () => true,
   },
   fields: [
+    { name: 'name', type: 'text', required: true, label: 'Name' },
     {
       name: 'role',
       defaultValue: 'user',
@@ -29,5 +30,3 @@ export const Users: CollectionConfig = {
     },
   ],
 };
-
-

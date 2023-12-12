@@ -123,7 +123,16 @@ use-auth
 termekek fenykep es fileokra lesz bontva
 
 tablak letrehozasa Products collection
+product file collection
 
 create media collection
+create order collection
 
-6:10
+Product Reel comp
+ProductListing comp
+skeleton
+npx shadcn-ui@latest add skeleton
+
+Image slider 
+
+7:19

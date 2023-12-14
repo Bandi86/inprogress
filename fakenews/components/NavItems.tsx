@@ -1,16 +1,13 @@
-import React from 'react'
+import Link from 'next/link';
 
 const NavItems = () => {
   return (
     <div className='flex flex-row gap-10 justify-between items-center'>
-     <span>Home</span>
-      <span>Articles</span>
-      <span>Categories</span>
-      <span>Tags</span>
-      <span>Authors</span>
-      <span>Search</span>
+      <Link href='/'>
+        <span>Home</span>
+      </Link>
     </div>
-  )
-}
+  );
+};
 
-export default NavItems
+export default NavItems;

@@ -16,6 +16,7 @@ import {
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Loader2 } from 'lucide-react';
 
 const page = () => {
   const router = useRouter();
@@ -28,10 +29,12 @@ const page = () => {
     resolver: zodResolver(AuthCredentialsValidator),
   });
 
+  
+
   const { mutate, isLoading } = trpc.auth.createPayloadUser.useMutation({
     onError: (error) => {
       if (error.data?.code === 'CONFLICT') {
-        toast.error('this email already in use. Sign in instead?');
+        toast.error('Ez az email mar foglalt probaljon meg bejelentkezni');
         return;
       }
       if (error instanceof ZodError) {
@@ -56,7 +59,7 @@ const page = () => {
       <div className='container relative flex pt-20 flex-col items-center justify-center lg:px-0'>
         <div className='mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]'>
           <div className='flex flex-col items-center space-y2 text-center'>
-            <h1 className='text-2x font-bold'>Create Account</h1>
+            <h1 className='text-2x font-bold'>Regisztracio</h1>
             <Link
               href='/bejelentkezes'
               className={buttonVariants({
@@ -117,7 +120,12 @@ const page = () => {
                     </p>
                   )}
                 </div>
-                <Button>Regisztracio</Button>
+                <Button disabled={isLoading}>
+                  {isLoading && (
+                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                  )}
+                  Regisztracio
+                </Button>
               </div>
             </form>
           </div>

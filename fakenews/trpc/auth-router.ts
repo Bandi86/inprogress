@@ -23,6 +23,7 @@ export const authRouter = router({
       });
       if (users.length !== 0) throw new TRPCError({ code: 'CONFLICT' });
 
+      console.log(name, email, password)
       // Create a new user
       await payload.create({
         collection: 'users',

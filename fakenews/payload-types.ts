@@ -9,6 +9,9 @@
 export interface Config {
   collections: {
     users: User;
+    categories: Category;
+    articles: Article;
+    images: Image;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
@@ -30,6 +33,68 @@ export interface User {
   loginAttempts?: number | null;
   lockUntil?: string | null;
   password: string | null;
+}
+export interface Category {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
+}
+export interface Article {
+  id: number;
+  title: string;
+  description: string;
+  content: {
+    [k: string]: unknown;
+  }[];
+  images: {
+    image: number | Image;
+    id?: string | null;
+  }[];
+  category: (number | Category)[];
+  author: number | User;
+  published: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+export interface Image {
+  id: number;
+  title: string;
+  user: number | User;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    featured?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 export interface PayloadPreference {
   id: number;

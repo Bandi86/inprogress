@@ -6,6 +6,9 @@ import { webpackBundler } from '@payloadcms/bundler-webpack';
 import { postgresAdapter } from '@payloadcms/db-postgres';
 
 import { Users } from './collections/Users';
+import { Categories } from './collections/Categories';
+import { Articles } from './collections/Articles';
+import { Images } from './collections/Images';
 
 dotenv.config({
   path: path.resolve(__dirname, '.env'),
@@ -13,7 +16,7 @@ dotenv.config({
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
-  collections: [Users],
+  collections: [Users, Categories, Articles, Images],
   routes: {
     admin: '/admin',
   },

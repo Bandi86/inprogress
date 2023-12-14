@@ -134,5 +134,9 @@ skeleton
 npx shadcn-ui@latest add skeleton
 
 Image slider 
+npm i swiper
+mivel a local folderbol tolti be ezert configolni kell a next-configban
 
-7:19
+Product Detail Page
+
+7:55

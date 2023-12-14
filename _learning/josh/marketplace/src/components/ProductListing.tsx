@@ -5,6 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import Link from 'next/link';
 import { cn, formatPrice } from '@/lib/utils';
 import { PRODUCT_CATEGORIES } from '@/config';
+import ImageSlider from './ImageSlider';
 
 interface ProductListingProps {
   product: Product | null;
@@ -25,7 +26,15 @@ const ProductListing = ({ product, index }: ProductListingProps) => {
     return <ProductPlaceholder />;
   }
 
-  const label = PRODUCT_CATEGORIES.find((c) => c.value === product.category)?.label
+  // FIND LABEL FOR CATEGORY
+  const label = PRODUCT_CATEGORIES.find(
+    (c) => c.value === product.category
+  )?.label;
+
+  // FIND VALID URLS
+  const validUrls = product.images
+    .map(({ image }) => (typeof image === 'string' ? image : image.url))
+    .filter(Boolean) as string[];
 
   if (visible && product) {
     return (
@@ -36,12 +45,14 @@ const ProductListing = ({ product, index }: ProductListingProps) => {
         })}
       >
         <div className='flex flex-col w-full'>
-            {/* Image Slider comp need to create that */}
+          <ImageSlider urls={validUrls} />
           <h3 className='mt-4 font-medium text-sm text-gray-700'>
             {product.name}
           </h3>
           <p className='mt-1 text-sm text-gray-500'>{label}</p>
-          <p className='mt-1 font-medium text-sm text-gray-900'>{formatPrice(product.price)}</p>
+          <p className='mt-1 font-medium text-sm text-gray-900'>
+            {formatPrice(product.price)}
+          </p>
         </div>
       </Link>
     );

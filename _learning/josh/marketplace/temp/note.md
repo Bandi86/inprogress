@@ -139,4 +139,31 @@ mivel a local folderbol tolti be ezert configolni kell a next-configban
 
 Product Detail Page
 
-7:55
+Add to cart button comp
+
+hook for cart
+use-cart
+zustand for cart statement
+
+carthoz
+npx shadcn-ui@latest add scroll-area
+
+CartItem comp
+
+Cart in app
+
+CheckOut process
+api: createcheckoutsession
+url fieldje lesz
+router for payment logic
+trpc payment-router
+
+helper for stripe lib folder stripe.ts
+npm i stripe
+
+be kell jelentkezni ha mar van acc aztan api kulcsot ki kell masolni es az lesz a stripe secret key
+letre hozunk egy terméket a stripe oldalan es annak lesz ugyanugy egy api kulcsa (transaction fee 1$)
+
+products collection hooks
+
+9:40

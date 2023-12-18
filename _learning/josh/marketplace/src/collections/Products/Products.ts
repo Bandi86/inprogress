@@ -7,6 +7,7 @@ export const Products: CollectionConfig = {
     useAsTitle: 'name',
   },
   access: {},
+  hooks: {},
   fields: [
     {
       name: 'user',

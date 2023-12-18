@@ -1,29 +1,29 @@
-import AddToCartButton from '@/components/AddToCartButton'
-import ImageSlider from '@/components/ImageSlider'
-import MaxWidthWrapper from '@/components/MaxWidthWrapper'
-import ProductReel from '@/components/ProductReel'
-import { PRODUCT_CATEGORIES } from '@/config'
-import { getPayloadClient } from '@/get-payload'
-import { formatPrice } from '@/lib/utils'
-import { Check, Shield } from 'lucide-react'
-import Link from 'next/link'
-import { notFound } from 'next/navigation'
+import AddToCartButton from '@/components/AddToCartButton';
+import ImageSlider from '@/components/ImageSlider';
+import MaxWidthWrapper from '@/components/MaxWidthWrapper';
+import ProductReel from '@/components/ProductReel';
+import { PRODUCT_CATEGORIES } from '@/config';
+import { getPayloadClient } from '@/get-payload';
+import { formatPrice } from '@/lib/utils';
+import { Check, Shield } from 'lucide-react';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 interface PageProps {
   params: {
-    productId: string
-  }
+    productId: string;
+  };
 }
 
 const BREADCRUMBS = [
   { id: 1, name: 'Home', href: '/' },
   { id: 2, name: 'Products', href: '/products' },
-]
+];
 
 const Page = async ({ params }: PageProps) => {
-  const { productId } = params
+  const { productId } = params;
 
-  const payload = await getPayloadClient()
+  const payload = await getPayloadClient();
 
   const { docs: products } = await payload.find({
     collection: 'products',
@@ -36,21 +36,19 @@ const Page = async ({ params }: PageProps) => {
         equals: 'approved',
       },
     },
-  })
+  });
 
-  const [product] = products
+  const [product] = products;
 
-  if (!product) return notFound()
+  if (!product) return notFound();
 
   const label = PRODUCT_CATEGORIES.find(
     ({ value }) => value === product.category
-  )?.label
+  )?.label;
 
   const validUrls = product.images
-    .map(({ image }) =>
-      typeof image === 'string' ? image : image.url
-    )
-    .filter(Boolean) as string[]
+    .map(({ image }) => (typeof image === 'string' ? image : image.url))
+    .filter(Boolean) as string[];
 
   return (
     <MaxWidthWrapper className='bg-white'>
@@ -64,7 +62,8 @@ const Page = async ({ params }: PageProps) => {
                   <div className='flex items-center text-sm'>
                     <Link
                       href={breadcrumb.href}
-                      className='font-medium text-sm text-muted-foreground hover:text-gray-900'>
+                      className='font-medium text-sm text-muted-foreground hover:text-gray-900'
+                    >
                       {breadcrumb.name}
                     </Link>
                     {i !== BREADCRUMBS.length - 1 ? (
@@ -72,7 +71,8 @@ const Page = async ({ params }: PageProps) => {
                         viewBox='0 0 20 20'
                         fill='currentColor'
                         aria-hidden='true'
-                        className='ml-2 h-5 w-5 flex-shrink-0 text-gray-300'>
+                        className='ml-2 h-5 w-5 flex-shrink-0 text-gray-300'
+                      >
                         <path d='M5.555 17.776l8-16 .894.448-8 16-.894-.448z' />
                       </svg>
                     ) : null}
@@ -144,7 +144,8 @@ const Page = async ({ params }: PageProps) => {
           </div>
         </div>
       </div>
-
+      
+      {/* Similar products for same category rendering here */}
       <ProductReel
         href='/products'
         query={{ category: product.category, limit: 4 }}
@@ -152,7 +153,7 @@ const Page = async ({ params }: PageProps) => {
         subtitle={`Browse similar high-quality ${label} just like '${product.name}'`}
       />
     </MaxWidthWrapper>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;

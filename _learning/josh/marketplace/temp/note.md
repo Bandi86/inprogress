@@ -166,4 +166,10 @@ letre hozunk egy terméket a stripe oldalan es annak lesz ugyanugy egy api kulcs
 
 products collection hooks
 
-9:40
+thank you page
+
+webhooks
+
+receipt email
+
+10:47

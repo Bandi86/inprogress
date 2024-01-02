@@ -36,7 +36,7 @@ export const paymentRouter = router({
         collection: 'orders',
         data: {
           _isPaid: false,
-          products: filteredProducts,
+          products: filteredProducts.map((product) => product.id),
           user: user.id,
         },
       });
@@ -70,6 +70,36 @@ export const paymentRouter = router({
           },
           line_items,
         });
-      } catch (error) {}
+        return {url: stripeSession.url};
+      } catch (error) {
+        console.log(error)
+        return {url: null}
+      }
     }),
+
+    pollOrderStatus: privateProcedure
+    .input(z.object({ orderId: z.string() }))
+    .query(async ({ input }) => {
+      const { orderId } = input
+
+      const payload = await getPayloadClient()
+
+      const { docs: orders } = await payload.find({
+        collection: 'orders',
+        where: {
+          id: {
+            equals: orderId,
+          },
+        },
+      })
+
+      if (!orders.length) {
+        throw new TRPCError({ code: 'NOT_FOUND' })
+      }
+
+      const [order] = orders
+
+      return { isPaid: order._isPaid }
+    }),
+
 });

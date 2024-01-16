@@ -1,0 +1,27 @@
+version: "3"
+services:
+  db:
+    image: postgres:9.6
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: hardwell86
+      POSTGRES_USER: postgres
+      POSTGRES_DB: bookshop
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  app:
+    image: bookshop
+    port: 8000
+    links:
+      - db
+    depends_on: 
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:hardwell86@db:5432/bookshop
+    volumes:
+      - .:/app
+      
+
+      

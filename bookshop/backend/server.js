@@ -1,5 +1,7 @@
+import bodyParser from 'body-parser'
 import express from 'express'
 import db from './db/config.js'
+import bookRouter from './routes/book.js'
 import userRouter from './routes/user.js'
 
 import cors from 'cors'
@@ -9,10 +11,13 @@ const app = express()
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }))
 
 app.use(express.json())
+app.use(bodyParser.json());
 
 app.use(express.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/user', userRouter)
+app.use('/api/book', bookRouter)
 
 const PORT = process.env.PORT || 8080
 

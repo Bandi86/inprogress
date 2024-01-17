@@ -1,29 +1,54 @@
 import Sequelize from 'sequelize'
+import { DataTypes } from 'sequelize'
 import db from '../db/config.js'
 
 const User = db.define('user', {
   id: {
-    type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4,
+    type: DataTypes.UUID,
+    defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
     allowNull: false,
   },
   username: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
+    type: DataTypes.STRING,
+    allowNull: {
+      args: false,
+      msg: 'Please enter your username',
+    },
   },
   email: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    unique: true,
+    type: DataTypes.STRING,
+    allowNull: {
+      args: false,
+      msg: 'Please enter your email address',
+    },
+    unique: {
+      args: true,
+      msg: 'Email already exists',
+    },
+    validate: {
+      isEmail: {
+        args: true,
+        msg: 'Please enter a valid email address',
+      },
+    },
   },
   password: {
-    type: Sequelize.STRING,
-    allowNull: false,
+    type: DataTypes.STRING,
+    allowNull: {
+      args: false,
+      msg: 'Please enter a password',
+    },
+    validate: {
+      isNotShort: (value) => {
+        if (value.length < 6) {
+          throw new Error('Password should be at least 6 characters')
+        }
+      },
+    },
   },
   role: {
-    type: Sequelize.STRING,
+    type: DataTypes.STRING,
     allowNull: false,
     defaultValue: 'user',
     validate: {
@@ -45,7 +70,7 @@ const User = db.define('user', {
     allowNull: true,
   },
   currentLoginDuration: {
-    type: Sequelize.INTEGER,
+    type: DataTypes.INTEGER,
     allowNull: true,
   },
 })

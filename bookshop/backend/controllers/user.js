@@ -104,6 +104,7 @@ export const loginUser = async (req, res) => {
   try {
     // Check the user in the database with email
     const user = await User.findOne({ where: { email } })
+    const {username} = user
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
@@ -132,18 +133,18 @@ export const loginUser = async (req, res) => {
     })
 
     // Generate and send token in response
-    const token = generateToken(res, user.id)
-
+    generateToken(res, username)
+    
     // data back to frontend
     const dataSendBack = {
       id: user.id,
-      name: user.username,
+      username,
       email: user.email,
+      role: user.role,
       created: user.createdAt,
       updated: user.updatedAt,
       lastLoginAt: currentLoginTime,
       currentLoginDuration: updatedLoginDuration,
-      token,
     }
     res.status(200).json({ message: 'Login successful', user: dataSendBack })
   } catch (error) {
@@ -217,7 +218,7 @@ export const deleteUser = async (req, res) => {
 // logout user
 export const logoutUser = async (req, res) => {
   try {
-    console.log('Logout request received:', req.user);
+    console.log('Logout request received:', req.user)
 
     // Ellenőrizze, hogy a felhasználó be van-e jelentkezve, ha igen, akkor kezelje a kijelentkezést
     if (req.user) {
@@ -232,7 +233,7 @@ export const logoutUser = async (req, res) => {
       console.log('Updating user record:', {
         lastLoginAt: null,
         currentLoginDuration: updatedLoginDuration,
-      });
+      })
 
       // Frissítsük a felhasználó rekordját az új kijelentkezési adatokkal
       await req.user.update({
@@ -247,7 +248,7 @@ export const logoutUser = async (req, res) => {
 
     // res.setHeader('Authorization', '');
 
-    console.log('Logout successful');
+    console.log('Logout successful')
     res.status(200).json({ message: 'Logout successful' })
   } catch (error) {
     console.error('Logout error:', error)

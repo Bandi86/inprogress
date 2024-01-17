@@ -14,10 +14,7 @@ const BookCategorys = () => {
     'adventure',
     'crime',
     'science fiction',
-    'biography',
-    'history',
-    'poetry',
-    'self help',
+    
     'others',
   ]
 

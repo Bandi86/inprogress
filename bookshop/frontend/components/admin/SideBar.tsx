@@ -9,8 +9,8 @@ const Sidebar = () => {
           <a href='#' className={menu}>
             Dashboard
           </a>
-          <a href='#' className={menu}>
-            Posts
+          <a href='admin/users' className={menu}>
+            Users
           </a>
           <a href='#' className={menu}>
             Pages

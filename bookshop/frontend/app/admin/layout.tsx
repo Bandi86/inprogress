@@ -10,10 +10,10 @@ const adminLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       { role && role === 'admin' ? (
-        <div className='flex flex-row h-full bg-slate-800 text-white'>
+        <div className='flex flex-row h-full w-full bg-zinc-500 text-black'>
           <Sidebar />
           {children && (
-            <div className='flex flex-col w-full items-center justify-center'>
+            <div className='flex flex-col w-full'>
               {children}
             </div>
           )}

@@ -4,9 +4,10 @@ import { useState, SyntheticEvent } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
-import { redirect, useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { login } from '@/constants/api'
+import  useUserStore  from '@/store'
 
 type FormState = {
   email: string
@@ -15,6 +16,8 @@ type FormState = {
 
 const loginPage = () => {
   const router = useRouter()
+
+  const { user, setUser, clearUser } = useUserStore();
 
   const id = localStorage.getItem('user')?.toString() || null
 
@@ -30,9 +33,12 @@ const loginPage = () => {
       const res = await axios.post(login, formState, { withCredentials: true })
       if (res.status === 200) {
         localStorage.setItem('user', JSON.stringify(res.data.user))
+        setUser(res.data.user)
         alert('Login success!')
-        router.push('/')
-        
+        console.log(res.data.role)
+        if (res.data.user.role === 'admin') {
+          router.push('/admin')
+        } else router.push('/')
       }
     } catch (error: any) {
       console.error('Validation error:', error.message)
@@ -48,7 +54,6 @@ const loginPage = () => {
         <div className='flex justify-center items-center h-screen'>
           <form
             onSubmit={handleForm}
-            
             className='grid grid-cols-1 gap-4 max-w-sm mx-auto'
           >
             <h2 className='text-center text-2xl font-semibold mb-4'>Login</h2>

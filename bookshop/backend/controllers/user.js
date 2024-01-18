@@ -16,8 +16,8 @@ export const getUsers = async (req, res) => {
         name: user.username,
         email: user.email,
         role: user.role,
-        created: user.createdAt,
-        updated: user.updatedAt,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
         lastLoginAt: user.lastLoginAt,
         currentLoginDuration: user.currentLoginDuration,
       }
@@ -102,21 +102,27 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body
 
   try {
+    
     // Check the user in the database with email
     const user = await User.findOne({ where: { email } })
-    const {username} = user
-
+    const {id} = user
+    
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
-
+    
     // Check if the password is correct
     const validPassword = await bcrypt.compare(password, user.password)
-
+    
     if (!validPassword) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
 
+    // check if user already logged in or not
+    if (req.user) {
+      return res.status(409).json({ message: 'User already logged in' })
+    }
+    
     // Megjegyzés: Itt már bejelentkezett a felhasználó, így frissíthetjük a belépési adatokat.
     const currentLoginTime = new Date()
     const lastLoginTime = user.lastLoginAt || currentLoginTime
@@ -133,12 +139,12 @@ export const loginUser = async (req, res) => {
     })
 
     // Generate and send token in response
-    generateToken(res, username)
+    generateToken(res, id)
     
     // data back to frontend
     const dataSendBack = {
       id: user.id,
-      username,
+      username: user.username,
       email: user.email,
       role: user.role,
       created: user.createdAt,

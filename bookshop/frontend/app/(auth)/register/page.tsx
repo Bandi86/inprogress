@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { register } from '@/constants/api'
+import { user } from '@/constants/api'
 
 type FormState = {
   username: string
@@ -28,7 +28,7 @@ const registerPage = () => {
   const handleForm = async (e: SyntheticEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(register, formState)
+      const res = await axios.post(user, formState)
 
       if (res.status === 201) {
         alert('Register success!')

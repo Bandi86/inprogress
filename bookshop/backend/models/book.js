@@ -1,6 +1,7 @@
 import { DataTypes } from 'sequelize'
 import Sequelize from 'sequelize'
 import db from '../db/config.js'
+import Category from './category.js'
 
 const Book = db.define('book', {
   book_id: {
@@ -9,6 +10,20 @@ const Book = db.define('book', {
     primaryKey: true,
     allowNull: false,
   },
+  category_id: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: {
+      model: Category, // Reference to the Category model
+      key: 'category_id',
+    },
+    validate: {
+      notNull: {
+        args: true,
+        msg: 'Please enter a category',
+      },
+    }
+  }, 
   title: {
     type: DataTypes.STRING,
     allowNull: {
@@ -37,11 +52,11 @@ const Book = db.define('book', {
       msg: 'Pease input a quantity',
     },
     validate: {
-        isInt: {
-            args: true,
-            msg: 'Please enter a valid quantity',
-        },
-    }
+      isInt: {
+        args: true,
+        msg: 'Please enter a valid quantity',
+      },
+    },
   },
   isbn: {
     type: DataTypes.STRING,
@@ -49,12 +64,32 @@ const Book = db.define('book', {
       args: false,
       msg: 'Pease input an ISBN',
     },
-   /*  validate: {
+    /*  validate: {
       isISBN: {
         args: true,
         msg: 'Please enter a valid ISBN',
       },
     }, */
+  },
+  price: {
+    type: DataTypes.FLOAT,
+    allowNull: {
+      args: false,
+      msg: 'Pease input a price',
+    },
+    validate: {
+      isFloat: {
+        args: true,
+        msg: 'Please enter a valid price',
+      },
+    },
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: {
+      args: false,
+      msg: 'Pease input an image',
+    },
   },
   published_date: {
     type: DataTypes.DATE,

@@ -1,3 +1,5 @@
+import Link from "next/link"
+
 const Sidebar = () => {
   const menu = 'p-4 hover:bg-slate-100 hover:text-black'
   return (
@@ -6,25 +8,22 @@ const Sidebar = () => {
         {/* dummy menu */}
         <div className='flex flex-col gap-12'>
           <h1 className="pt-4">Hello Admin</h1>
-          <a href='#' className={menu}>
+          <Link href='/admin' className={menu}>
             Dashboard
-          </a>
-          <a href='admin/users' className={menu}>
+          </Link>
+          <Link href='admin/users' className={menu}>
             Users
-          </a>
-          <a href='#' className={menu}>
-            Pages
-          </a>
-          <a href='#' className={menu}>
+          </Link>
+          <Link href='/admin/books' className={menu}>
+            Books
+          </Link>
+          <Link href='#' className={menu}>
             Media
-          </a>
-          <a href='#' className={menu}>
-            Users
-          </a>
-          <a href='#' className={menu}>
+          </Link>          
+          <Link href='#' className={menu}>
             Settings
-          </a>
-          <a href="/" className={menu}>User Home</a>
+          </Link>
+          <Link href="/" className={menu}>User Home</Link>
         </div>
       </div>
     </div>

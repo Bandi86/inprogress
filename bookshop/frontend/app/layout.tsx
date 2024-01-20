@@ -3,8 +3,9 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
-import useUserStore from '@/store'
+
 import { metadata } from './metadata'
+import { usePathname } from 'next/navigation'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,14 +17,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { user } = useUserStore()
-  
-  
+  const pathname = usePathname()
+
+  const adminurl = pathname.includes('/admin')
+
   return (
     <html lang='en'>
       <body className={inter.className}>
         <main className='flex flex-col items-center w-screen h-screen bg-slate-400'>
-          {user && user.role === 'admin' ? null : <Header />}
+          {adminurl ? null : <Header />}
 
           {children}
         </main>

@@ -4,12 +4,8 @@ import Searchbar from '@/components/Search'
 import BookCategorys from './BookCategorys'
 import Link from 'next/link'
 import Auth from './Auth'
-import useAuth from '@/hooks/useAuth'
 
-const Header = () => { 
-
-  useAuth()
-
+const Header = () => {
   return (
     <div className='flex flex-col'>
       <nav className='flex justify-between items-center bg-gray-900 text-white w-screen border-b-2'>

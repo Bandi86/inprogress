@@ -22,8 +22,8 @@ const Book = db.define('book', {
         args: true,
         msg: 'Please enter a category',
       },
-    }
-  }, 
+    },
+  },
   title: {
     type: DataTypes.STRING,
     allowNull: {
@@ -64,12 +64,6 @@ const Book = db.define('book', {
       args: false,
       msg: 'Pease input an ISBN',
     },
-    /*  validate: {
-      isISBN: {
-        args: true,
-        msg: 'Please enter a valid ISBN',
-      },
-    }, */
   },
   price: {
     type: DataTypes.FLOAT,

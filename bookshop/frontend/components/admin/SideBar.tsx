@@ -11,7 +11,7 @@ const Sidebar = () => {
           <Link href='/admin' className={menu}>
             Dashboard
           </Link>
-          <Link href='admin/users' className={menu}>
+          <Link href='/admin/users' className={menu}>
             Users
           </Link>
           <Link href='/admin/books' className={menu}>

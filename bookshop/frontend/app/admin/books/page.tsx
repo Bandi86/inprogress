@@ -5,12 +5,13 @@ import { Category } from '@/types/category'
 import { Book } from '@/types/book'
 import axios from 'axios'
 import { booksApi, categoriesApi } from '@/constants/api'
-import DataOfBooks from '@/components/admin/DataOfBooks'
+import SharedTable from '@/components/shared/Table'
 
 const page = () => {
   const [books, setBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [categories, setCategories] = useState<Category[]>([])
+  
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -47,17 +48,24 @@ const page = () => {
     fetchBooks()
   }, [])
 
-  return (
-    <div className='h-screen w-full flex flex-row'>
-      <div className='w-2/6 flex flex-col items-center p-4'>
-        <h1 className='font-semibold'>Create Book</h1>
-        <CreateBookForm categories={categories} loading={loading} />
-      </div>
-      <div className='w-4/6 flex flex-col items-center p-4'>
-        <h1 className='font-semibold'>Data of Books in database</h1>
-        <DataOfBooks books={books} loading={loading} />
-      </div>
-    </div>
+  return loading ? (
+    <div>Loading...</div>
+  ) : (
+    <SharedTable
+      data={books}
+      columns={[
+        'book_id',
+        'title',
+        'author',
+        'price',
+        'quantity',
+        'published_date',
+        'createdAt',
+        'updatedAt',
+      ]}
+      tableCaptionText='Book in database'
+      type={'book'}      
+    />
   )
 }
 

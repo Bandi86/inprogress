@@ -13,7 +13,7 @@ const adminLayout = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <>
-      <div className='flex flex-row h-full w-full bg-zinc-500 text-black'>
+      <div className='flex flex-row h-full w-full bg-stone-300 text-black'>
         <Sidebar />
         {children && <div className='flex flex-col w-full'>{children}</div>}
       </div>

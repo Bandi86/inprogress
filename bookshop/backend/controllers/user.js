@@ -13,7 +13,7 @@ export const getUsers = async (req, res) => {
     const dataSendBack = users.map((user) => {
       return {
         id: user.id,
-        name: user.username,
+        username: user.username,
         email: user.email,
         role: user.role,
         createdAt: user.createdAt,
@@ -39,7 +39,7 @@ export const getUser = async (req, res) => {
     }
     const dataSendBack = {
       id: user.id,
-      name: user.username,
+      username: user.username,
       email: user.email,
       created: user.createdAt,
       updated: user.updatedAt,
@@ -84,7 +84,7 @@ export const createUser = async (req, res) => {
     })
     const dataSendBack = {
       id: user.id,
-      name: user.username,
+      username: user.username,
       email: user.email,
       created: user.createdAt,
       updated: user.updatedAt,

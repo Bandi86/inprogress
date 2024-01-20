@@ -2,7 +2,6 @@ import { DataTypes } from 'sequelize'
 import db from '../db/config.js'
 import Sequelize from 'sequelize'
 
-
 const Category = db.define('category', {
   category_id: {
     type: DataTypes.UUID,
@@ -12,9 +11,9 @@ const Category = db.define('category', {
   },
   category_name: {
     type: DataTypes.STRING,
-    allowNull: {
-      args: false,
-      msg: 'Please enter a category name',
+    allowNull: false,
+    validate: {
+      notEmpty: true,
     },
   },
   createdAt: {
@@ -25,9 +24,6 @@ const Category = db.define('category', {
     type: DataTypes.DATE,
     defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
   },
-  
-
 })
-
 
 export default Category

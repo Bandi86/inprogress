@@ -1,3 +1,5 @@
+
+
 const SearchBar = () => {
   return (
     <div className='flex justify-center items-center'>

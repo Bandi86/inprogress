@@ -22,6 +22,7 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete, MdOutlineCreateNewFolder } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import AdminTableModal from './AdminTableModal'
+import convertDataTimestamp from '@/utils/convertDataTimestamp'
 
 interface TableProps {
   data: any[]
@@ -35,20 +36,24 @@ const SharedTable: React.FC<TableProps> = ({
   data,
   columns,
   tableCaptionText,
-  type
+  type,
 }) => {
+  const [showModal, setShowModal] = useState<boolean>(false)
+  const [selectedRow, setSelectedRow] = useState<any>(null)
+  const [selectedIcon, setSelectedIcon] = useState<string>('')
 
-    const [showModal, setShowModal] = useState<boolean>(false)
-    const [selectedRow, setSelectedRow] = useState<any>(null);
+  const handleClick = (row: any, icon: string) => {
+    setSelectedRow(row)
+    setShowModal(true)
+    setSelectedIcon(icon)
+  }
 
-    const handleClick = (row: any) => {
-      setSelectedRow(row);
-      setShowModal(true);
-    };
+  convertDataTimestamp(data)
+  
 
   return (
-    <section className='w-auto h-screen p-10'>
-      <Table className='overflow-auto'>
+    <section className='h-screen p-10'>
+      <Table>
         <TableCaption>
           <span className='font-semibold text-lg text-black'>
             {data.length}
@@ -75,15 +80,40 @@ const SharedTable: React.FC<TableProps> = ({
                   <TableCell>{row[column]}</TableCell>
                 </React.Fragment>
               ))}
-              <div className='flex gap-4 text-3xl pt-4'>
-                <MdOutlineCreateNewFolder className='cursor-pointer' />
-                <CgProfile
-                  className='cursor-pointer'
-                  onClick={() => handleClick(row)}
-                />
-                <FaRegEdit className='cursor-pointer' />
-                <MdDelete className='cursor-pointer' />
-              </div>
+
+              {type === 'user' && (
+                <div className='flex gap-4 text-3xl pt-4'>
+                  <CgProfile
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'profile')}
+                  />
+                  <MdDelete
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'delete')}
+                  />
+                </div>
+              )}
+
+              {type === 'book' && (
+                <div className='flex gap-4 text-3xl pt-4'>
+                  <MdOutlineCreateNewFolder
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'new')}
+                  />
+                  <CgProfile
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'profile')}
+                  />
+                  <FaRegEdit
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'edit')}
+                  />
+                  <MdDelete
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'delete')}
+                  />
+                </div>
+              )}
             </TableRow>
           ))}
         </TableBody>
@@ -94,6 +124,7 @@ const SharedTable: React.FC<TableProps> = ({
           type={type}
           setShowModal={setShowModal}
           rowData={selectedRow}
+          selectedIcon={selectedIcon}
         />
       )}
       <div className='p-10'>

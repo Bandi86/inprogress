@@ -2,7 +2,10 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>page</div>
+    <section className='p-10 flex justify-center'>
+      
+      <h1>hello</h1>
+    </section>
   )
 }
 

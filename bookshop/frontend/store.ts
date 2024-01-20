@@ -9,7 +9,7 @@ export type UserStore = {
 
 const useUserStore = create<UserStore>((set) => {
   // Felhasználói adatok betöltése a localStorage-ből az inicializálás során
-  const storedUser = localStorage.getItem('user');
+  const storedUser = typeof localStorage !== 'undefined' ? localStorage.getItem('user') : null;
   const initialState = storedUser ? { user: JSON.parse(storedUser) } : { user: null };
 
   return {
@@ -17,12 +17,16 @@ const useUserStore = create<UserStore>((set) => {
     setUser: (user: User) => {
       set({ user });
       // Felhasználói adatok mentése a localStorage-be
-      localStorage.setItem('user', JSON.stringify(user));
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('user', JSON.stringify(user));
+      }
     },
     clearUser: () => {
       set({ user: null });
       // Felhasználói adatok törlése a localStorage-ből
-      localStorage.removeItem('user');
+      if (typeof localStorage !== 'undefined') {
+        localStorage.removeItem('user');
+      }
       // remove cookie
       document.cookie = "jwt=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     },

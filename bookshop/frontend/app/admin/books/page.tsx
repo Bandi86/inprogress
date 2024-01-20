@@ -11,7 +11,6 @@ const page = () => {
   const [books, setBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState<boolean>(false)
   const [categories, setCategories] = useState<Category[]>([])
-  
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -48,24 +47,36 @@ const page = () => {
     fetchBooks()
   }, [])
 
-  return loading ? (
-    <div>Loading...</div>
-  ) : (
-    <SharedTable
-      data={books}
-      columns={[
-        'book_id',
-        'title',
-        'author',
-        'price',
-        'quantity',
-        'published_date',
-        'createdAt',
-        'updatedAt',
-      ]}
-      tableCaptionText='Book in database'
-      type={'book'}      
-    />
+  loading && <h1>Loading...</h1>
+
+  return (
+    <>
+      {books.length !== 0 ? (
+        <SharedTable
+          data={books}
+          columns={[
+            'book_id',
+            'title',
+            'author',
+            'price',
+            'quantity',
+            'published_date',
+            'createdAt',
+            'updatedAt',
+          ]}
+          tableCaptionText='Book in database'
+          type={'book'}
+        />
+      ) : (
+        <div className='flex p-6 '>
+          <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
+            <h2 className='text-center p-6'>No books in the database</h2>
+            <p>Try to add your first Book here</p>
+            <CreateBookForm categories={categories} loading={loading} />
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

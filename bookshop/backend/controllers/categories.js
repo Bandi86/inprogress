@@ -17,8 +17,17 @@ export const getAllCategories = async (req, res) => {
 export const createCategory = async (req, res) => {
   try {
     const { category_name } = req.body
-    const category = await Category.create({ category_name })
-    res.status(201).json({ category })
+    // check if category already exists
+    const categoryExists = await Category.findOne({
+      where: { category_name },
+    })
+    if (categoryExists) {
+      return res.status(400).json({ error: 'Category already exists' })
+    } else {
+      const category = await Category.create({ category_name })
+      res.status(201).json({ category })
+    }
+    
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Internal Server Error' })

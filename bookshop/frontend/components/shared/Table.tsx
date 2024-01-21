@@ -23,13 +23,12 @@ import { MdDelete, MdOutlineCreateNewFolder } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import AdminTableModal from './AdminTableModal'
 
-
 interface TableProps {
   data: any[]
   columns: string[]
   tableCaptionText?: string
   type: string
-  /* event: React.MouseEvent<HTMLButtonElement> */
+ 
 }
 
 const SharedTable: React.FC<TableProps> = ({
@@ -47,9 +46,6 @@ const SharedTable: React.FC<TableProps> = ({
     setShowModal(true)
     setSelectedIcon(icon)
   }
-
-  
-  
 
   return (
     <section className='h-screen p-10'>
@@ -86,6 +82,19 @@ const SharedTable: React.FC<TableProps> = ({
                   <CgProfile
                     className='cursor-pointer'
                     onClick={() => handleClick(row, 'profile')}
+                  />
+                  <MdDelete
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'delete')}
+                  />
+                </div>
+              )}
+
+              {type === 'category' && (
+                <div className='flex gap-4 text-3xl pt-4'>
+                  <FaRegEdit
+                    className='cursor-pointer'
+                    onClick={() => handleClick(row, 'edit')}
                   />
                   <MdDelete
                     className='cursor-pointer'

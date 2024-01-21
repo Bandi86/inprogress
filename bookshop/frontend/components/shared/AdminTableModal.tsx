@@ -1,10 +1,11 @@
 import { IoClose } from 'react-icons/io5'
 import CreateBookForm from '../admin/CreateBookForm'
 import { useEffect, useState } from 'react'
-import { Category } from '@/types/category'
 import axios from 'axios'
 import { categoriesApi } from '@/constants/api'
 import Image from 'next/image'
+import useCategoryStore from '@/store/categorieStore'
+import CreateCategoryForm from '../admin/CreateCategoryForm'
 
 interface AdminTableModalProps {
   showModal: boolean
@@ -25,8 +26,10 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
     return null
   }
 
-  const [categories, setCategories] = useState<Category[]>([])
+  const { categories, setCategories, clearCategories } = useCategoryStore()
+
   const [loading, setLoading] = useState<boolean>(false)
+  const [refreshBooks, setRefreshBooks] = useState<boolean>(false)
 
   const newForm = selectedIcon === 'new'
   const editForm = selectedIcon === 'edit'
@@ -43,7 +46,7 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
       setLoading(false)
     }
     fetchCategories()
-  }, [])
+  }, [refreshBooks])
 
   const handleCloseModal = () => {
     setShowModal(false)
@@ -58,6 +61,12 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
             {type === 'book' && selectedIcon === 'edit' ? 'Edit Book' : ''}
             {type === 'book' && selectedIcon === 'delete' ? 'Delete Book' : ''}
             {type === 'book' && selectedIcon === 'profile' ? 'View Book' : ''}
+            {type === 'category' && selectedIcon === 'edit'
+              ? 'Edit Category'
+              : ''}
+            {type === 'category' && selectedIcon === 'delete'
+              ? 'Delete Category'
+              : ''}
           </div>
           <button onClick={handleCloseModal}>
             <IoClose className='text-2xl hover:text-gray-500 cursor-pointer' />
@@ -67,14 +76,30 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
           {type === 'book' &&
           (selectedIcon === 'new' || selectedIcon === 'edit') ? (
             <CreateBookForm
-              categories={categories}
+              categories={
+                Array.isArray(categories) && categories.length > 0
+                  ? categories
+                  : null
+              }
               loading={loading}
               options={options}
               rowData={options === 'edit' ? rowData : undefined}
+              setRefReshBooks={setRefreshBooks}
             />
           ) : (
             ''
           )}
+          {type === 'category' && selectedIcon === 'edit' ? (
+            <CreateCategoryForm
+              text={rowData.category_name}
+              setText={() => {}}
+              setRefresh={() => {}}
+              rowData={rowData}
+            />
+          ) : (
+            ''
+          )}
+
           {type === 'book' && selectedIcon === 'delete' ? (
             <div>Are you sure you want to delete this book?</div>
           ) : (

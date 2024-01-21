@@ -17,6 +17,9 @@ const Sidebar = () => {
           <Link href='/admin/books' className={menu}>
             Books
           </Link>
+          <Link href='/admin/categorys' className={menu}>
+            Categories
+          </Link>
           <Link href='/admin/orders' className={menu}>
             Orders
           </Link>          

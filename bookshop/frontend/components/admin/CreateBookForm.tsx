@@ -17,10 +17,11 @@ import { booksApi } from '@/constants/api'
 import { Book } from '@/types/book'
 
 interface CreateBookFormProps {
-  categories: Category[]
+  categories: Category[] | null
   loading: boolean
   options: string
   rowData?: Book
+  setRefReshBooks: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const CreateBookForm = ({
@@ -28,6 +29,8 @@ const CreateBookForm = ({
   loading,
   options,
   rowData,
+  setRefReshBooks,
+
 }: CreateBookFormProps) => {
   const [error, setError] = React.useState<string | null>(null)
 
@@ -58,6 +61,7 @@ const CreateBookForm = ({
         } else {
           setError(null)
           alert('Book edited successfully')
+          setRefReshBooks(true)
         }
       }
     } catch (error) {
@@ -101,12 +105,12 @@ const CreateBookForm = ({
             <SelectContent>
               <SelectGroup>
                 {categories && !loading ? (
-                  categories.map((category) => (
+                  categories.map((item) => (
                     <SelectItem
-                      key={category.category_id}
-                      value={category.category_id}
+                      key={item.category_id}
+                      value={item.category_id}
                     >
-                      {category.category_name}
+                      {item.category_name}
                     </SelectItem>
                   ))
                 ) : (
@@ -177,12 +181,12 @@ const CreateBookForm = ({
           <SelectContent>
             <SelectGroup>
               {categories && !loading ? (
-                categories.map((category) => (
+                categories.map((item) => (
                   <SelectItem
-                    key={category.category_id}
-                    value={category.category_id}
+                    key={item.category_id}
+                    value={item.category_id}
                   >
-                    {category.category_name}
+                    {item.category_name}
                   </SelectItem>
                 ))
               ) : (

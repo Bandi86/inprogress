@@ -26,7 +26,7 @@ const page = () => {
     'createdAt',
     'updatedAt',
     'lastLoginAt',
-    'currentLoginDuration',
+    
   ]
 
     return (

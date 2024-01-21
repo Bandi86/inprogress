@@ -29,14 +29,22 @@ const page = () => {
     'currentLoginDuration',
   ]
 
-  return (
-    <SharedTable
-      data={userData}
-      columns={columns}
-      tableCaptionText='user in database'
-      type='user'
-    />
-  )
-}
+    return (
+      (
+        userData && userData.length > 0 ? (
+          <SharedTable
+            data={userData}
+            columns={columns}
+            tableCaptionText='user in database'
+            type='user'
+          />
+        ) : (
+          <div className='text-center text-2xl text-gray-500 p-8'>
+            No data in database
+          </div>
+        )
+      )
+    );
+  }
 
 export default page

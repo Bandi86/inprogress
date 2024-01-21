@@ -45,7 +45,7 @@ const page = () => {
     }
     fetchCategories()
     fetchBooks()
-  }, [])
+  }, [loading])
 
   loading && <h1>Loading...</h1>
 
@@ -72,7 +72,7 @@ const page = () => {
           <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
             <h2 className='text-center p-6'>No books in the database</h2>
             <p>Try to add your first Book here</p>
-            <CreateBookForm categories={categories} loading={loading} />
+            <CreateBookForm categories={categories} loading={loading} options='new' />
           </div>
         </div>
       )}

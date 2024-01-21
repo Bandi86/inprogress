@@ -1,7 +1,7 @@
 import User from '../models/user.js'
 import bcrypt from 'bcrypt'
 import generateToken from '../utils/generateToken.js'
-import timestampConverter from '../utils/timestampConverter.js'
+
 
 // CRUD Controllers
 
@@ -17,9 +17,9 @@ export const getUsers = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
-        createdAt: timestampConverter(user.createdAt),
-        updatedAt: timestampConverter(user.updatedAt),
-        lastLoginAt: timestampConverter(user.lastLoginAt),
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+        lastLoginAt: user.lastLoginAt,
         currentLoginDuration: user.currentLoginDuration,
       }
     })
@@ -195,7 +195,7 @@ export const updateUser = async (req, res) => {
       user: {
         username: updatedUser.username,
         email: updatedUser.email,
-        updatedAt: timestampConverter(updatedUser.updatedAt),
+        updatedAt: updatedUser.updatedAt,
       },
     })
   } catch (error) {

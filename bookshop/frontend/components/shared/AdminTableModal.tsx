@@ -28,11 +28,15 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState<boolean>(false)
 
+  const newForm = selectedIcon === 'new'
+  const editForm = selectedIcon === 'edit'
+
+  const options = newForm ? 'new' : editForm ? 'edit' : ''
+
   useEffect(() => {
     const fetchCategories = async () => {
       setLoading(true)
       const res = await axios.get(categoriesApi)
-     
 
       const data = await res.data.categories
       setCategories(data)
@@ -62,7 +66,12 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
         <div>
           {type === 'book' &&
           (selectedIcon === 'new' || selectedIcon === 'edit') ? (
-            <CreateBookForm categories={categories} loading={loading} />
+            <CreateBookForm
+              categories={categories}
+              loading={loading}
+              options={options}
+              rowData={options === 'edit' ? rowData : undefined}
+            />
           ) : (
             ''
           )}
@@ -83,7 +92,12 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
                   <div>Published Date: {rowData.published_date}</div>
                   <div>Created At: {rowData.createdAt}</div>
                   <div>Updated At: {rowData.updatedAt}</div>
-                  <Image src={rowData.image} width={200} height={300} alt="book cover" />
+                  <Image
+                    src={rowData.image}
+                    width={200}
+                    height={300}
+                    alt='book cover'
+                  />
                 </div>
               ) : (
                 <h2>no data</h2>

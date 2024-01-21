@@ -22,7 +22,7 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete, MdOutlineCreateNewFolder } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import AdminTableModal from './AdminTableModal'
-import convertDataTimestamp from '@/utils/convertDataTimestamp'
+
 
 interface TableProps {
   data: any[]
@@ -48,7 +48,7 @@ const SharedTable: React.FC<TableProps> = ({
     setSelectedIcon(icon)
   }
 
-  convertDataTimestamp(data)
+  
   
 
   return (

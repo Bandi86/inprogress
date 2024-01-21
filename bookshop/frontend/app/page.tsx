@@ -1,10 +1,20 @@
-import RenderBook from "@/components/RenderBook";
+import RenderBook from '@/components/RenderBook'
 
 export default function Home() {
+  return (
+    <section className='h-full w-full'>
+      <div className='flex justify-center'>
+        <div className='w-1/8 border p-4'>{/* Left section */}</div>
+        <div className='w-6/8 border p-4'>
+          {/* Middle section */}
 
- 
-  return <section>
-    <h1>Wellcome here</h1>
-    <RenderBook />
-  </section>
+          <div className=''>
+            <RenderBook options={{ title: 'latest books' }} />
+            <RenderBook options={{ title: 'hot deals' }} />
+          </div>
+        </div>
+        <div className='w-1/8 border p-4'>{/* Right section */}</div>
+      </div>
+    </section>
+  )
 }

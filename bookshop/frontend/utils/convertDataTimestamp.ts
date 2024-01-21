@@ -1,4 +1,4 @@
-import timestampConverter from "./timestampConverter"
+/* import timestampConverter from "./timestampConverter"
 
 const testdata = {
     "user": {
@@ -33,5 +33,5 @@ export default function convertDataTimestamp(data: any) {
     return dataArray
 }
 
-console.log(convertDataTimestamp(testdata));
+console.log(convertDataTimestamp(testdata)); */
 

@@ -24,7 +24,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <main className='flex flex-col items-center w-screen h-screen bg-gradient-to-r from-green-200 to-green-500'>
+        <main className='flex flex-col items-center w-screen h-min-screen bg-gradient-to-r from-green-200 to-green-500'>
           {adminurl ? null : <Header />}
 
           {children}

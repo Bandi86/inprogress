@@ -1,8 +1,5 @@
 import { IoClose } from 'react-icons/io5'
 import CreateBookForm from '../admin/CreateBookForm'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { categoriesApi } from '@/constants/api'
 import Image from 'next/image'
 import useCategoryStore from '@/store/categorieStore'
 import CreateCategoryForm from '../admin/CreateCategoryForm'
@@ -26,27 +23,12 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
     return null
   }
 
-  const { categories, setCategories, clearCategories } = useCategoryStore()
-
-  const [loading, setLoading] = useState<boolean>(false)
-  const [refreshBooks, setRefreshBooks] = useState<boolean>(false)
+  const { categories } = useCategoryStore()
 
   const newForm = selectedIcon === 'new'
   const editForm = selectedIcon === 'edit'
 
   const options = newForm ? 'new' : editForm ? 'edit' : ''
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true)
-      const res = await axios.get(categoriesApi)
-
-      const data = await res.data.categories
-      setCategories(data)
-      setLoading(false)
-    }
-    fetchCategories()
-  }, [refreshBooks])
 
   const handleCloseModal = () => {
     setShowModal(false)
@@ -81,10 +63,10 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
                   ? categories
                   : null
               }
-              loading={loading}
               options={options}
               rowData={options === 'edit' ? rowData : undefined}
-              setRefReshBooks={setRefreshBooks}
+              setShowModal={setShowModal}
+
             />
           ) : (
             ''
@@ -93,8 +75,8 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
             <CreateCategoryForm
               text={rowData.category_name}
               setText={() => {}}
-              setRefresh={() => {}}
               rowData={rowData}
+              setShowModal={setShowModal}
             />
           ) : (
             ''

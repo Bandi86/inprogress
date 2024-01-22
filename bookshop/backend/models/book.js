@@ -98,15 +98,15 @@ const Book = db.define('book', {
       },
     },
   },
-  createdAt: {
-    type: 'TIMESTAMP',
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  created_at: {
+    type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
-  updatedAt: {
-    type: 'TIMESTAMP',
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  updated_at: {
+    type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
 })
 

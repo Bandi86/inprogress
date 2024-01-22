@@ -17,9 +17,9 @@ export const getUsers = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-        lastLoginAt: user.lastLoginAt,
+        createdAt: user.created_at,
+        updatedAt: user.updated_at,
+        lastLoginAt: user.lastLogin_at,
         currentLoginDuration: user.currentLoginDuration,
       }
     })
@@ -42,9 +42,9 @@ export const getUser = async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      created: user.createdAt,
-      updated: user.updatedAt,
-      lastLoginAt: user.lastLoginAt,
+      created: user.created_at,
+      updated: user.updated_at,
+      lastLoginAt: user.lastLogin_at,
       currentLoginDuration: user.currentLoginDuration,
     }
     res.status(200).json({ user: dataSendBack })
@@ -87,8 +87,8 @@ export const createUser = async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      created: user.createdAt,
-      updated: user.updatedAt,
+      created: user.created_at,
+      updated: user.updated_at,
     }
     res
       .status(201)
@@ -148,8 +148,8 @@ export const loginUser = async (req, res) => {
       username: user.username,
       email: user.email,
       role: user.role,
-      created: user.createdAt,
-      updated: user.updatedAt,
+      created: user.created_at,
+      updated: user.updated_at,
       lastLoginAt: currentLoginTime,
       currentLoginDuration: updatedLoginDuration,
     }
@@ -184,7 +184,7 @@ export const updateUser = async (req, res) => {
     // Update user properties
     updatedUser.username = updatedName
     updatedUser.email = updatedEmail
-    updatedUser.updatedAt = new Date()
+    updatedUser.updated_at = new Date()
 
     // Save changes to the database
     await updatedUser.save()
@@ -195,7 +195,7 @@ export const updateUser = async (req, res) => {
       user: {
         username: updatedUser.username,
         email: updatedUser.email,
-        updatedAt: updatedUser.updatedAt,
+        updatedAt: updatedUser.updated_at,
       },
     })
   } catch (error) {

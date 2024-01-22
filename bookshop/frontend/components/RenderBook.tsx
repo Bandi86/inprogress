@@ -1,12 +1,11 @@
 'use client'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { booksApi } from '@/constants/api'
+import { useState } from 'react'
 import { Book } from '@/types/book'
 import Image from 'next/image'
 import { Button } from './ui/button'
 import { GrFavorite } from 'react-icons/gr'
 import Link from 'next/link'
+import useBookStore from '@/store/bookStore'
 
 interface Props {
   options?: {
@@ -17,32 +16,47 @@ interface Props {
     discount?: boolean
     rating?: boolean
   }
+  book?: Book
 }
 
-const RenderBook = ({ options }: Props) => {
-  const [data, setData] = useState<Book[]>([])
+const RenderBook = ({ options, book }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true)
-      try {
-        const response = await axios.get(booksApi)
-        setData(response.data.books)
-      } catch (error: any) {
-        console.log(error)
-      }
-      setLoading(false)
-    }
-    fetchData()
-  }, [])
+  const { books } = useBookStore()
 
   const handleProps = () => {
     if (options?.howmuch) {
-      return data.slice(0, options.howmuch)
+      return books.slice(0, options.howmuch)
     }
 
-    return data
+    return books
+  }
+
+  // 1 book should be rendered to book page
+
+  if (book && !options) {
+    return (
+      <div className='max-w-5xl mx-auto p-8'>
+        <div className='bg-white flex flex-row rounded shadow'>
+          <Image
+            src={book.image}
+            width={150}
+            height={150}
+            alt={book.title}
+            className='rounded-l'
+          />
+          <div className='flex flex-col items-center w-[10rem] p-4 gap-4'>
+            <h2 className='text-xl font-bold mb-2'>Title: {book.title}</h2>
+            <Link href={`/author/${book.author}`}>
+              <p className='text-gray-600'>Author: {book.author}</p>
+            </Link>
+            <p className='text-gray-600'>Price: {book.price}</p>
+            <GrFavorite />
+            <Button type='submit'>Add to Cart</Button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
   return (

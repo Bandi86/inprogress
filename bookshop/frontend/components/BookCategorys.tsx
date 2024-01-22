@@ -1,33 +1,27 @@
+import useCategoryStore from '@/store/categorieStore'
+import { Category } from '@/types/category'
+import Link from 'next/link'
 import React from 'react'
 
 const BookCategorys = () => {
-  const categories = [
-    'drama',
-    'fiction',
-    'romance',
-    'thriller',
-    'horror',
-    'mystery',
-    'fantasy',
-    'comedy',
-    'action',
-    'adventure',
-    'crime',
-    'science fiction',
-    
-    'others',
-  ]
+  const { categories } = useCategoryStore()
 
   return (
     <div className='h-14 p-4 flex bg-gray-900 text-white justify-center'>
       <ul className='gap-10 flex pr-4 pl-4 justify-center items-center'>
-        {categories.map((category) => (
-          <li key={category}>
-            <a className='hover:text-gray-200' href='#'>
-              {category}
-            </a>
-          </li>
-        ))}
+        {Array.isArray(categories) &&
+          categories.map((category: Category) => (
+            <li key={category?.category_id}>
+              {category && (
+                <Link
+                  className='hover:text-gray-200'
+                  href={`/books/${category?.category_id}`}
+                >
+                  {category?.category_name}
+                </Link>
+              )}
+            </li>
+          ))}
       </ul>
     </div>
   )

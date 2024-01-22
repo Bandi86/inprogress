@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { SetStateAction } from 'react'
 import { Button } from '../ui/button'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
@@ -15,25 +15,21 @@ import { Category } from '@/types/category'
 import axios from 'axios'
 import { booksApi } from '@/constants/api'
 import { Book } from '@/types/book'
+import { handleSuccess } from '@/utils/adminHandleSuccess'
 
 interface CreateBookFormProps {
   categories: Category[] | null
-  loading: boolean
   options: string
   rowData?: Book
-  setRefReshBooks: React.Dispatch<React.SetStateAction<boolean>>
+  setShowModal?: (value: SetStateAction<boolean>) => void
 }
 
 const CreateBookForm = ({
   categories,
-  loading,
   options,
   rowData,
-  setRefReshBooks,
-
+  setShowModal,
 }: CreateBookFormProps) => {
-  const [error, setError] = React.useState<string | null>(null)
-
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -44,29 +40,29 @@ const CreateBookForm = ({
     }
     try {
       if (options === 'new') {
-        const response = await axios.post(
-          booksApi,
-          data
-        )
+        const response = await axios.post(booksApi, data)
         if (response.status !== 201) {
           throw new Error('Error while creating the book.')
         } else {
-          setError(null)
-          alert('Book created successfully')
+          if (setShowModal) {
+            handleSuccess(setShowModal)
+          }
         }
       } else if (options === 'edit') {
-        const response = await axios.put(`${booksApi}/${rowData?.book_id}`, data)
-        if (response.status !== 201) {
+        const response = await axios.put(
+          `${booksApi}/${rowData?.book_id}`,
+          data
+        )
+        if (response.status !== 200) {
           throw new Error('Error while editing the book.')
         } else {
-          setError(null)
-          alert('Book edited successfully')
-          setRefReshBooks(true)
+          if (setShowModal) {
+            handleSuccess(setShowModal)
+          }
         }
       }
     } catch (error) {
-      setError('An error occurred while creating the book.') // Set error message
-      console.error(error) // Log the error for debugging
+      console.error('Error creating/editing book:', error)
     }
   }
 
@@ -104,12 +100,9 @@ const CreateBookForm = ({
             </SelectTrigger>
             <SelectContent>
               <SelectGroup>
-                {categories && !loading ? (
+                {categories ? (
                   categories.map((item) => (
-                    <SelectItem
-                      key={item.category_id}
-                      value={item.category_id}
-                    >
+                    <SelectItem key={item.category_id} value={item.category_id}>
                       {item.category_name}
                     </SelectItem>
                   ))
@@ -154,11 +147,8 @@ const CreateBookForm = ({
             id='published_date'
             defaultValue={rowData.published_date}
           />
-          {loading ? (
-            <Button disabled>Loading...</Button>
-          ) : (
-            <Button type='submit'>Edit Book</Button>
-          )}
+
+          <Button type='submit'>Edit Book</Button>
         </form>
       </div>
     )
@@ -180,12 +170,9 @@ const CreateBookForm = ({
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {categories && !loading ? (
+              {categories ? (
                 categories.map((item) => (
-                  <SelectItem
-                    key={item.category_id}
-                    value={item.category_id}
-                  >
+                  <SelectItem key={item.category_id} value={item.category_id}>
                     {item.category_name}
                   </SelectItem>
                 ))
@@ -205,13 +192,10 @@ const CreateBookForm = ({
         <Input type='number' name='quantity' id='quantity' />
         <Label htmlFor='published_date'>Published Date</Label>
         <Input type='date' name='published_date' id='published_date' />
-        {loading ? (
-          <Button disabled>Loading...</Button>
-        ) : (
-          <Button type='submit'>
-            {options === 'new' ? 'Create Book' : 'Edit Book'}
-          </Button>
-        )}
+
+        <Button type='submit'>
+          {options === 'new' ? 'Create Book' : 'Edit Book'}
+        </Button>
       </form>
     </div>
   )

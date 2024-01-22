@@ -1,22 +1,14 @@
 import { Category } from '@/types/category'
 import { create } from 'zustand'
 
-export type CategoryStore = {
-  categories: Category | null
-  setCategories: (categories: Category) => void
-  clearCategories: () => void | null
-}
+type CategoryStore = {
+  categories: Category[];
+  setCategories: (categories: Category[]) => void;
+};
 
-const useCategoryStore = create<CategoryStore>((set) => {
-  return {
-    categories: null as Category | null, 
-    setCategories: (categories: Category | null) => {
-      set({ categories });
-    },
-    clearCategories: () => {
-      set({ categories: null });
-    },
-  }
-})
+const useCategoryStore = create<CategoryStore>((set) => ({
+  categories: [],
+  setCategories: (categories) => set({ categories }),
+}));
 
 export default useCategoryStore

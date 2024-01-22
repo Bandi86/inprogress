@@ -5,15 +5,18 @@ import { Input } from '../ui/input';
 import { categoriesApi } from '@/constants/api';
 import axios from 'axios';
 import { Category } from '@/types/category';
+import { rootFetch } from '@/utils/fetch';
+import useCategoryStore from '@/store/categorieStore';
 
 type Props = {
   text: string;
-  setText: (text: string) => void;
-  setRefresh: (refresh: boolean) => void;
+  setText: (text: string) => void;  
   rowData?: Category;
+  setShowModal?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const CreateCategoryForm = ({ text, setText, setRefresh, rowData }: Props) => {
+const CreateCategoryForm: React.FC<Props> = ({ text, setText, rowData, setShowModal }: Props) => {
+
   useEffect(() => {
     if (rowData) {
       setText(rowData.category_name);
@@ -30,7 +33,14 @@ const CreateCategoryForm = ({ text, setText, setRefresh, rowData }: Props) => {
         if (res.status === 201) {
           setText('');
           alert('Edit category successfully');
-          setRefresh(true);
+          await rootFetch({
+            setBooks: () => {}, // Add a dummy function for setBooks
+            setCategories: useCategoryStore.getState().setCategories
+          });
+          if (setShowModal) {
+            setShowModal(false);
+          }
+          
         }
         return;
       }
@@ -38,7 +48,11 @@ const CreateCategoryForm = ({ text, setText, setRefresh, rowData }: Props) => {
       if (res.status === 201) {
         setText('');
         alert('Create category successfully');
-        setRefresh(true);
+        await rootFetch({
+          setBooks: () => {}, // Add a dummy function for setBooks
+          setCategories: useCategoryStore.getState().setCategories
+        });
+        
       }
     } catch (error) {
       console.error('Error creating/editing category:', error);

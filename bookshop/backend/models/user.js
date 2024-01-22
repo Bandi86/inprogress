@@ -3,7 +3,7 @@ import { DataTypes } from 'sequelize'
 import db from '../db/config.js'
 
 const User = db.define('user', {
-  id: {
+  user_id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
@@ -55,19 +55,20 @@ const User = db.define('user', {
       isIn: [['user', 'admin']],
     },
   },
-  createdAt: {
-    type: 'TIMESTAMP',
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  created_at: {
+    type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
-  updatedAt: {
-    type: 'TIMESTAMP',
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+  updated_at: {
+    type: DataTypes.DATE,
     allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
-  lastLoginAt: {
-    type: 'TIMESTAMP',
-    allowNull: true,
+  lastLogin_at: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
   currentLoginDuration: {
     type: DataTypes.INTEGER,

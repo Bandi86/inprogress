@@ -16,13 +16,15 @@ const Category = db.define('category', {
       notEmpty: true,
     },
   },
-  createdAt: {
+  created_at: {
     type: DataTypes.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
   updatedAt: {
     type: DataTypes.DATE,
-    defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    allowNull: false,
+    defaultValue: Sequelize.NOW,
   },
 })
 

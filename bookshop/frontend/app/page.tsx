@@ -1,8 +1,9 @@
 import RenderBook from '@/components/RenderBook'
+import RightMenu from '@/components/Sheet'
 
 export default function Home() {
   return (
-    <section className='h-full w-full'>
+    <section className='h-min-screen'>
       <div className='flex justify-center'>
         <div className='w-1/8 border p-4'>{/* Left section */}</div>
         <div className='w-6/8 border p-4'>
@@ -14,7 +15,7 @@ export default function Home() {
           </div>
         </div>
         <div className='w-1/8 border p-4'>{/* Right section */}</div>
-      </div>
+      </div>      
     </section>
   )
 }

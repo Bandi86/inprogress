@@ -1,5 +1,4 @@
 import { DataTypes } from 'sequelize'
-import Sequelize from 'sequelize'
 import db from '../db/config.js'
 import User from './user.js'
 
@@ -47,6 +46,16 @@ const Cart = db.define('cart', {
       },
     },
   },
+  total_items: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      isInt: {
+        args: true,
+        msg: 'Please enter a valid total items',
+      },
+    },
+  },
   is_checked_out: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
@@ -56,16 +65,7 @@ const Cart = db.define('cart', {
     type: DataTypes.DATE,
     allowNull: true,
   },
-  cart_created_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
-  cart_updated_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
+ 
 })
 
 export default Cart

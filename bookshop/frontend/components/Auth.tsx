@@ -10,13 +10,13 @@ const Auth = () => {
 
   return (
     <>
-      {user ? (
+      {user?.user_id ? (
         <div className='hidden xl:flex items-center space-x-5'>
           <RightMenu />
 
           <Link
             className='flex items-center hover:text-gray-200'
-            href={`/profile/${user.id.toString()}`}
+            href={`/profile/${user.user_id}`}
           >
             <AvatarMenu />
           </Link>

@@ -16,6 +16,7 @@ import axios from 'axios'
 import { booksApi } from '@/constants/api'
 import { Book } from '@/types/book'
 import { handleSuccess } from '@/utils/adminHandleSuccess'
+import { redirect } from 'next/navigation'
 
 interface CreateBookFormProps {
   categories: Category[] | null
@@ -39,6 +40,15 @@ const CreateBookForm = ({
       return // Do not make the axios post request if form data is empty
     }
     try {
+      if (options === 'first') {
+        const response = await axios.post(booksApi, data)
+        if (response.status !== 201) {
+          throw new Error('Error while creating the book.')
+        } else {
+          redirect('/admin/books')
+        }
+      }
+
       if (options === 'new') {
         const response = await axios.post(booksApi, data)
         if (response.status !== 201) {

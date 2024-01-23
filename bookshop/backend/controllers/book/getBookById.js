@@ -1,9 +1,9 @@
 import Book from '../../models/book.js'
 
 export const getBook = async (req, res) => {
-  const bookId = req.params.bookId
+  const book_id = req.params.book_id
   try {
-    const book = await Book.findByPk(bookId)
+    const book = await Book.findByPk(book_id)
     if (!book) {
       return res.status(404).json({ message: 'Book not found!' })
     }

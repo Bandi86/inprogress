@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { login } from '@/constants/api'
-import  useUserStore  from '@/store'
+import useUserStore from '@/store'
 
 type FormState = {
   email: string
@@ -17,9 +17,7 @@ type FormState = {
 const loginPage = () => {
   const router = useRouter()
 
-  const { user, setUser, clearUser } = useUserStore();
-
-  const id = localStorage.getItem('user')?.toString() || null
+  const { user, setUser, clearUser } = useUserStore()
 
   const [formState, setFormState] = useState<FormState>({
     email: '',
@@ -35,7 +33,7 @@ const loginPage = () => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         setUser(res.data.user)
         alert('Login success!')
-        console.log(res.data.role)
+
         if (res.data.user.role === 'admin') {
           router.push('/admin')
         } else router.push('/')
@@ -48,7 +46,7 @@ const loginPage = () => {
 
   return (
     <>
-      {id ? (
+      {user?.user_id ? (
         router.push('/')
       ) : (
         <div className='flex justify-center items-center h-screen'>

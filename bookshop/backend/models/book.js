@@ -2,6 +2,7 @@ import { DataTypes } from 'sequelize'
 import Sequelize from 'sequelize'
 import db from '../db/config.js'
 import Category from './category.js'
+import Comments from './comments.js'
 
 const Book = db.define('book', {
   book_id: {
@@ -23,6 +24,15 @@ const Book = db.define('book', {
         msg: 'Please enter a category',
       },
     },
+  },
+  comment_id: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: Comments,
+      key: 'comment_id',
+    },
+   
   },
   title: {
     type: DataTypes.STRING,

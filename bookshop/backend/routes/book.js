@@ -11,11 +11,11 @@ const router = express.Router()
 // CRUD Routes /books
 
 router.get('/', getBooks) // /books
-router.get('/:bookId', getBook) // /books/:bookId
+router.get('/:book_id', getBook) // /books/:bookId
 router.get('/search', searchBookByParams) // /books/search
 router.post('/', createBook) // /books
-router.put('/:bookId', updateBook) // /books/:bookId
-router.delete('/:bookId', deleteBook) // /books/:bookId
+router.put('/:book_id', updateBook) // /books/:bookId
+router.delete('/:book_id', deleteBook) // /books/:bookId
 
 
 export default router

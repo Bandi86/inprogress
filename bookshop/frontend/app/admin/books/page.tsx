@@ -28,12 +28,12 @@ const page = () => {
           type={'book'}
         />
       ) : (
-        <div className='flex p-6 '>
+        <div className='flex p-6 justify-center items-center '>
           <div className='w-full md:w-1/2 lg:w-1/3 xl:w-1/4'>
             <h2 className='text-center p-6'>No books in the database</h2>
             <p>Try to add your first Book here</p>
             {Array.isArray(categories) && categories.length > 0 && (
-              <CreateBookForm categories={categories} options='new' />
+              <CreateBookForm categories={categories} options='first' />
             )}
           </div>
         </div>

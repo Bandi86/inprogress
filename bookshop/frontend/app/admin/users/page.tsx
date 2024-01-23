@@ -19,32 +19,27 @@ const page = () => {
   }, [])
 
   const columns = [
-    'id',
+    'user_id',
     'username',
     'email',
     'role',
     'createdAt',
     'updatedAt',
     'lastLoginAt',
-    
   ]
 
-    return (
-      (
-        userData && userData.length > 0 ? (
-          <SharedTable
-            data={userData}
-            columns={columns}
-            tableCaptionText='user in database'
-            type='user'
-          />
-        ) : (
-          <div className='text-center text-2xl text-gray-500 p-8'>
-            No data in database
-          </div>
-        )
-      )
-    );
-  }
+  return userData && userData.length > 0 ? (
+    <SharedTable
+      data={userData}
+      columns={columns}
+      tableCaptionText='user in database'
+      type='user'
+    />
+  ) : (
+    <div className='text-center text-2xl text-gray-500 p-8'>
+      No data in database
+    </div>
+  )
+}
 
 export default page

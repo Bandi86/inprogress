@@ -7,11 +7,12 @@ import CreateCategoryForm from '@/components/admin/CreateCategoryForm'
 
 const page = () => {
   const { categories } = useCategoryStore()
+
   const [text, setText] = useState('')
 
   return (
     <div>
-      {!categories && (
+      {categories.length === 0 && (
         <>
           <div className='text-center text-2xl text-gray-500 p-8'>
             No data in database

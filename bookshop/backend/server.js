@@ -5,6 +5,8 @@ import bookRouter from './routes/book.js'
 import userRouter from './routes/user.js'
 import categoryRouter from './routes/categories.js'
 import synchronizeModels from './db/sync.js';
+import cartRouter from './routes/cart.js'
+import commentsRouter from './routes/comments.js'
 
 import cors from 'cors'
 
@@ -21,6 +23,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/api/user', userRouter)
 app.use('/api/book', bookRouter)
 app.use('/api/categories', categoryRouter)
+app.use('/api/cart', cartRouter)
+app.use('/comments', commentsRouter)
 
 const PORT = process.env.PORT || 8080
 

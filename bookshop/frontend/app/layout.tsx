@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react'
 import { rootFetch } from '@/utils/fetch'
 import useBookStore from '@/store/bookStore'
 import useCategoryStore from '@/store/categorieStore'
+import useCartStore from '@/store/cartStore'
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -33,6 +35,7 @@ export default function RootLayout({
         await rootFetch({
           setBooks: useBookStore.getState().setBooks,
           setCategories: useCategoryStore.getState().setCategories,
+          setCart: useCartStore.getState().cart,
         })
 
         setIsDataLoaded(true)

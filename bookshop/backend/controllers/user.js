@@ -2,7 +2,6 @@ import User from '../models/user.js'
 import bcrypt from 'bcrypt'
 import generateToken from '../utils/generateToken.js'
 
-
 // CRUD Controllers
 
 const saltRounds = 10 // Konstans a salt rounds-hoz
@@ -11,9 +10,10 @@ const saltRounds = 10 // Konstans a salt rounds-hoz
 export const getUsers = async (req, res) => {
   try {
     const users = await User.findAll()
+    
     const dataSendBack = users.map((user) => {
       return {
-        id: user.id,
+        user_id: user.user_id,
         username: user.username,
         email: user.email,
         role: user.role,
@@ -103,18 +103,16 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body
 
   try {
-    
     // Check the user in the database with email
     const user = await User.findOne({ where: { email } })
-    const {id} = user
-    
+
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
-    
+
     // Check if the password is correct
     const validPassword = await bcrypt.compare(password, user.password)
-    
+
     if (!validPassword) {
       return res.status(401).json({ message: 'Invalid email or password' })
     }
@@ -123,7 +121,7 @@ export const loginUser = async (req, res) => {
     if (req.user) {
       return res.status(409).json({ message: 'User already logged in' })
     }
-    
+
     // Megjegyzés: Itt már bejelentkezett a felhasználó, így frissíthetjük a belépési adatokat.
     const currentLoginTime = new Date()
     const lastLoginTime = user.lastLoginAt || currentLoginTime
@@ -140,11 +138,11 @@ export const loginUser = async (req, res) => {
     })
 
     // Generate and send token in response
-    generateToken(res, id)
-    
+    generateToken(res, user.user_id)
+
     // data back to frontend
     const dataSendBack = {
-      id: user.id,
+      user_id: user.user_id,
       username: user.username,
       email: user.email,
       role: user.role,

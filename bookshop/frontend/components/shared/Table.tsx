@@ -22,6 +22,7 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete, MdOutlineCreateNewFolder } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import AdminTableModal from './AdminTableModal'
+import { User } from '@/types/user'
 
 interface TableProps {
   data: any[]

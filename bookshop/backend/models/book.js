@@ -1,8 +1,9 @@
 import { DataTypes } from 'sequelize'
-import Sequelize from 'sequelize'
 import db from '../db/config.js'
 import Category from './category.js'
 import Comments from './comments.js'
+import Cart from './cart.js'
+import Favorite from './favorites.js'
 
 const Book = db.define('book', {
   book_id: {
@@ -31,6 +32,24 @@ const Book = db.define('book', {
     references: {
       model: Comments,
       key: 'comment_id',
+    },
+   
+  },
+  cart_id: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: Cart,
+      key: 'cart_id',
+    },
+   
+  },
+  favorite_id: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: Favorite,
+      key: 'favorite_id',
     },
    
   },

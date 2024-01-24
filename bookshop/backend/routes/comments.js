@@ -9,8 +9,8 @@ import updateComment from '../controllers/comments/updateComment.js'
 const router = express.Router()
 
 router.get('/', allComments)
-router.get('/:comment_id', getComment)
-router.post('/', createComment)
+router.get('/:book_id', getComment)
+router.post('/:book_id', createComment)
 router.delete('/:comment_id', deleteComment)
 router.put('/:comment_id', updateComment)
 

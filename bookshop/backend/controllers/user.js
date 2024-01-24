@@ -10,7 +10,7 @@ const saltRounds = 10 // Konstans a salt rounds-hoz
 export const getUsers = async (req, res) => {
   try {
     const users = await User.findAll()
-    
+
     const dataSendBack = users.map((user) => {
       return {
         user_id: user.user_id,
@@ -18,7 +18,7 @@ export const getUsers = async (req, res) => {
         email: user.email,
         role: user.role,
         createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
+        updatedAt: user.updatedAt,
         lastLoginAt: user.lastLogin_at,
         currentLoginDuration: user.currentLoginDuration,
       }
@@ -103,8 +103,11 @@ export const loginUser = async (req, res) => {
   const { email, password } = req.body
 
   try {
+    if (req.user) {
+      return res.status(409).json({ message: 'User already logged in' })
+    }
     // Check the user in the database with email
-    const user = await User.findOne({ where: { email } })   
+    const user = await User.findOne({ where: { email } })
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
@@ -222,8 +225,7 @@ export const deleteUser = async (req, res) => {
 
 // logout user
 export const logoutUser = async (req, res) => {
-  try {    
-
+  try {
     // Ellenőrizze, hogy a felhasználó be van-e jelentkezve, ha igen, akkor kezelje a kijelentkezést
     if (req.user) {
       const currentLogoutTime = new Date()

@@ -9,6 +9,7 @@ import cartRouter from './routes/cart.js'
 import commentsRouter from './routes/comments.js'
 
 import cors from 'cors'
+import authenticate from './middleware/auth.js'
 
 const app = express()
 
@@ -24,7 +25,7 @@ app.use('/api/user', userRouter)
 app.use('/api/book', bookRouter)
 app.use('/api/categories', categoryRouter)
 app.use('/api/cart', cartRouter)
-app.use('/comments', commentsRouter)
+app.use('/api/comments', authenticate, commentsRouter)
 
 const PORT = process.env.PORT || 8080
 

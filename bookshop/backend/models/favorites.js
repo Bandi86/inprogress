@@ -10,20 +10,6 @@ const Favorite = db.define('favorite', {
     primaryKey: true,
     allowNull: false,
   },
-  book_id: {
-    type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: Book, // Reference to the Book model
-      key: 'book_id',
-    },
-    validate: {
-      notNull: {
-        args: true,
-        msg: 'Please enter a book',
-      },
-    },
-  },
   user_id: {
     type: DataTypes.UUID,
     allowNull: false,
@@ -37,7 +23,7 @@ const Favorite = db.define('favorite', {
         msg: 'Please enter a user',
       },
     },
-  }, 
+  },
 })
 
 export default Favorite

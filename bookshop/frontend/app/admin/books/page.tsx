@@ -4,10 +4,17 @@ import CreateBookForm from '@/components/admin/CreateBookForm'
 import SharedTable from '@/components/shared/Table'
 import useBookStore from '@/store/bookStore'
 import useCategoryStore from '@/store/categorieStore'
+import { fetchBooks, fetchCategories } from '@/utils/fetch'
+import { useEffect } from 'react'
 
 const page = () => {
-  const { books } = useBookStore()
-  const { categories } = useCategoryStore()
+  const { books, setBooks } = useBookStore()
+  const { categories, setCategories } = useCategoryStore()
+
+  useEffect(() => {
+    fetchBooks(setBooks)
+    fetchCategories(setCategories)
+  }, [])
 
   return (
     <>

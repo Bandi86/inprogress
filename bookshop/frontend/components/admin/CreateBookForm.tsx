@@ -44,9 +44,8 @@ const CreateBookForm = ({
         const response = await axios.post(booksApi, data)
         if (response.status !== 201) {
           throw new Error('Error while creating the book.')
-        } else {
-          redirect('/admin/books')
         }
+        redirect('/admin/books') 
       }
 
       if (options === 'new') {
@@ -204,7 +203,8 @@ const CreateBookForm = ({
         <Input type='date' name='published_date' id='published_date' />
 
         <Button type='submit'>
-          {options === 'new' ? 'Create Book' : 'Edit Book'}
+          {options === 'new' || options ==='first' ? 'Create Book' : 'Edit Book'}
+
         </Button>
       </form>
     </div>

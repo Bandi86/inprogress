@@ -1,14 +1,20 @@
 'use client'
 
 import useCategoryStore from '@/store/categorieStore'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SharedTable from '@/components/shared/Table'
 import CreateCategoryForm from '@/components/admin/CreateCategoryForm'
+import { fetchCategories } from '@/utils/fetch'
 
 const page = () => {
-  const { categories } = useCategoryStore()
+  const { categories, setCategories } = useCategoryStore()
 
   const [text, setText] = useState('')
+  const [refresh, setRefresh] = useState(false)
+
+  useEffect(() => {
+    fetchCategories(setCategories)
+  }, [refresh])
 
   return (
     <div>
@@ -28,7 +34,7 @@ const page = () => {
             tableCaptionText='category in database'
             type='category'
           />
-          <CreateCategoryForm text={text} setText={setText} />
+          <CreateCategoryForm text={text} setText={setText} setRefresh={setRefresh} />
         </div>
       )}
     </div>

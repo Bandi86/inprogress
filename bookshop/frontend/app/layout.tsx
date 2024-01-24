@@ -3,15 +3,8 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/Header'
-
 import { metadata } from './metadata'
 import { usePathname } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { rootFetch } from '@/utils/fetch'
-import useBookStore from '@/store/bookStore'
-import useCategoryStore from '@/store/categorieStore'
-import useCartStore from '@/store/cartStore'
-
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,31 +19,6 @@ export default function RootLayout({
   const pathname = usePathname()
 
   const adminurl = pathname.includes('/admin')
-
-  const [isDataLoaded, setIsDataLoaded] = useState(false)
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await rootFetch({
-          setBooks: useBookStore.getState().setBooks,
-          setCategories: useCategoryStore.getState().setCategories,
-          setCart: useCartStore.getState().cart,
-        })
-
-        setIsDataLoaded(true)
-      } catch (error) {
-        console.error('Error during data fetching:', error)
-        setIsDataLoaded(true)
-      }
-    }
-
-    fetchData()
-
-    const intervalId = setInterval(fetchData, 5 * 60 * 1000)
-
-    return () => clearInterval(intervalId)
-  }, [])
 
   return (
     <html lang='en'>

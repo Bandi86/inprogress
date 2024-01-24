@@ -3,10 +3,15 @@
 import RenderBook from '@/components/RenderBook'
 import useBookStore from '@/store/bookStore'
 import { Book } from '@/types/book'
+import { fetchBooks } from '@/utils/fetch'
 import { useEffect, useState } from 'react'
 
 export default function profilePage({ params }: { params: { slug: string } }) {
-  const { books } = useBookStore()
+  const { books, setBooks } = useBookStore()
+
+  useEffect(() => {
+    fetchBooks(setBooks)
+  }, [])
 
   const [actualBook, setActualBook] = useState<Book>()
 

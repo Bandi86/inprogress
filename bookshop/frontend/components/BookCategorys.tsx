@@ -1,10 +1,16 @@
 import useCategoryStore from '@/store/categorieStore'
 import { Category } from '@/types/category'
+import { fetchCategories } from '@/utils/fetch'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect } from 'react'
 
 const BookCategorys = () => {
-  const { categories } = useCategoryStore()
+  const { categories, setCategories } = useCategoryStore()
+  
+  useEffect(() => {
+    fetchCategories(setCategories)
+  }, [])
+  
 
   return (
     <div className='h-14 p-4 flex bg-gray-900 text-white justify-center'>

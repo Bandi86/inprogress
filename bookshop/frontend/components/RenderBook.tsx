@@ -1,13 +1,13 @@
 'use client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Book } from '@/types/book'
 import Image from 'next/image'
 import { Button } from './ui/button'
 import { GrFavorite } from 'react-icons/gr'
 import Link from 'next/link'
 import useBookStore from '@/store/bookStore'
-import useCartStore from '@/store/cartStore'
-import { rootFetch } from '@/utils/fetch'
+import { fetchBooks } from '@/utils/fetch'
+import addToCart from '@/utils/addToCart'
 
 interface Props {
   options?: {
@@ -24,21 +24,13 @@ interface Props {
 const RenderBook = ({ options, book }: Props) => {
   const [loading, setLoading] = useState<boolean>(false)
 
-  const { books } = useBookStore()
-  const {cart} = useCartStore()
+  const { books, setBooks } = useBookStore()
 
-  const addToCart = (book: Book) => {
-    try {
-      rootFetch({
-        setCart: useCartStore.getState().setCart,
-        cart: cart,
-        book: book,
-      })
-      alert('Book added to cart')
-    } catch (error) {
-      
-    }  
-  }
+  useEffect(() => {
+    setLoading(true)
+    fetchBooks(setBooks)
+    setLoading(false)
+  }, [])
 
   const handleProps = () => {
     if (options?.howmuch) {
@@ -68,7 +60,9 @@ const RenderBook = ({ options, book }: Props) => {
             </Link>
             <p className='text-gray-600'>Price: {book.price}</p>
             <GrFavorite />
-            <Button type='submit' onClick={() => addToCart(book)}>Add to Cart</Button>
+            <Button type='submit' onClick={() => addToCart(book)}>
+              Add to Cart
+            </Button>
           </div>
         </div>
       </div>
@@ -104,7 +98,9 @@ const RenderBook = ({ options, book }: Props) => {
                   </Link>
                   <p className='text-gray-600'>Price: {item.price}</p>
                   <GrFavorite />
-                  <Button type='submit' onClick={() => addToCart(item)}>Add to Cart</Button>
+                  <Button type='submit' onClick={() => addToCart(item)}>
+                    Add to Cart
+                  </Button>
                 </div>
               </div>
             ))

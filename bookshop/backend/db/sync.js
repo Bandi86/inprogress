@@ -3,6 +3,7 @@ import Category from '../models/category.js';
 import User from '../models/user.js';
 import Cart from '../models/cart.js';
 import Favorite from '../models/favorites.js';
+import Comments from '../models/comments.js';
 
 
 
@@ -14,6 +15,7 @@ const synchronizeModels = async () => {
     await Book.sync({ force: false });
     await Cart.sync({ force: false });
     await Favorite.sync({ force: false });
+    await Comments.sync({ force: false });
 
     // Kapcsolatok definiálása
     Book.belongsTo(Category, { foreignKey: 'category_id' });
@@ -21,6 +23,7 @@ const synchronizeModels = async () => {
 
     Cart.belongsToMany(Book, { through: 'CartItems', foreignKey: 'cart_id' });
     Book.belongsToMany(Cart, { through: 'CartItems', foreignKey: 'book_id' });
+    Comments.belongsTo(Book, { foreignKey: 'book_id' });
 
     console.log('Tables synced successfully');
   } catch (error) {

@@ -22,13 +22,14 @@ import { FaRegEdit } from 'react-icons/fa'
 import { MdDelete, MdOutlineCreateNewFolder } from 'react-icons/md'
 import { CgProfile } from 'react-icons/cg'
 import AdminTableModal from './AdminTableModal'
-import { User } from '@/types/user'
+
 
 interface TableProps {
   data: any[]
   columns: string[]
   tableCaptionText?: string
   type: string
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
  
 }
 
@@ -37,6 +38,7 @@ const SharedTable: React.FC<TableProps> = ({
   columns,
   tableCaptionText,
   type,
+  setRefresh,
 }) => {
   const [showModal, setShowModal] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<any>(null)
@@ -135,6 +137,7 @@ const SharedTable: React.FC<TableProps> = ({
           setShowModal={setShowModal}
           rowData={selectedRow}
           selectedIcon={selectedIcon}
+          setRefresh={setRefresh}
         />
       )}
       <div className='p-10'>

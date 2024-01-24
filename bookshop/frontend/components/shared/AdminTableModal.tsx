@@ -3,6 +3,8 @@ import CreateBookForm from '../admin/CreateBookForm'
 import Image from 'next/image'
 import useCategoryStore from '@/store/categorieStore'
 import CreateCategoryForm from '../admin/CreateCategoryForm'
+import { Button } from '../ui/button'
+import handleDelete from '@/utils/handleDelete'
 
 interface AdminTableModalProps {
   showModal: boolean
@@ -10,6 +12,7 @@ interface AdminTableModalProps {
   type: string
   rowData?: any
   selectedIcon: string
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AdminTableModal: React.FC<AdminTableModalProps> = ({
@@ -18,6 +21,7 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
   rowData,
   type,
   selectedIcon,
+  setRefresh
 }) => {
   if (!showModal) {
     return null
@@ -27,12 +31,14 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
 
   const newForm = selectedIcon === 'new'
   const editForm = selectedIcon === 'edit'
+  const deleteItem = selectedIcon === 'delete'
 
   const options = newForm ? 'new' : editForm ? 'edit' : ''
 
   const handleCloseModal = () => {
     setShowModal(false)
   }
+ 
 
   return (
     <div className='fixed inset-0 z-50 flex items-center justify-center'>
@@ -66,7 +72,6 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
               options={options}
               rowData={options === 'edit' ? rowData : undefined}
               setShowModal={setShowModal}
-
             />
           ) : (
             ''
@@ -77,13 +82,23 @@ const AdminTableModal: React.FC<AdminTableModalProps> = ({
               setText={() => {}}
               rowData={rowData}
               setShowModal={setShowModal}
+              setRefresh={setRefresh}
             />
           ) : (
             ''
           )}
+          {type === 'category' && deleteItem ? ( <>
+              <div>Are you sure you want to delete this category?</div>
+              <Button onClick={handleDelete({type: type, id: rowData.category_id, handleCloseModal, setRefresh})}>Yes</Button>
+              <Button onClick={handleCloseModal}>No</Button>
+            </>) : ''}
 
-          {type === 'book' && selectedIcon === 'delete' ? (
-            <div>Are you sure you want to delete this book?</div>
+          {type === 'book' && deleteItem ? (
+            <>
+              <div>Are you sure you want to delete this book?</div>
+              <Button onClick={handleDelete({type: type, id: rowData.category_id, handleCloseModal, setRefresh})}>Yes</Button>
+              <Button onClick={handleCloseModal}>No</Button>
+            </>
           ) : (
             ''
           )}

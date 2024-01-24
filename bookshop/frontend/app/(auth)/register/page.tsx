@@ -6,7 +6,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-import { user } from '@/constants/api'
+import { userApi } from '@/constants/api'
+import useUserStore from '@/store'
 
 type FormState = {
   username: string
@@ -17,7 +18,7 @@ type FormState = {
 const registerPage = () => {
   const router = useRouter()
 
-  const id = localStorage.getItem('user')?.toString() || null
+  const { user, setUser } = useUserStore()
 
   const [formState, setFormState] = useState<FormState>({
     username: '',
@@ -28,7 +29,7 @@ const registerPage = () => {
   const handleForm = async (e: SyntheticEvent) => {
     e.preventDefault()
     try {
-      const res = await axios.post(user, formState)
+      const res = await axios.post(userApi, formState)
 
       if (res.status === 201) {
         alert('Register success!')
@@ -41,7 +42,7 @@ const registerPage = () => {
 
   return (
     <>
-      {id ? (
+      {user?.user_id ? (
         router.push('/')
       ) : (
         <div className="flex justify-center items-center h-screen">

@@ -54,17 +54,7 @@ const User = db.define('user', {
     validate: {
       isIn: [['user', 'admin']],
     },
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
+  }, 
   lastLogin_at: {
     type: DataTypes.DATE,
     allowNull: false,

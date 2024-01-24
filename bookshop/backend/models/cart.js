@@ -22,20 +22,7 @@ const Cart = db.define('cart', {
         msg: 'Please enter a user',
       },
     },
-  },
-  quantity: {
-    type: DataTypes.INTEGER,
-    allowNull: {
-      args: false,
-      msg: 'Pease input a quantity',
-    },
-    validate: {
-      isInt: {
-        args: true,
-        msg: 'Please enter a valid quantity',
-      },
-    },
-  },
+  }, 
   total_price: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,

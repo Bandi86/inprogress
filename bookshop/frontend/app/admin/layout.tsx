@@ -8,18 +8,20 @@ const adminLayout = ({ children }: { children: React.ReactNode }) => {
   const { user } = useUserStore()
 
   const router = useRouter()
-  if (user && user.role !== 'admin') {
+  if (!user || user.role !== 'admin') {
     router.push('/')
   }
 
   return (
     <>
-      <div className='flex flex-row min-h-min w-screen bg-gradient-to-r from-green-200 to-green-500 text-black'>
+      <div className='flex min-h-min w-full bg-gradient-to-r from-green-200 to-green-500 text-black'>
         <Sidebar />
-        {children && <div className='flex flex-col w-auto pt-6'>
-          <SearchBar />
-          {children}
-          </div>}
+        {children && (
+          <div className='w-full p-10'>
+            <SearchBar />
+            {children}
+            </div>
+        )}
       </div>
     </>
   )

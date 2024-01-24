@@ -27,7 +27,6 @@ export const createCategory = async (req, res) => {
       const category = await Category.create({ category_name })
       res.status(201).json({ category })
     }
-    
   } catch (error) {
     console.error(error)
     res.status(500).json({ error: 'Internal Server Error' })
@@ -37,3 +36,19 @@ export const createCategory = async (req, res) => {
 // update category
 
 // delete category
+export const deleteCategory = async (req, res) => {
+  try {
+    const { category_id } = req.params
+    console.log(req.params);
+    const category = await Category.findOne({ where: { category_id } })
+    if (category) {
+      await category.destroy()
+      res.status(204).json({ message: 'Category deleted' })
+    } else {
+      res.status(404).json({ error: 'Category not found' })
+    }
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
+}

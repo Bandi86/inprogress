@@ -17,7 +17,7 @@ type FormState = {
 const loginPage = () => {
   const router = useRouter()
 
-  const { user, setUser, clearUser } = useUserStore()
+  const { user, setUser } = useUserStore()
 
   const [formState, setFormState] = useState<FormState>({
     email: '',
@@ -33,10 +33,9 @@ const loginPage = () => {
         localStorage.setItem('user', JSON.stringify(res.data.user))
         setUser(res.data.user)
         alert('Login success!')
-
         if (res.data.user.role === 'admin') {
           router.push('/admin')
-        } else router.push('/')
+        }
       }
     } catch (error: any) {
       console.error('Validation error:', error.message)

@@ -17,8 +17,8 @@ export const getUsers = async (req, res) => {
         username: user.username,
         email: user.email,
         role: user.role,
-        createdAt: user.created_at,
-        updatedAt: user.updated_at,
+        createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
         lastLoginAt: user.lastLogin_at,
         currentLoginDuration: user.currentLoginDuration,
       }
@@ -42,8 +42,8 @@ export const getUser = async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      created: user.created_at,
-      updated: user.updated_at,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
       lastLoginAt: user.lastLogin_at,
       currentLoginDuration: user.currentLoginDuration,
     }
@@ -87,8 +87,8 @@ export const createUser = async (req, res) => {
       id: user.id,
       username: user.username,
       email: user.email,
-      created: user.created_at,
-      updated: user.updated_at,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
     }
     res
       .status(201)
@@ -104,7 +104,7 @@ export const loginUser = async (req, res) => {
 
   try {
     // Check the user in the database with email
-    const user = await User.findOne({ where: { email } })
+    const user = await User.findOne({ where: { email } })   
 
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password' })
@@ -146,8 +146,8 @@ export const loginUser = async (req, res) => {
       username: user.username,
       email: user.email,
       role: user.role,
-      created: user.created_at,
-      updated: user.updated_at,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
       lastLoginAt: currentLoginTime,
       currentLoginDuration: updatedLoginDuration,
     }
@@ -222,8 +222,7 @@ export const deleteUser = async (req, res) => {
 
 // logout user
 export const logoutUser = async (req, res) => {
-  try {
-    console.log('Logout request received:', req.user)
+  try {    
 
     // Ellenőrizze, hogy a felhasználó be van-e jelentkezve, ha igen, akkor kezelje a kijelentkezést
     if (req.user) {

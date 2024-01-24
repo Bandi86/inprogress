@@ -107,17 +107,7 @@ const Book = db.define('book', {
         msg: 'Please enter a valid date',
       },
     },
-  },
-  created_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
-  updated_at: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: Sequelize.NOW,
-  },
+  }, 
 })
 
 export default Book

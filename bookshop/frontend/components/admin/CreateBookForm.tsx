@@ -15,14 +15,13 @@ import { Category } from '@/types/category'
 import axios from 'axios'
 import { booksApi } from '@/constants/api'
 import { Book } from '@/types/book'
-import { handleSuccess } from '@/utils/adminHandleSuccess'
-import { redirect } from 'next/navigation'
 
 interface CreateBookFormProps {
   categories: Category[] | null
   options: string
   rowData?: Book
   setShowModal?: (value: SetStateAction<boolean>) => void
+  setRefresh: (value: SetStateAction<boolean>) => void
 }
 
 const CreateBookForm = ({
@@ -30,7 +29,10 @@ const CreateBookForm = ({
   options,
   rowData,
   setShowModal,
+  setRefresh,
 }: CreateBookFormProps) => {
+  console.log(options)
+
   const handleSubmitForm = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const formData = new FormData(e.currentTarget)
@@ -45,29 +47,35 @@ const CreateBookForm = ({
         if (response.status !== 201) {
           throw new Error('Error while creating the book.')
         }
-        redirect('/admin/books') 
+        setRefresh(true)
       }
 
       if (options === 'new') {
         const response = await axios.post(booksApi, data)
-        if (response.status !== 201) {
-          throw new Error('Error while creating the book.')
-        } else {
+
+        if (response.status === 201) {
+          alert('Book created')
+
           if (setShowModal) {
-            handleSuccess(setShowModal)
+            setShowModal(false)
           }
+          setRefresh(true)
+        } else {
+          throw new Error('Error while creating the book.')
         }
       } else if (options === 'edit') {
         const response = await axios.put(
           `${booksApi}/${rowData?.book_id}`,
           data
         )
-        if (response.status !== 200) {
-          throw new Error('Error while editing the book.')
-        } else {
+        if (response.status === 200) {
+          alert('Book edited')
           if (setShowModal) {
-            handleSuccess(setShowModal)
+            setShowModal(false)
           }
+          setRefresh(true)
+        } else {
+          throw new Error('Error while editing the book.')
         }
       }
     } catch (error) {
@@ -203,8 +211,9 @@ const CreateBookForm = ({
         <Input type='date' name='published_date' id='published_date' />
 
         <Button type='submit'>
-          {options === 'new' || options ==='first' ? 'Create Book' : 'Edit Book'}
-
+          {options === 'new' || options === 'first'
+            ? 'Create Book'
+            : 'Edit Book'}
         </Button>
       </form>
     </div>

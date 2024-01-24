@@ -1,9 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    // add lira domain to images
     images: {
-        domains: ['lira.erbacdn.net'],
-    },
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'lira.erbacdn.net',
+            pathname: '**',
+          },
+        ],
+      },
+
 }
 
 module.exports = nextConfig

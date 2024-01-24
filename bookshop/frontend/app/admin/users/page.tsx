@@ -1,6 +1,6 @@
 'use client'
 
-import { user } from '@/constants/api'
+import { userApi } from '@/constants/api'
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { User } from '@/types/user'
@@ -12,7 +12,7 @@ const page = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(user)
+      const result = await axios.get(userApi)
       setUserData(result.data.users)
     }
     fetchData()

@@ -1,9 +1,24 @@
-import { Book } from "@/types/book"
-import axios from "axios"
+import { cartApi } from '@/constants/api'
+import { Book } from '@/types/book'
+import axios from 'axios'
+import { cookies } from 'next/headers'
 
-const  addToCart = async ( book: Book) => {
- // get the full book from props what added the user to cart
- const res = await axios.post('/api/cart', book)
+const addToCart = async (book: Book) => {
+  const cookieStore = cookies()
+  const token = cookieStore.get('jwt')
+
+  // get the full book from props what added the user to cart
+  const res = await axios.post(cartApi, book, {
+    // Add a comma here
+    headers: {
+      Authorization: `Bearer ${token}`, // Declare the 'token' variable or replace it with the actual token value
+    }, // Add a comma here
+  })
+  if (res.status === 200) {
+    console.log('book added to cart')
+  } else {
+    console.log('error')
+  }
 }
 
 export default addToCart

@@ -6,12 +6,13 @@ import { categoriesApi } from '@/constants/api'
 import axios from 'axios'
 import { Category } from '@/types/category'
 
+
 type Props = {
   text: string
   setText: (text: string) => void
   rowData?: Category
   setShowModal?: React.Dispatch<React.SetStateAction<boolean>>
-  setRefresh?: React.Dispatch<React.SetStateAction<boolean>>
+  setRefresh: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const CreateCategoryForm: React.FC<Props> = ({
@@ -26,6 +27,8 @@ const CreateCategoryForm: React.FC<Props> = ({
       setText(rowData.category_name)
     }
   }, [rowData])
+
+ 
 
   const handleSubmit = async () => {
     const data = {
@@ -52,6 +55,7 @@ const CreateCategoryForm: React.FC<Props> = ({
         setText('')
         alert('Create category successfully')
         if (setRefresh) setRefresh(true)
+        setRefresh(true)
       }
     } catch (error) {
       console.error('Error creating/editing category:', error)
@@ -59,13 +63,13 @@ const CreateCategoryForm: React.FC<Props> = ({
   }
 
   return (
-    <div>
+    <div className='w-[10rem]'>
       <Label htmlFor='name'>Name</Label>
       <Input
         name='name'
         type='text'
         placeholder='name'
-        className='w-full mb-4'
+        className='mb-4'
         value={text}
         onChange={(e) => setText(e.target.value)}
       />

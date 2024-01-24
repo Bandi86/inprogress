@@ -17,13 +17,13 @@ const page = () => {
   }, [refresh])
 
   return (
-    <div>
+    <div className='flex flex-col gap-10 justify-center'>
       {categories.length === 0 && (
         <>
           <div className='text-center text-2xl text-gray-500 p-8'>
             No data in database
           </div>
-          <CreateCategoryForm text={text} setText={setText} />
+          <CreateCategoryForm text={text} setText={setText} setRefresh={setRefresh} />
         </>
       )}
       {Array.isArray(categories) && categories.length > 0 && (
@@ -33,6 +33,7 @@ const page = () => {
             columns={['category_id', 'category_name', 'createdAt', 'updatedAt']}
             tableCaptionText='category in database'
             type='category'
+            setRefresh={setRefresh}
           />
           <CreateCategoryForm text={text} setText={setText} setRefresh={setRefresh} />
         </div>

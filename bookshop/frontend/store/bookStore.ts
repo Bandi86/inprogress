@@ -16,7 +16,7 @@ const useBookStore = create<BookStore>((set) => {
     },
     clearBooks: () => {
       set({ books: [] })
-    },
+    },   
   }
 })
 

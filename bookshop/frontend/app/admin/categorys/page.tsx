@@ -1,4 +1,4 @@
-'use client'
+
 
 import useCategoryStore from '@/store/categorieStore'
 import { useEffect, useState } from 'react'

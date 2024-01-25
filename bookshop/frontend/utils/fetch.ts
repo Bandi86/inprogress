@@ -4,11 +4,12 @@ import { Book } from '@/types/book'
 import { Category } from '@/types/category'
 import { Cart } from '@/types/cart'
 import { cartApi } from '@/constants/api'
+import axiosCookie from './axios-interceptor'
 
 const fetchBooks = async (setBooks: (books: Book[]) => void) => {
   try {
     console.log('Fetching books...')
-    const res = await axios.get(booksApi)
+    const res = await axios.get(booksApi, { ...axiosCookie })
 
     if (res.status !== 200) {
       throw new Error('Error while fetching books')
@@ -26,7 +27,7 @@ const fetchCategories = async (
 ) => {
   try {
     console.log('Fetching categories...')
-    const res = await axios.get(categoriesApi)
+    const res = await axios.get(categoriesApi, { ...axiosCookie })
     console.log('Response from categories API:', res)
 
     if (res.status !== 200) {
@@ -43,7 +44,7 @@ const fetchCategories = async (
 const fetchCart = async (setCart: (cart: Cart[]) => void) => {
   try {
     console.log('Fetching cart...')
-    const res = await axios.get(cartApi)
+    const res = await axios.get(cartApi, { ...axiosCookie })
     console.log('Response from cart API:', res)
 
     if (res.status !== 200) {

@@ -1,4 +1,4 @@
-'use client'
+
 
 import Searchbar from '@/components/Search'
 import BookCategorys from './BookCategorys'

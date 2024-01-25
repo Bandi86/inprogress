@@ -1,3 +1,4 @@
+'use client'
 import useCategoryStore from '@/store/categorieStore'
 import { Category } from '@/types/category'
 import { fetchCategories } from '@/utils/fetch'

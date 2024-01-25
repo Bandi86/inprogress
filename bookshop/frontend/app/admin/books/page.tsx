@@ -1,5 +1,3 @@
-'use client'
-
 import CreateBookForm from '@/components/admin/CreateBookForm'
 import SharedTable from '@/components/shared/Table'
 import useBookStore from '@/store/bookStore'
@@ -43,7 +41,11 @@ const page = () => {
             <p>Try to add your first Book here</p>
             <p>Have no category pls add first one after you can add book</p>
             {Array.isArray(categories) && categories.length > 0 && (
-              <CreateBookForm categories={categories} options='first' setRefresh={setRefresh} />
+              <CreateBookForm
+                categories={categories}
+                options='first'
+                setRefresh={setRefresh}
+              />
             )}
           </div>
         </div>

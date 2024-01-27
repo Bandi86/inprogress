@@ -1,11 +1,14 @@
 Backend:
-npm i @babel/core
-npm i async
-npm install --save @types/lodash
-npm i dotenv
-npm i bcryptjs
-npm install jsonwebtoken
-npm i passport
+postgres
+npm i @nestjs/jwt
+npm i bcrypt
+npm install @nestjs/passport passport passport-local @nestjs/jwt passport-jwt
+
+npm i --save-dev @types/passport-local
+npm i cookie-parser
+npm i -D @types/cookie-parser
+
+
 
 Frontend:
 axios

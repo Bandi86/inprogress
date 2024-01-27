@@ -1,0 +1,97 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId    String      @id @default(uuid())
+  email     String      @unique
+  username  String      @unique
+  password  String
+  role      Role        @default(USER)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  lastLogin DateTime?
+  comments  Comments[]
+  favorites Favorites[]
+  cart      Carts[]
+}
+
+model Book {
+  bookId      String      @id @default(uuid())
+  title       String
+  description String
+  isbn        String      @unique
+  quantity    Int         @default(1)
+  price       Float
+  image       String      @default("https://via.placeholder.com/150")
+  category    Categorys   @relation(fields: [categoryId], references: [categoryId])
+  categoryId  String
+  publishedAt DateTime
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  author      Authors     @relation(fields: [authorId], references: [authorId])
+  authorId    String
+  comments    Comments[]
+  favorites   Favorites[]
+  cart        Carts[]
+}
+
+model Authors {
+  authorId  String   @id @default(uuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  books     Book[]
+}
+
+model Categorys {
+  categoryId String   @id @default(uuid())
+  name       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  books      Book[]
+}
+
+model Comments {
+  commentId String   @id @default(uuid())
+  text      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [userId])
+  userId    String
+  book      Book     @relation(fields: [bookId], references: [bookId])
+  bookId    String
+}
+
+model Favorites {
+  favoriteId String   @id @default(uuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  user       User     @relation(fields: [userId], references: [userId])
+  userId     String
+  book       Book     @relation(fields: [bookId], references: [bookId])
+  bookId     String
+}
+
+model Carts {
+  cartId    String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [userId])
+  userId    String
+  book      Book     @relation(fields: [bookId], references: [bookId])
+  bookId    String
+}
+
+enum Role {
+  ADMIN
+  USER
+}

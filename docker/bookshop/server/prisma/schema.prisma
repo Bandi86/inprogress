@@ -32,7 +32,7 @@ model Book {
   quantity    Int         @default(1)
   price       Float
   image       String      @default("https://via.placeholder.com/150")
-  category    Categorys   @relation(fields: [categoryId], references: [categoryId])
+  category    Category    @relation(fields: [categoryId], references: [categoryId])
   categoryId  String
   publishedAt DateTime
   createdAt   DateTime    @default(now())
@@ -52,7 +52,7 @@ model Authors {
   books     Book[]
 }
 
-model Categorys {
+model Category {
   categoryId String   @id @default(uuid())
   name       String
   createdAt  DateTime @default(now())
@@ -95,3 +95,5 @@ enum Role {
   ADMIN
   USER
 }
+
+// parancsok npx prisma generate -npx prisma migrate dev --name init

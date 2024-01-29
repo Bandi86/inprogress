@@ -1,11 +1,8 @@
 import {
   Body,
-  CanActivate,
   Controller,
   Delete,
-  ExecutionContext,
   Get,
-  Injectable,
   Param,
   Patch,
   Post,
@@ -20,19 +17,7 @@ import { User } from '@prisma/client';
 import { LoginResponse, UserPayload } from './interfaces/users-login.interface';
 import { ExpressRequestWithUser } from './interfaces/express-request-with-user.interface';
 import { Public } from 'src/common/decorators/public.decorator';
-
-@Injectable()
-export class IsMineGuard implements CanActivate {
-  constructor() {}
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const request = context.switchToHttp().getRequest();
-
-    // 💡 We can access the user payload from the request object
-    // because we assigned it in the AuthGuard
-    return parseInt(request.params.userId) === request.user.sub;
-  }
-}
+import { IsMineGuard } from 'src/common/guards/is-mine.guard';
 
 @Controller('users')
 export class UsersController {

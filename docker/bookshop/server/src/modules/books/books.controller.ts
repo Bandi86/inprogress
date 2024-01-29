@@ -1,63 +1,63 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    ParseIntPipe,
-    Patch,
-    Post,
-    Request,
-    UseGuards,
-  } from '@nestjs/common';
-import { CreateBooksDto } from './dtos/create-books.dto'
-import { ExpressRequestWithUser } from '../users/interfaces/express-request-with-user.interface'
-import { Book } from '@prisma/client'
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Request,
+  UseGuards,
+} from '@nestjs/common';
+import { CreateBookDto } from './dtos/create-book.dto';
+import { ExpressRequestWithUser } from '../users/interfaces/express-request-with-user.interface';
+import { Book } from '@prisma/client';
 import { Public } from 'src/common/decorators/public.decorator';
-import { IsMineGuard } from '../users/users.controller'
-import { UpdateBooksDto } from './dtos/update-books.dto'
-  
-  @Controller('books')
-  export class BooksController {
-    constructor(private readonly booksService: BooksService) {}
+import { IsMineGuard } from 'src/common/guards/is-mine.guard';
+import { UpdateBookDto } from './dtos/update-book.dto';
+import { BookService } from './books.service';
 
-    // create a book
-    @Post()
+@Controller('books')
+export class BooksController {
+  constructor(private readonly booksService: BookService) {}
+
+  // create a book
+  @Post()
   async createPost(
-    @Body() createBooksDto: CreateBooksDto,
+    @Body() createBookDto: CreateBookDto,
     @Request() req: ExpressRequestWithUser,
-  ): Promise<Book> {    
-    return this.booksService.createBooks(createBooksDto);
+  ): Promise<Book> {
+    return this.booksService.createBook(createBookDto);
   }
 
   // get all books
   @Public()
   @Get()
   getAllPosts(): Promise<Book[]> {
-    return this.booksService.getAllPosts();
+    return this.booksService.getAllBook();
   }
 
-    // get a book by id
-    @Public()
-    @Get(':bookId')
-    getBookById(@Param('bookId') bookId: string): Promise<Book> {
-        return this.booksService.getBookById(bookId);
-    }
+  // get a book by id
+  @Public()
+  @Get(':bookId')
+  getBookById(@Param('bookId') bookId: string): Promise<Book> {
+    return this.booksService.getBookById(bookId);
+  }
 
-    // update a book by id
-    @Patch(':bookId')
-    @UseGuards(IsMineGuard)
-    async updatePost(
-      @Param('bookId') bookId: string,
-      @Body() updateBooksDto: UpdateBooksDto,
-    ): Promise<Book> {
-      return this.booksService.updateBooks(bookId, updateBooksDto);
-    }
+  // update a book by id
+  @Patch(':bookId')
+  @UseGuards(IsMineGuard)
+  async updatePost(
+    @Param('bookId') bookId: string,
+    @Body() updateBookDto: UpdateBookDto,
+  ): Promise<Book> {
+    return this.booksService.updateBook(bookId, updateBookDto);
+  }
 
-    // delete a book by id
-    @Delete(':bookId')
-    @UseGuards(IsMineGuard)
-    async deletePost(@Param('bookId') bookId: string): Promise<Book> {
-      return this.booksService.deleteBooks(bookId);
-    }
-  }    
+  // delete a book by id
+  @Delete(':bookId')
+  @UseGuards(IsMineGuard)
+  async deletePost(@Param('bookId') bookId: string): Promise<Book> {
+    return this.booksService.deleteBook(bookId);
+  }
+}

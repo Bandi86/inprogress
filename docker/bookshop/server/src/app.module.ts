@@ -6,15 +6,19 @@ import { CoreModule } from 'src/core/core.module';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards/auth.guard';
+import { BookModule } from './modules/books/books.module'
+import { CategoriesModule } from './modules/categories/categories.module'
 
 @Module({
   imports: [
     UsersModule,
+    BookModule,
     CoreModule,
+    CategoriesModule,
     // add jwt module
     JwtModule.register({
       global: true,
-      secret: 'process.env.JWT_SECRET',
+      secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '30d' },
     }),
   ],

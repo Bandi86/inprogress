@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
+import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -9,6 +10,7 @@ async function bootstrap() {
   app.enableCors();
   app.use(cookieParser());
   app.setGlobalPrefix('/api');
+  app.useGlobalPipes(new ValidationPipe());
 
 
   const config = new DocumentBuilder()
@@ -16,6 +18,8 @@ async function bootstrap() {
     .setDescription('The Bookshop API description')
     .setVersion('1.0')
     .addTag('Bookshop')
+    .addBearerAuth()
+
     .build();
 
 

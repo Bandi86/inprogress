@@ -15,3 +15,4 @@ npm install bcrypt --save
 
 Frontend:
 axios
+swr

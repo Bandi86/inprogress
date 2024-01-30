@@ -25,70 +25,78 @@ model User {
 }
 
 model Book {
-  bookId      String      @id @default(uuid())
-  title       String
-  description String
-  isbn        String      @unique
-  quantity    Int         @default(1)
-  price       Float
-  image       String      @default("https://via.placeholder.com/150")
-  category    Category    @relation(fields: [categoryId], references: [categoryId])
-  categoryId  String
-  publishedAt DateTime
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  author      Authors     @relation(fields: [authorId], references: [authorId])
-  authorId    String
-  comments    Comments[]
-  favorites   Favorites[]
-  cart        Carts[]
+  bookId        String      @id @default(uuid())
+  title         String
+  description   String
+  isbn          String?     @unique
+  quantity      Int         @default(1)
+  price         Float
+  stock         Boolean     @default(true)
+  image         String      @default("https://via.placeholder.com/150")
+  category      Category    @relation(fields: [categoryId], references: [categoryId])
+  categoryId    String
+  publishedAt   DateTime
+  publisher     String
+  numberOfPages Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  author        Author      @relation(fields: [authorId], references: [authorId])
+  authorId      String
+  comments      Comments[]
+  favorites     Favorites[]
+  cart          Carts[]
 }
 
-model Authors {
-  authorId  String   @id @default(uuid())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  books     Book[]
+model Author {
+  authorId    String   @id @default(uuid())
+  name        String   @unique
+  description String
+  birthDate   DateTime
+  image       String   @default("https://via.placeholder.com/150")
+  books       Book[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Category {
   categoryId String   @id @default(uuid())
-  name       String
+  name       String   @unique
+  books      Book[]
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
-  books      Book[]
 }
 
 model Comments {
   commentId String   @id @default(uuid())
   text      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  rating    Int
   user      User     @relation(fields: [userId], references: [userId])
   userId    String
   book      Book     @relation(fields: [bookId], references: [bookId])
   bookId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Favorites {
   favoriteId String   @id @default(uuid())
+  user       User     @relation(fields: [userId], references: [userId])
+  userId     String
+  book       Book     @relation(fields: [bookId], references: [bookId])
+  bookId     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Carts {
+  cartId     String   @id @default(uuid())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   user       User     @relation(fields: [userId], references: [userId])
   userId     String
   book       Book     @relation(fields: [bookId], references: [bookId])
   bookId     String
-}
-
-model Carts {
-  cartId    String   @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [userId])
-  userId    String
-  book      Book     @relation(fields: [bookId], references: [bookId])
-  bookId    String
+  totalPrice Float    @default(0)
 }
 
 enum Role {

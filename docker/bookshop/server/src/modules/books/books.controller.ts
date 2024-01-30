@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
   Request,
   UseGuards,
 } from '@nestjs/common';
@@ -27,13 +28,26 @@ export class BooksController {
     @Body() createBookDto: CreateBookDto,
     @Request() req: ExpressRequestWithUser,
   ): Promise<Book> {
+    
     return this.booksService.createBook(createBookDto);
   }
 
   // get all books
   @Public()
   @Get()
-  getAllPosts(): Promise<Book[]> {
+  // implement query params
+  getAllBook(
+    @Query() query: { authorId: string; categoryId: string }
+  ): Promise<Book[]> {
+    const { authorId, categoryId } = query
+    if (query) {
+      if (authorId) {
+        return this.booksService.getAllBookByAuthor(authorId);
+      }
+      if (categoryId) {
+        return this.booksService.getAllBookByCategory(categoryId);
+      }
+    }
     return this.booksService.getAllBook();
   }
 

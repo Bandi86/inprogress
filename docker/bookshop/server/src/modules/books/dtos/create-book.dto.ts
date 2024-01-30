@@ -35,6 +35,12 @@ export class CreateBookDto {
   @IsUUID()
   @IsNotEmpty()
   authorId: string;
+
+  @IsNumber()
+  numberOfPages: number;
+
+  @IsString()
+  publisher: string;
 }
 
 export default CreateBookDto;

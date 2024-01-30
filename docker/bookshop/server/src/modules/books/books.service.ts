@@ -1,12 +1,8 @@
-import {
-  HttpException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException, Query } from '@nestjs/common';
 import { Book } from '@prisma/client';
 import { PrismaService } from 'src/core/services/prisma.service';
-import { CreateBookDto } from './dtos/create-book.dto'
-import { UpdateBookDto } from './dtos/update-book.dto'
+import { CreateBookDto } from './dtos/create-book.dto';
+import { UpdateBookDto } from './dtos/update-book.dto';
 
 @Injectable()
 export class BookService {
@@ -15,6 +11,17 @@ export class BookService {
   // create a book
   async createBook(createBookDto: CreateBookDto): Promise<Book> {
     try {
+      // check if author exists
+      const author = await this.prisma.author.findUnique({
+        where: {
+          authorId: createBookDto.authorId,
+        },
+      });
+
+      if (!author) {
+        throw new NotFoundException('Author not found');
+      }
+
       // create new book using prisma client
       const newBook = await this.prisma.book.create({
         data: {
@@ -30,10 +37,44 @@ export class BookService {
   }
 
   // get all book
-  async getAllBook(): Promise<Book[]> {
+  async getAllBook(): Promise<Book[]> {   
     try {
       // get all books using prisma client
       const allBooks = await this.prisma.book.findMany();
+
+      return allBooks;
+    } catch (error) {
+      // throw error if any
+      throw new HttpException(error, 500);
+    }
+  }
+
+  // get all book by category
+  async getAllBookByCategory(categoryId: string): Promise<Book[]> {
+    try {
+      // get all books by category using prisma client
+      const allBooks = await this.prisma.book.findMany({
+        where: {
+          categoryId: categoryId,
+        },
+      });
+
+      return allBooks;
+    } catch (error) {
+      // throw error if any
+      throw new HttpException(error, 500);
+    }
+  }
+
+  // get all book by author
+  async getAllBookByAuthor(authorId: string): Promise<Book[]> {
+    try {
+      // get all books by author using prisma client
+      const allBooks = await this.prisma.book.findMany({
+        where: {
+          authorId: authorId,
+        },
+      });
 
       return allBooks;
     } catch (error) {

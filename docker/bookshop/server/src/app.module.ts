@@ -8,6 +8,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards/auth.guard';
 import { BookModule } from './modules/books/books.module'
 import { CategoriesModule } from './modules/categories/categories.module'
+import { AuthorModule } from './modules/authors/authors.module'
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CategoriesModule } from './modules/categories/categories.module'
     BookModule,
     CoreModule,
     CategoriesModule,
+    AuthorModule,
     // add jwt module
     JwtModule.register({
       global: true,

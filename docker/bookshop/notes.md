@@ -16,3 +16,5 @@ npm install bcrypt --save
 Frontend:
 axios
 swr
+npx shadcn-ui@latest init
+npm i zustand

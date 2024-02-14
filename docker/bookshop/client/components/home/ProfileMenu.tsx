@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { RxHamburgerMenu } from 'react-icons/rx'
 import useUserStore from '@/store/userStore'
-import {Avatar} from './Avatar'
+import { Avatar } from './Avatar'
 import { FaHeart } from 'react-icons/fa'
 import { FaShoppingCart } from 'react-icons/fa'
 

@@ -18,3 +18,5 @@ axios
 swr
 npx shadcn-ui@latest init
 npm i zustand
+react-hook-form
+zod

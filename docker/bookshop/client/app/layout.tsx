@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/home/Header'
 
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -16,14 +15,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
- 
-
   return (
     <html lang='en'>
       <body className={inter.className}>
-      <main className='flex flex-col items-center w-screen h-min-screen bg-gradient-to-r from-green-200 to-green-500'>
-          <Header />
-
+        <Header />
+        <main className='flex flex-col items-center w-screen h-dvh bg-gradient-to-r from-green-200 to-green-500'>
           {children}
         </main>
       </body>

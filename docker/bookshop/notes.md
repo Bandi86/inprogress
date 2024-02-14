@@ -15,8 +15,12 @@ npm install bcrypt --save
 
 Frontend:
 axios
-swr
 npx shadcn-ui@latest init
-npm i zustand
-react-hook-form
-zod
+npm install react-redux
+npm install --save @types/react-redux
+npm install @reduxjs/toolkit
+npm i redux-persist
+npm install firebase
+npm i react-quill --save
+npm i moment
+npm i react-circular-progressbar

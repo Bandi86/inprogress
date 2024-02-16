@@ -15,7 +15,7 @@ npm i react-circular-progressbar
 
 # Backend
 
-npm i bcrypt jsonwebtoken cors dotenv express sequelize pg nodemon async body-parser cookie-parser
+npm i bcrypt jsonwebtoken cors dotenv express sequelize pg nodemon async body-parser cookie-parser, morgan
 npm install @babel/cli
 npm install @babel/core
 npm install @babel/node

@@ -1,4 +1,9 @@
-import { HttpException, Injectable, NotFoundException, Query } from '@nestjs/common';
+import {
+  HttpException,
+  Injectable,
+  NotFoundException,
+  Query,
+} from '@nestjs/common';
 import { Book } from '@prisma/client';
 import { PrismaService } from 'src/core/services/prisma.service';
 import { CreateBookDto } from './dtos/create-book.dto';
@@ -12,7 +17,7 @@ export class BookService {
   async createBook(createBookDto: CreateBookDto): Promise<Book> {
     try {
       // check if author exists
-      const author = await this.prisma.author.findUnique({
+      const author = await this.prisma.authors.findUnique({
         where: {
           authorId: createBookDto.authorId,
         },
@@ -37,7 +42,7 @@ export class BookService {
   }
 
   // get all book
-  async getAllBook(): Promise<Book[]> {   
+  async getAllBook(): Promise<Book[]> {
     try {
       // get all books using prisma client
       const allBooks = await this.prisma.book.findMany();

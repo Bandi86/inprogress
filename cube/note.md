@@ -12,6 +12,7 @@ npm install firebase
 npm i react-quill --save
 npm i moment
 npm i react-circular-progressbar
+npm install react-hook-form zod @hookform/resolvers
 
 # Backend
 

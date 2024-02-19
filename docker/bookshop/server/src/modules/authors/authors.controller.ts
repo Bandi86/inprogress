@@ -13,7 +13,7 @@ import {
 import CreateAuthorDto from './dtos/create-author.dto';
 import { AuthorService } from './authors.service';
 import { ExpressRequestWithUser } from '../users/interfaces/express-request-with-user.interface';
-import { Author } from '@prisma/client';
+import { Authors } from '@prisma/client';
 import UpdateAuthorDto from './dtos/update-author.dto';
 
 @Controller('authors')
@@ -25,19 +25,19 @@ export class AuthorController {
   async createAuthor(
     @Body() createAuthorDto: CreateAuthorDto,
     @Request() req: ExpressRequestWithUser,
-  ): Promise<Author> {
+  ): Promise<Authors> {
     return this.authorService.createAuthor(createAuthorDto);
   }
 
   // get all authors
   @Get()
-  getAllAuthors(): Promise<Author[]> {
+  getAllAuthors(): Promise<Authors[]> {
     return this.authorService.getAllAuthor();
   }
 
   // get a author by id
   @Get(':authorId')
-  getAuthorById(@Param('authorId') authorId: string): Promise<Author> {
+  getAuthorById(@Param('authorId') authorId: string): Promise<Authors> {
     return this.authorService.getAuthorById(authorId);
   }
 
@@ -52,7 +52,7 @@ export class AuthorController {
     } */
 
   @Delete(':authorId')
-  async deleteAuthor(@Param('authorId') authorId: string): Promise<Author> {
+  async deleteAuthor(@Param('authorId') authorId: string): Promise<Authors> {
     return this.authorService.deleteAuthor(authorId);
   }
 }

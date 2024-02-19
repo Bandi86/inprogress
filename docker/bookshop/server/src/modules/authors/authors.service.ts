@@ -1,16 +1,16 @@
 import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/core/services/prisma.service';
 import CreateAuthorDto from './dtos/create-author.dto';
-import { Author } from '@prisma/client';
+import { Authors } from '@prisma/client';
 
 @Injectable()
 export class AuthorService {
   constructor(private prisma: PrismaService) {}
 
   // create a author
-  async createAuthor(createAuthorDto: CreateAuthorDto): Promise<Author> {
+  async createAuthor(createAuthorDto: CreateAuthorDto): Promise<Authors> {
     try {
-      const newAuthor = await this.prisma.author.create({
+      const newAuthor = await this.prisma.authors.create({
         data: {
           ...createAuthorDto,
         },
@@ -24,9 +24,9 @@ export class AuthorService {
   }
 
   // get all author
-  async getAllAuthor(): Promise<Author[]> {
+  async getAllAuthor(): Promise<Authors[]> {
     try {
-      const allAuthors = await this.prisma.author.findMany();
+      const allAuthors = await this.prisma.authors.findMany();
       return allAuthors;
     } catch (error) {
       // throw error if any
@@ -35,9 +35,9 @@ export class AuthorService {
   }
 
   // get a author by id
-  async getAuthorById(authorId: string): Promise<Author> {
+  async getAuthorById(authorId: string): Promise<Authors> {
     try {
-      const author = await this.prisma.author.findUniqueOrThrow({
+      const author = await this.prisma.authors.findUniqueOrThrow({
         where: {
           authorId: authorId,
         },
@@ -59,9 +59,9 @@ export class AuthorService {
   async updateAuthor(
     authorId: string,
     updateAuthorDto: CreateAuthorDto,
-  ): Promise<Author> {
+  ): Promise<Authors> {
     try {
-      const updatedAuthor = await this.prisma.author.update({
+      const updatedAuthor = await this.prisma.authors.update({
         where: {
           authorId: authorId,
         },
@@ -78,9 +78,9 @@ export class AuthorService {
   }
 
   // delete a author
-  async deleteAuthor(authorId: string): Promise<Author> {
+  async deleteAuthor(authorId: string): Promise<Authors> {
     try {
-      const deletedAuthor = await this.prisma.author.delete({
+      const deletedAuthor = await this.prisma.authors.delete({
         where: {
           authorId: authorId,
         },

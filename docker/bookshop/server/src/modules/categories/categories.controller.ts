@@ -1,6 +1,6 @@
 import { CategoriesService } from './categories.service';
 import { CreateCategoryDto } from './dtos/create-category.dto';
-import { Category } from '@prisma/client';
+import { Categorys } from '@prisma/client';
 import {
   Body,
   Controller,
@@ -26,21 +26,21 @@ export class CategoriesController {
   async createCategory(
     @Body() createCategoryDto: CreateCategoryDto,
     @Request() req: ExpressRequestWithUser,
-  ): Promise<Category> {
+  ): Promise<Categorys> {
     return this.categoriesService.createCategory(createCategoryDto);
   }
 
   // get all categories
   @Public()
   @Get()
-  async getAllCategories(): Promise<Category[]> {
+  async getAllCategories(): Promise<Categorys[]> {
     return this.categoriesService.getAllCategories();
   }
 
   // get category by id
   @Public()
   @Get(':categoryId')
-  async getCategoryById(categoryId: string): Promise<Category> {
+  async getCategoryById(categoryId: string): Promise<Categorys> {
     const category = await this.categoriesService.getCategoryById(categoryId);
     if (!category) {
       throw new HttpException('Category not found', 404);
@@ -54,7 +54,7 @@ export class CategoriesController {
   async updateCategory(
     @Param('categoryId') categoryId: string,
     @Body() createCategoryDto: CreateCategoryDto,
-  ): Promise<Category> {
+  ): Promise<Categorys> {
     const category = await this.categoriesService.updateCategory(
       categoryId,
       createCategoryDto,
@@ -71,7 +71,7 @@ export class CategoriesController {
   async deleteCategory(
     @Param('categoryId')
     categoryId: string,
-  ): Promise<Category> {
+  ): Promise<Categorys> {
     const category = await this.categoriesService.deleteCategory(categoryId);
     if (!category) {
       throw new HttpException('Category not found', 404);

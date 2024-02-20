@@ -17,56 +17,57 @@ import { Input } from '@/components/ui/input'
 import { RegisterSchema } from '@/zod/register'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
-import { register } from '@/vars/endpoints'
+import { login } from '@/vars/endpoints'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  signInStart,
+  signInSuccess,
+  signInFailure,
+  UserRedux,
+} from '@/redux/userSlice'
 
 const page = () => {
   const router = useRouter()
+  const dispatch = useDispatch()
+  const { loading, error: errorMessage } = useSelector(
+    (state: UserRedux) => state.user
+  )
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
-      username: '',
       email: '',
       password: '',
     },
   })
 
   async function onSubmit(values: z.infer<typeof RegisterSchema>) {
+    dispatch(signInStart())
     try {
-      const res = await axios.post(register, values)
-      if (res.status === 201) {
-        router.push('/login')
-        alert('register ok')
+      const res = await axios.post(login, values, {
+        withCredentials: true,
+      })
+      if (res.status === 200) {
+        dispatch(signInSuccess(res.data.user))
+        router.push('/')
+        alert('login ok')
+      } else {
+        dispatch(signInFailure(res.data.message))
+        alert(res.data.message)
       }
     } catch (error: any) {
-      console.error('Validation error:', error.message)
+      dispatch(signInFailure(error.message))
     }
   }
 
   return (
     <div className='flex flex-col mb-4 p-2 justify-center items-center'>
-      <h1>Registration</h1>
+      <h1>Login</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className='space-y-8'
         >
-          <FormField
-            control={form.control}
-            name='username'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder='username' {...field} />
-                </FormControl>
-                <FormDescription>
-                  This is your public display name.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name='email'
@@ -102,7 +103,15 @@ const page = () => {
               </FormItem>
             )}
           />
-          <Button type='submit'>Submit</Button>
+          <Button type='submit' disabled={loading ? true : undefined}>
+            {loading ? (
+              <>
+                <span className='pl-3'>Loading...</span>
+              </>
+            ) : (
+              <span>Login</span>
+            )}
+          </Button>
         </form>
       </Form>
     </div>

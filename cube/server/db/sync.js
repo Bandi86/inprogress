@@ -1,4 +1,3 @@
-import db from './connection.js'
 import User from '../models/user.js'
 
 const synchronizeModels = async () => {

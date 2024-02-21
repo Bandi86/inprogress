@@ -2,25 +2,26 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Header from '@/components/header/Header'
+import { ReduxProvider } from '@/redux/redux-provider'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Men Cube',
-  description: 'gaming movies series for everyone',
+  description: 'gaming movies series for everyone'
 }
 
 export default function RootLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang='hun'>
+    <html lang="hun">
       <body className={inter.className}>
         <Header />
-        <div className='flex flex-col items-center h-min-screen ml-[10rem] mr-[10rem] mt-4'>
-          {children}
+        <div className="flex flex-col items-center h-min-screen ml-[10rem] mr-[10rem] mt-4">
+          <ReduxProvider>{children}</ReduxProvider>
         </div>
       </body>
     </html>
